@@ -87,8 +87,9 @@ const Home: React.FC = () => {
         value={dateValue}
         onChange={setDateValue}
         id="date-picker"
-        width={80}
+        width={200}
         requid={true}
+        errorMess={["huhu","hihi"]}
       />
       <Pagination
         currentPage={currentPage}
