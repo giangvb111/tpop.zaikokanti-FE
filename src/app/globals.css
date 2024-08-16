@@ -26,6 +26,18 @@ body {
   font-family: 'Yu Gothic (Body)', sans-serif;
 }
 
+/* Custom CSS */
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

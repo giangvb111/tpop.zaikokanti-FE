@@ -41,16 +41,16 @@ const WarehouseRegister: React.FC = () => {
 
     master.createWarehouse(`lang=${language}`, postData)
       .then(res => {
-        if (res.data.message === null) {
+        if (res.status === 200) {
           setWarehouseCd("")
           setWarehouseName("")
+          setErrorMess([])
           dispatch(hiddenLoading())
         }
       })
       .catch(err => {
         if (err.response.data.status === 0) {
           setErrorMess(err.response.data.error.errorDetails)
-
           dispatch(hiddenLoading());
         }
       });
@@ -81,8 +81,8 @@ const WarehouseRegister: React.FC = () => {
                   width={200}
                   value={warehouseCd}
                   onChange={setWarehouseCd}
-                  errorMess={errorMess.filter(error => error.field === 'warehouseCd').map(error => error.message)} 
-                  />
+                  errorMess={errorMess.filter(error => error.field === 'warehouseCd').map(error => error.message)}
+                />
               </td>
             </tr>
             <tr className='flex justify-start items-start'>
@@ -94,8 +94,8 @@ const WarehouseRegister: React.FC = () => {
                   width={200}
                   value={warehouseName}
                   onChange={setWarehouseName}
-                  errorMess={errorMess.filter(error => error.field === 'warehouseName').map(error => error.message)} 
-                  />
+                  errorMess={errorMess.filter(error => error.field === 'warehouseName').map(error => error.message)}
+                />
               </td>
             </tr>
           </tbody>

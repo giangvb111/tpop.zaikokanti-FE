@@ -12,9 +12,10 @@ interface SelectProps {
     id?: string;
     width: number;
     requid: boolean;
+    errorMess: string[];
 }
 
-const SelectCommon: React.FC<SelectProps> = ({ options, value, onChange, id, width, requid }) => {
+const SelectCommon: React.FC<SelectProps> = ({ options, value, onChange, id, width, requid, errorMess }) => {
 
     const isValidValue = options?.some(option => option.value === value && value !== "");
 
@@ -25,7 +26,7 @@ const SelectCommon: React.FC<SelectProps> = ({ options, value, onChange, id, wid
     }, [isValidValue, onChange]);
 
     return (
-        <div className={`flex justify-left items-center`}>
+        <div className={`block justify-left items-center`}>
             <select
                 id={id}
                 value={isValidValue ? value : ""}
@@ -46,6 +47,15 @@ const SelectCommon: React.FC<SelectProps> = ({ options, value, onChange, id, wid
                         : <option disabled>-- Not data --</option>
                 }
             </select>
+            {
+                errorMess.length > 0 && (
+                    <div className='pt-0.5'>
+                        {errorMess.map((message, index) => (
+                            <p key={index} className='text-left text-sm text-red-500'>{message}</p>
+                        ))}
+                    </div>
+                )
+            }
         </div>
     );
 };
