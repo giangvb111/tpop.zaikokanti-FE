@@ -14,6 +14,7 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
 import { hiddenLoading, showLoading } from '@/redux/future/loading-slice';
 import master from '@/api/master';
+import InputNumberCommon from '@/common/combobox/inputNumberCommon';
 
 
 const Home: React.FC = () => {
@@ -68,29 +69,42 @@ const Home: React.FC = () => {
   return (
     <div className='w-full h-full'>
       <TitleCommon title='出荷一覧' />
-      <BtnEntryCommon title='検索オプション' style='center' action={handleClick} width={200} height={50} fontSize={20}/>
-      <BtnClassicCommon title='検索オプション' style='center' action={handleClick} width={200} height={50} fontSize={20} border={40}/>
-      <BtnDisabledCommon title='検索オプション' style='center' width={200} height={50} fontSize={20}/>
+      <BtnEntryCommon title='検索オプション' style='center' action={handleClick} width={200} height={50} fontSize={20} />
+      <BtnClassicCommon title='検索オプション' style='center' action={handleClick} width={200} height={50} fontSize={20} border={40} />
+      <BtnDisabledCommon title='検索オプション' style='center' width={200} height={50} fontSize={20} />
       <br />
       <br />
       <br />
-      <SelectCommon
-        options={options}
-        value={selectedValue}
-        onChange={setSelectedValue}
-        id="select-example"
-        width={80}
-        requid={true}
-      />
+      <div className='pl-40'>
+        <SelectCommon
+          options={options}
+          value={selectedValue}
+          onChange={setSelectedValue}
+          id="select-example"
+          width={80}
+          requid={true}
+          errorMess={["huhu", "hihi"]}
+        />
 
-      <InputDateCommon
-        value={dateValue}
-        onChange={setDateValue}
-        id="date-picker"
-        width={200}
-        requid={true}
-        errorMess={["huhu","hihi"]}
-      />
+        <InputDateCommon
+          value={dateValue}
+          onChange={setDateValue}
+          id="date-picker"
+          width={200}
+          requid={true}
+          errorMess={["huhu", "hihi"]}
+        />
+
+        <InputNumberCommon
+          value={dateValue}
+          onChange={setDateValue}
+          id="date-picker"
+          width={200}
+          requid={true}
+          errorMess={["huhu", "hihi"]}
+        />
+      </div>
+
       <Pagination
         currentPage={currentPage}
         totalItems={totalItems}
