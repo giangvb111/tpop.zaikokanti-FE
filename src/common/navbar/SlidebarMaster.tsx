@@ -44,8 +44,8 @@ const SlidebarMaster: React.FC<MasterAction> = ({ actionMaster, setActionMaster 
                     ロケーション
                 </li>
                 <li
-                    className={`${pathName.split('/')[2] === "torihikisaki" ? "bg-white text-black" : ""} hover:bg-white hover:text-black text-xl px-6 py-2 cursor-pointer`}
-                    onClick={() => handleItemClick('/master/torihikisaki/list')}
+                    className={`${pathName.split('/')[2] === "customer" ? "bg-white text-black" : ""} hover:bg-white hover:text-black text-xl px-6 py-2 cursor-pointer`}
+                    onClick={() => handleItemClick('/master/customer/list')}
                 >
                     取引先
                 </li>

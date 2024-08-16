@@ -87,7 +87,7 @@ const Warehouse: React.FC = () => {
         <BtnClassicCommon title='インポート' style='start' action={routerWarehouseEntry} width={200} height={60} fontSize={25} border={50} />
       </div>
 
-      {/* button search data */}
+      {/* button search pro data */}
       <div className='pr-3'>
         <BtnClassicCommon title='検索オプション' style='end' action={routerWarehouseEntry} width={150} height={35} fontSize={15} border={10} />
       </div>
@@ -121,6 +121,7 @@ const Warehouse: React.FC = () => {
           </tbody>
         </table>
       </div>
+      {/* button search data */}
       <div id='btn-search-data'>
         <BtnEntryCommon title='この条件で検索' style='center' action={handleSearchList} width={220} height={35} fontSize={15} />
       </div>
