@@ -62,8 +62,8 @@ const SlidebarMaster: React.FC<MasterAction> = ({ actionMaster, setActionMaster 
                     権限
                 </li>
                 <li
-                    className={`${pathName.split('/')[2] === "department" ? "bg-white text-black" : ""} hover:bg-white hover:text-black text-xl px-6 py-2 cursor-pointer`}
-                    onClick={() => handleItemClick('/master/department/list')}
+                    className={`${pathName.split('/')[2] === "division" ? "bg-white text-black" : ""} hover:bg-white hover:text-black text-xl px-6 py-2 cursor-pointer`}
+                    onClick={() => handleItemClick('/master/division/list')}
                 >
                     部門
                 </li>

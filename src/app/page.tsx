@@ -69,7 +69,7 @@ const Home: React.FC = () => {
   return (
     <div className='w-full h-full'>
       <TitleCommon title='出荷一覧' />
-      <BtnEntryCommon title='検索オプション' style='center' action={handleClick} width={200} height={50} fontSize={20} />
+      <BtnEntryCommon title='検索オプション' style='center' action={handleClick} width={200} height={50} fontSize={20} background={'#548EA6'} />
       <BtnClassicCommon title='検索オプション' style='center' action={handleClick} width={200} height={50} fontSize={20} border={40} />
       <BtnDisabledCommon title='検索オプション' style='center' width={200} height={50} fontSize={20} />
       <br />

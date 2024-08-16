@@ -1,14 +1,14 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
-import InputTextCommon from '@/common/combobox/InputTextCommon';
-import BtnEntryCommon from '@/common/button/BtnEntryCommon';
-import SelectCommon from '@/common/combobox/SelectCommon';
 import master from '@/api/master';
-import { useDispatch } from 'react-redux';
+import BtnEntryCommon from '@/common/button/BtnEntryCommon';
+import InputTextCommon from '@/common/combobox/InputTextCommon';
+import SelectCommon from '@/common/combobox/SelectCommon';
 import { hiddenLoading, showLoading } from '@/redux/future/loading-slice';
 import { AppDispatch } from '@/redux/store';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 
 interface SelectOption {
@@ -16,10 +16,9 @@ interface SelectOption {
   label: string;
 }
 
-const LocationRegister: React.FC = () => {
+const DivisionRegister: React.FC = () => {
   const [language, setLanguage] = useState<string>('en');
   const router = useRouter();
-  const pathName = usePathname();
   const dispatch = useDispatch<AppDispatch>();
   const [errorMess, setErrorMess] = useState<{ field: string, message: string }[]>([]);
 
@@ -50,8 +49,8 @@ const LocationRegister: React.FC = () => {
   const [locationName, setLocationName] = useState("");
   const [warehouseId, setWarehouseId] = useState("");
 
-  const routerLocationList = () => {
-    router.push("/master/location/list")
+  const routerDivisionList = () => {
+    router.push("/master/division/list")
   }
 
   // handle register location
@@ -90,18 +89,65 @@ const LocationRegister: React.FC = () => {
         {/* button back to list */}
         <button
           className='flex justify-start items-center gap-5 hover:text-black hover:font-bold text-xl'
-          onClick={routerLocationList}
+          onClick={routerDivisionList}
         >
           <span>＜</span>
           <span>一覧に戻る</span>
         </button>
       </div>
-      <div className='flex justify-between items-start px-7 py-10'>
+      <div className='items-start px-7 py-10'>
         {/* register items */}
-        <table className='min-w-[520px]'>
+        <div className='flex my-3'>
+          <div className='w-[12%]'>
+            <span className='text-left w-[33%] py-2 text-base font-bold'>部門コード</span>
+          </div>
+          <div className=''>
+            <InputTextCommon
+                  id='locationCd'
+                  requid={true}
+                  width={200}
+                  value={locationCd}
+                  onChange={setLocationCd}
+                  errorMess={errorMess.filter(error => error.field === 'locationCd').map(error => error.message)}
+                />
+          </div>
+        </div>
+
+        <div className='flex my-3'>
+          <div className='w-[12%]'>
+            <span className='text-left w-[33%] py-2 text-base font-bold'>部門<span className='text-[#b72e30]'>*</span></span>
+          </div>
+          <div className=''>
+            <InputTextCommon
+                  id='locationCd'
+                  requid={true}
+                  width={200}
+                  value={locationCd}
+                  onChange={setLocationCd}
+                  errorMess={errorMess.filter(error => error.field === 'locationCd').map(error => error.message)}
+                />
+          </div>
+        </div>
+
+        <div className='my-3'>
+          <div className='w-[12%]'>
+            <span className='text-left py-2 text-base font-bold'>倉庫</span>
+          </div>
+        </div>
+
+        <div className='flex my-3'>
+          <div className='w-[12%]'>
+                    <BtnEntryCommon title='追加' style='end' action={handleRegisterLocation} width={80} height={40} fontSize={15} background={'#f38c8d'}/>
+          </div>
+          <div className=''>
+            
+          </div>
+        </div>
+
+        {/* <table className='min-w-[520px]'>
           <tbody>
             <tr className='flex justify-start items-start'>
-              <th className='text-left w-60 py-2 text-[#8B8B8B] text-xl'>ロケーションコード<span className='text-[#b72e30]'>*</span></th>
+              <th className='text-left w-[33%] py-2 text-[#8B8B8B] text-base'>部門コード</th>
               <td className='py-2'>
                 <InputTextCommon
                   id='locationCd'
@@ -114,7 +160,7 @@ const LocationRegister: React.FC = () => {
               </td>
             </tr>
             <tr className='flex justify-start items-start'>
-              <th className='text-left w-60 py-2 text-[#8B8B8B] text-xl'>ロケーション名<span className='text-[#b72e30]'>*</span></th>
+              <th className='text-left w-[33%] py-2 text-[#8B8B8B] text-base'>部門<span className='text-[#b72e30]'>*</span></th>
               <td className='py-2'>
                 <InputTextCommon
                   id='locationName'
@@ -127,7 +173,7 @@ const LocationRegister: React.FC = () => {
               </td>
             </tr>
             <tr className='flex justify-start items-start'>
-              <th className='text-left w-60 py-2 text-[#8B8B8B] text-xl'>倉庫名<span className='text-[#b72e30]'>*</span></th>
+              <th className='text-left w-[33%] py-2 text-[#8B8B8B] text-base'>倉庫<span className='text-[#b72e30]'>*</span></th>
               <td className='py-2'>
                 <SelectCommon
                   id='warehouseId'
@@ -141,7 +187,7 @@ const LocationRegister: React.FC = () => {
               </td>
             </tr>
           </tbody>
-        </table>
+        </table> */}
       </div>
       <div className='pt-60 pr-20'>
         <BtnEntryCommon title='登録' style='end' action={handleRegisterLocation} width={150} height={50} fontSize={25} background={'#548EA6'}/>
@@ -152,4 +198,4 @@ const LocationRegister: React.FC = () => {
   );
 };
 
-export default LocationRegister;
+export default DivisionRegister;

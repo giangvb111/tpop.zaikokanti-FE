@@ -27,6 +27,12 @@ const master = {
     createLocation(payload, data) {
         const url = `master/location/create?${payload}`;
         return axiosAPI.post(url, data);
+    } ,
+
+    //Division
+    getDivisionList(payload) {
+        const url = `master/division/get-list?${payload}`;
+        return axiosAPI.get(url);
     },
 
     // customer

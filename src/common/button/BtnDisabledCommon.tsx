@@ -18,7 +18,7 @@ const BtnDisabledCommon: React.FC<BtnProps> = ({ title, style, width, height, fo
           height: height,
           fontSize: fontSize
         }}
-        className={`bg-white border-[2px] font-bold border-[#A6A6A6] text-[#A6A6A6] pl-5 pr-1 transition-colors duration-150 rounded-3xl m-[auto] mr-4 ml-4 truncate cursor-not-allowed`}
+        className={`bg-white border-[2px] font-bold border-[#A6A6A6] text-[#A6A6A6] transition-colors duration-150 rounded-3xl m-[auto] mr-4 ml-4 truncate cursor-not-allowed`}
       >
         {title}
       </button>
