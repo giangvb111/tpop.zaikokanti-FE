@@ -25,7 +25,7 @@ export default function RootLayout({
         <ReduxProvider>
           <div>
             <Header />
-            <div className="flex w-full max-w-[100%]">
+            <div className="flex pt-14 w-full max-w-full">
               <div className="w-80 z-40">
                 <Sidebar />
               </div>

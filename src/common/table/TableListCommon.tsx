@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 interface Column {
     title: string;
@@ -13,11 +13,16 @@ interface TableListCommonProps {
 }
 
 const TableListCommon: React.FC<TableListCommonProps> = ({ columns, data, widthCheckbox }) => {
-    const [colWidths, setColWidths] = useState([30, ...columns.map(col => col.width || 100)]); // Add 25px for the checkbox column
+    const [colWidths, setColWidths] = useState([widthCheckbox, ...columns.map(col => col.width || 100)]);
+    const [totalWidth, setTotalWidth] = useState(colWidths.reduce((acc, width) => acc + width, 0));
     const tableRef = useRef<HTMLTableElement>(null);
     const startXRef = useRef(0);
     const startWidthRef = useRef(0);
     const colIndexRef = useRef(0);
+
+    useEffect(() => {
+        setTotalWidth(colWidths.reduce((acc, width) => acc + width, 0));
+    }, [colWidths]);
 
     const handleMouseDown = (e: React.MouseEvent, index: number) => {
         startXRef.current = e.clientX;
@@ -45,9 +50,14 @@ const TableListCommon: React.FC<TableListCommonProps> = ({ columns, data, widthC
     };
 
     return (
-        <div className="pb-4 max-w-full max-h-80 w-full overflow-x-auto overflow-y-auto pl-5">
-            <table ref={tableRef} className="w-auto table-fixed border-collapse border-[2px] border-[#548EA6] max-h-24 overflow-y-auto">
-                <thead>
+        <div
+            style={{
+                width: totalWidth + 20,
+                maxWidth: '100%'
+            }}
+            className="max-h-96 w-auto overflow-auto">
+            <table ref={tableRef} style={{ width: totalWidth }} className="table-fixed border-collapse border-[2px] border-[#548EA6]">
+                <thead className='bg-[#548EA6] text-white border-[#548EA6] border-collapse sticky top-[-2px] z-10 py-8'>
                     <tr>
                         <th
                             style={{ width: widthCheckbox }}

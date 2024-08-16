@@ -2,7 +2,7 @@ import React from 'react'
 
 const Header: React.FC = () => {
     return (
-        <div className="flex justify-between p-2 bg-white top-0 z-50 min-w-[1200px]">
+        <div className="fixed left-0 h-14 flex w-full justify-between p-2 bg-white top-0 z-50 min-w-[1200px]">
             <div className="flex justify-center item-center pl-10">
                 <div className="text-3xl font-extrabold text-[#548EA6] mr-4">eeeCLOUD</div>
                 <div>
