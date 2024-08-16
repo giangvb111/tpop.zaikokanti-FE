@@ -65,8 +65,6 @@ const Warehouse: React.FC = () => {
         setListDataWarehouse(res.data.data.content)
         dispatch(hiddenLoading())
       } else {
-        console.log(res.data.message);
-
         setActionTable(false)
         const errorMessages = Array.isArray(res.data.message) ? res.data.message : [res.data.message];
         setErrorMess(errorMessages);
