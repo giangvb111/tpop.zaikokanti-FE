@@ -28,6 +28,12 @@ const master = {
         const url = `master/location/create?${payload}`;
         return axiosAPI.post(url, data);
     },
+
+    // customer
+    getCustumerList(payload) {
+        const url = `master/customer/get-list?${payload}`;
+        return axiosAPI.get(url);
+    },
 };
 
 export default master;
