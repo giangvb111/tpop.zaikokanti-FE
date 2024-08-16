@@ -102,7 +102,7 @@ const WarehouseRegister: React.FC = () => {
         </table>
       </div>
       <div className='pt-60 pr-20'>
-        <BtnEntryCommon title='登録' style='end' action={handleRegisterWarehouse} width={150} height={50} fontSize={25} />
+        <BtnEntryCommon title='登録' style='end' action={handleRegisterWarehouse} width={150} height={50} fontSize={25} background={'#548EA6'}/>
       </div>
 
     </div>

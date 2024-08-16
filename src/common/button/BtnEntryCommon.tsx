@@ -7,9 +7,10 @@ interface BtnProps {
   width: number;
   height: number;
   fontSize: number;
+  background: string;
 }
 
-const BtnEntryCommon: React.FC<BtnProps> = ({ title, action, style, width, height, fontSize }) => {
+const BtnEntryCommon: React.FC<BtnProps> = ({ title, action, style, width, height, fontSize ,background }) => {
   return (
     <div className={`flex justify-${style} items-center pt-3`}>
       <button
@@ -17,9 +18,10 @@ const BtnEntryCommon: React.FC<BtnProps> = ({ title, action, style, width, heigh
         style={{
           width: width,
           height: height,
-          fontSize: fontSize
+          fontSize: fontSize,
+          background: background,
         }}
-        className={`px-5 bg-[#548EA6] border-[2px] border-[#595959] font-bold text-white transition-colors duration-150 rounded-md focus:shadow-outline hover:bg-cyan-700 truncate`}
+        className={`px-5 border-[2px] border-[#595959] font-bold text-white transition-colors duration-150 rounded-md focus:shadow-outline hover:bg-cyan-700 truncate`}
         >
         {title}
       </button>
