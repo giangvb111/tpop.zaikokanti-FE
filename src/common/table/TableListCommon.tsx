@@ -46,7 +46,7 @@ const TableListCommon: React.FC<TableListCommonProps> = ({ columns, data, widthC
 
     return (
         <div className="pb-4 max-w-full w-full overflow-x-auto pl-5">
-            <table ref={tableRef} className="w-auto table-fixed border-collapse border-[2px] border-[#548EA6]">
+            <table ref={tableRef} className="w-auto table-fixed border-collapse border-[2px] border-[#548EA6] max-h-24 overflow-y-auto">
                 <thead>
                     <tr>
                         <th
