@@ -92,72 +92,16 @@ const Location: React.FC = () => {
 
     return (
         <div className='bg-white h-screen pl-[170px] container-body'>
-<<<<<<< Updated upstream
-            <div className='px-3'>
-                {/* button register */}
-                <div className='flex justify-start items-center gap-3'>
-                    <BtnEntryCommon title='新規登録' style='start' action={routerWarehouseRegister} width={200} height={60} fontSize={25} />
-                    <BtnClassicCommon title='インポート' style='start' action={routerLocationEntry} width={200} height={60} fontSize={25} border={50} />
-                </div>
-=======
             {/* button register */}
             <div className='flex justify-start items-center gap-3'>
                 <BtnEntryCommon title='新規登録' style='start' action={routerWarehouseRegister} width={200} height={60} fontSize={25} background={'#548EA6'}/>
                 <BtnClassicCommon title='インポート' style='start' action={routerLocationEntry} width={200} height={60} fontSize={25} border={50} />
             </div>
->>>>>>> Stashed changes
 
                 {/* button search pro data */}
                 <div className='pr-3'>
                     <BtnClassicCommon title='検索オプション' style='end' action={routerLocationEntry} width={150} height={35} fontSize={15} border={10} />
                 </div>
-
-<<<<<<< Updated upstream
-                {/* item search data */}
-                <div className='flex justify-between items-start'>
-                    <table className='min-w-full'>
-                        <tbody>
-                            <tr className='border-b-2'>
-                                <th className='text-left w-[15%] py-2 text-[#8B8B8B] text-base'>ロケーションコード</th>
-                                <td className='pr-10 py-2'>
-                                    <input
-                                        className='border-[2px] h-8 rounded-md px-2 border-[#9B9B9B]'
-                                        type="text"
-                                        value={locationCd}
-                                        onChange={(e) => setLocationCd(e.target.value)}
-                                    />
-                                </td>
-                            </tr>
-                            <tr className='border-b-2'>
-                                <th className='text-left w-[15%] py-2 text-[#8B8B8B] text-base'>ロケーション名</th>
-                                <td className='pr-10 py-2'>
-                                    <input
-                                        className='border-[2px] h-8 rounded-md px-2 border-[#9B9B9B]'
-                                        type="text"
-                                        value={locationName}
-                                        onChange={(e) => setLocationName(e.target.value)}
-                                    />
-                                </td>
-                            </tr>
-                            <tr className='border-b-2'>
-                                <th className='text-left w-[15%] py-2 text-[#8B8B8B] text-base'>倉庫名</th>
-                                <td className='pr-10 py-2'>
-                                    <input
-                                        className='border-[2px] h-8 rounded-md px-2 border-[#9B9B9B]'
-                                        type="text"
-                                        value={warehouseName}
-                                        onChange={(e) => setWarehouseName(e.target.value)}
-                                    />
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                {/* button search data */}
-                <div id='btn-search-data'>
-                    <BtnEntryCommon title='この条件で検索' style='center' action={handleSearchList} width={220} height={35} fontSize={15} />
-                </div>
-=======
             {/* item search data */}
             <div className='flex justify-between items-start'>
                 <table className='min-w-[520px]'>
@@ -202,7 +146,6 @@ const Location: React.FC = () => {
             <div id='btn-search-data'>
                 <BtnEntryCommon title='この条件で検索' style='center' action={handleSearchList} width={220} height={35} fontSize={15} background={'#548EA6'}/>
             </div>
->>>>>>> Stashed changes
 
                 {/* paging and button option */}
                 {
@@ -238,7 +181,6 @@ const Location: React.FC = () => {
                     </div> : <ErrorMessager titles={errorMess} />
                 }
             </div>
-        </div>
     );
 };
 

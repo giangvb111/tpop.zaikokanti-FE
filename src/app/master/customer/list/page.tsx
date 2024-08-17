@@ -67,11 +67,10 @@ const Customer: React.FC = () => {
   }
   return (
     <div className='bg-white h-screen pl-[170px] container-body'>
-<<<<<<< Updated upstream
       <div className='px-3'>
         {/* button register */}
         <div className='flex justify-start items-center gap-3'>
-          <BtnEntryCommon title='新規登録' style='start' action={routerLocationEntry} width={200} height={60} fontSize={25} />
+          <BtnEntryCommon title='新規登録' style='start' action={routerLocationEntry} width={200} height={60} fontSize={25} background={'#548EA6'}/>
           <BtnClassicCommon title='インポート' style='start' action={routerLocationEntry} width={200} height={60} fontSize={25} border={50} />
         </div>
 
@@ -111,7 +110,7 @@ const Customer: React.FC = () => {
         </div>
         {/* button search data */}
         <div id='btn-search-data'>
-          <BtnEntryCommon title='この条件で検索' style='center' action={handleSearchList} width={220} height={35} fontSize={15} />
+          <BtnEntryCommon title='この条件で検索' style='center' action={handleSearchList} width={220} height={35} fontSize={15} background={'#548EA6'}/>
         </div>
 
         {/* paging and button option */}
@@ -148,13 +147,12 @@ const Customer: React.FC = () => {
           </div>
             : <ErrorMessager titles={errorMess} />
         }
-=======
       {/* button register */}
       <div className='flex justify-start items-center gap-3'>
         <BtnEntryCommon title='新規登録' style='start' action={routerLocationEntry} width={200} height={60} fontSize={25} background={'#548EA6'}/>
         <BtnClassicCommon title='インポート' style='start' action={routerLocationEntry} width={200} height={60} fontSize={25} border={50} />
->>>>>>> Stashed changes
       </div>
+    </div>
     </div>
   );
 };
