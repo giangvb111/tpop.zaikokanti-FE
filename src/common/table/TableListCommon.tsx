@@ -12,9 +12,10 @@ interface TableListCommonProps {
     data: Record<string, any>[]; // Array of objects, each representing a row
     widthCheckbox: number;
     handleUpdate: (id: string) => void;
+    listKeyLink: string[];
 }
 
-const TableListCommon: React.FC<TableListCommonProps> = ({ columns, data, widthCheckbox, handleUpdate }) => {
+const TableListCommon: React.FC<TableListCommonProps> = ({ columns, data, widthCheckbox, handleUpdate, listKeyLink }) => {
     const [colWidths, setColWidths] = useState([widthCheckbox, ...columns.map(col => col.width || 100)]);
     const [totalWidth, setTotalWidth] = useState(colWidths.reduce((acc, width) => acc + width, 0));
     const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' } | null>(null);
@@ -125,17 +126,18 @@ const TableListCommon: React.FC<TableListCommonProps> = ({ columns, data, widthC
                                     }}
                                     className="border bg-[#E9EEF1] border-white p-2 text-center px-3 py-2 truncate"
                                 >
-                                    {col.key.endsWith('Cd') ? (
+                                    {listKeyLink.includes(col.key) ? (
                                         <button
                                             onClick={() => handleUpdate(row['id'])}
                                             className='underline text-[#0070C0] hover:font-bold'
-                                        >{row[col.key]}</button>
+                                        >
+                                            {row[col.key]}
+                                        </button>
                                     ) : (
-                                        (col.key === 'supplierFlag') && row[col.key] === 1 ? <span className="text-3xl">●</span> : row[col.key]
+                                        (col.key.endsWith("Flag")) && row[col.key] === 1 ? <span className="text-3xl">●</span> : row[col.key]
                                     )}
                                 </td>
                             ))}
-
                         </tr>
                     ))}
                 </tbody>

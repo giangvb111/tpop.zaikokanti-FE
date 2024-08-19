@@ -67,6 +67,7 @@ const LocationRegister: React.FC = () => {
           if (res.status === 200) {
             setLocationCd(res.data.data.locationCd)
             setLocationName(res.data.data.locationName)
+            setWarehouseId(res.data.data.warehouseId)
             setErrorMess([])
             dispatch(hiddenLoading())
           }
@@ -79,6 +80,7 @@ const LocationRegister: React.FC = () => {
     dispatch(showLoading())
 
     const postData = [{
+      id: idParam,
       locationCd: locationCd,
       locationName: locationName,
       warehouseId: warehouseId
@@ -92,6 +94,7 @@ const LocationRegister: React.FC = () => {
           setWarehouseId("")
           setErrorMess([])
           dispatch(hiddenLoading())
+          routerLocationList();
         }
       })
       .catch(err => {

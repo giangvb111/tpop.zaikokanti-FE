@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
 import { hiddenLoading, showLoading } from '@/redux/future/loading-slice';
 import master from '@/api/master';
+import ErrorMessager from '@/common/error/ErrorMessager';
 
 
 const WarehouseRegister: React.FC = () => {
@@ -21,6 +22,10 @@ const WarehouseRegister: React.FC = () => {
 
   const [warehouseCd, setWarehouseCd] = useState("");
   const [warehouseName, setWarehouseName] = useState("");
+  //check data change
+  const [warehouseCdCheck, setWarehouseCdCheck] = useState("");
+  const [warehouseNameCheck, setWarehouseNameCheck] = useState("");
+  const [errorTile, setErrorTitle] = useState("");
 
   const routerWarehouseList = () => {
     router.push("/master/warehouse/list")
@@ -41,6 +46,9 @@ const WarehouseRegister: React.FC = () => {
           if (res.status === 200) {
             setWarehouseCd(res.data.data.warehouseCd)
             setWarehouseName(res.data.data.warehouseName)
+            //set value data check
+            setWarehouseCdCheck(res.data.data.warehouseCd)
+            setWarehouseNameCheck(res.data.data.warehouseName)
             setErrorMess([])
             dispatch(hiddenLoading())
           }
@@ -57,6 +65,10 @@ const WarehouseRegister: React.FC = () => {
       warehouseCd: warehouseCd,
       warehouseName: warehouseName
     }]
+
+    if (!idParam) {
+
+    }
 
     master.createWarehouse(`lang=${language}`, postData)
       .then(res => {
@@ -122,6 +134,9 @@ const WarehouseRegister: React.FC = () => {
             </tr>
           </tbody>
         </table>
+      </div>
+      <div>
+        <ErrorMessager titles={[errorTile]} />
       </div>
       <div className='pt-60 pr-20'>
         <BtnEntryCommon title='登録' style='end' action={handleRegisterWarehouse} width={150} height={50} fontSize={25} background={'#548EA6'} disabled={false} />

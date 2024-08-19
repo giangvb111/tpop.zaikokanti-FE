@@ -175,7 +175,7 @@ const Warehouse: React.FC = () => {
             </div>
 
             {/* table data list  */}
-            <TableListCommon columns={listHeaderWarehouse} data={listDataWarehouse} widthCheckbox={100} handleUpdate={handleUpdateData} />
+            <TableListCommon columns={listHeaderWarehouse} data={listDataWarehouse} widthCheckbox={100} handleUpdate={handleUpdateData} listKeyLink={["warehouseCd"]}/>
           </div>
             : <ErrorMessager titles={errorMess} />
         }
