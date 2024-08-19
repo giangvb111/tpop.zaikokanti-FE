@@ -30,6 +30,7 @@ const Customer: React.FC = () => {
 
   // fake data
   const columns = [
+    { title: '', key: 'id', width: 200 },
     { title: '取引先コード', key: 'customerCd', width: 200 },
     { title: '取引先名', key: 'customerName', width: 200 },
     { title: '取引先名（正式名称）', key: 'customerNameFormal', width: 200 },
@@ -153,7 +154,7 @@ const Customer: React.FC = () => {
             </div>
 
             {/* table data list  */}
-            <TableListCommon columns={listHeaderCustomer} data={listDataCustomer} widthCheckbox={100} handleUpdate={routerLocationEntry}/>
+            <TableListCommon columns={listHeaderCustomer} data={listDataCustomer} widthCheckbox={100} handleUpdate={routerLocationEntry} listKeyLink={["customerCd"]}/>
           </div>
             : <ErrorMessager titles={errorMess} />
         }

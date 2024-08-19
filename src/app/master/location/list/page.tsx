@@ -189,7 +189,7 @@ const Location: React.FC = () => {
                             </div>
 
                             {/* table data list  */}
-                            <TableListCommon columns={listHeaderLocation} data={listDataLocation} widthCheckbox={100} handleUpdate={handleUpdateData} />
+                            <TableListCommon columns={listHeaderLocation} data={listDataLocation} widthCheckbox={100} handleUpdate={handleUpdateData} listKeyLink={["locationCd"]}/>
                         </div>
                         : <ErrorMessager titles={errorMess} />
                 }
