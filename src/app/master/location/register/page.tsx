@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import InputTextCommon from '@/common/combobox/InputTextCommon';
 import BtnEntryCommon from '@/common/button/BtnEntryCommon';
 import SelectCommon from '@/common/combobox/SelectCommon';
@@ -21,6 +21,10 @@ const LocationRegister: React.FC = () => {
   const router = useRouter();
   const pathName = usePathname();
   const dispatch = useDispatch<AppDispatch>();
+
+  const searchParams = useSearchParams();
+  const idParam = searchParams.get('id');
+
   const [errorMess, setErrorMess] = useState<{ field: string, message: string }[]>([]);
 
   const [listWareHouse, setListWareHouse] = useState<SelectOption[]>([]);
@@ -53,6 +57,22 @@ const LocationRegister: React.FC = () => {
   const routerLocationList = () => {
     router.push("/master/location/list")
   }
+
+  //get data update
+  useEffect(() => {
+    if (idParam) {
+      dispatch(showLoading())
+      master.getLocationById(`id=${idParam}&&lang=${language}`)
+        .then(res => {
+          if (res.status === 200) {
+            setLocationCd(res.data.data.locationCd)
+            setLocationName(res.data.data.locationName)
+            setErrorMess([])
+            dispatch(hiddenLoading())
+          }
+        })
+    }
+  }, [])
 
   // handle register location
   const handleRegisterLocation = () => {
@@ -110,6 +130,7 @@ const LocationRegister: React.FC = () => {
                   value={locationCd}
                   onChange={setLocationCd}
                   errorMess={errorMess.filter(error => error.field === 'locationCd').map(error => error.message)}
+                  disabled={false}
                 />
               </td>
             </tr>
@@ -123,6 +144,7 @@ const LocationRegister: React.FC = () => {
                   value={locationName}
                   onChange={setLocationName}
                   errorMess={errorMess.filter(error => error.field === 'locationName').map(error => error.message)}
+                  disabled={false}
                 />
               </td>
             </tr>
@@ -137,6 +159,7 @@ const LocationRegister: React.FC = () => {
                   requid={true}
                   width={200}
                   errorMess={errorMess.filter(error => error.field === 'warehouseId').map(error => error.message)}
+                  disabled={false}
                 />
               </td>
             </tr>
@@ -144,7 +167,7 @@ const LocationRegister: React.FC = () => {
         </table>
       </div>
       <div className='pt-60 pr-20'>
-        <BtnEntryCommon title='登録' style='end' action={handleRegisterLocation} width={150} height={50} fontSize={25} background={'#548EA6'}/>
+        <BtnEntryCommon title='登録' style='end' action={handleRegisterLocation} width={150} height={50} fontSize={25} background={'#548EA6'} disabled={false} />
 
       </div>
 

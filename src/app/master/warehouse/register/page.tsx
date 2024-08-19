@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import InputTextCommon from '@/common/combobox/InputTextCommon';
 import BtnEntryCommon from '@/common/button/BtnEntryCommon';
 import { useDispatch } from 'react-redux';
@@ -16,6 +16,8 @@ const WarehouseRegister: React.FC = () => {
   const pathName = usePathname();
   const dispatch = useDispatch<AppDispatch>();
   const [errorMess, setErrorMess] = useState<{ field: string, message: string }[]>([]);
+  const searchParams = useSearchParams();
+  const idParam = searchParams.get('id');
 
   const [warehouseCd, setWarehouseCd] = useState("");
   const [warehouseName, setWarehouseName] = useState("");
@@ -30,11 +32,28 @@ const WarehouseRegister: React.FC = () => {
     setLanguage(userLanguage);
   }, []);
 
+  //get data update
+  useEffect(() => {
+    if (idParam) {
+      dispatch(showLoading())
+      master.getWarehouseById(`id=${idParam}&&lang=${language}`)
+        .then(res => {
+          if (res.status === 200) {
+            setWarehouseCd(res.data.data.warehouseCd)
+            setWarehouseName(res.data.data.warehouseName)
+            setErrorMess([])
+            dispatch(hiddenLoading())
+          }
+        })
+    }
+  }, [])
+
   // register warehouse
   const handleRegisterWarehouse = () => {
     dispatch(showLoading())
 
     const postData = [{
+      id: idParam,
       warehouseCd: warehouseCd,
       warehouseName: warehouseName
     }]
@@ -46,6 +65,7 @@ const WarehouseRegister: React.FC = () => {
           setWarehouseName("")
           setErrorMess([])
           dispatch(hiddenLoading())
+          routerWarehouseList()
         }
       })
       .catch(err => {
@@ -82,6 +102,7 @@ const WarehouseRegister: React.FC = () => {
                   value={warehouseCd}
                   onChange={setWarehouseCd}
                   errorMess={errorMess.filter(error => error.field === 'warehouseCd').map(error => error.message)}
+                  disabled={false}
                 />
               </td>
             </tr>
@@ -95,6 +116,7 @@ const WarehouseRegister: React.FC = () => {
                   value={warehouseName}
                   onChange={setWarehouseName}
                   errorMess={errorMess.filter(error => error.field === 'warehouseName').map(error => error.message)}
+                  disabled={false}
                 />
               </td>
             </tr>
@@ -102,7 +124,7 @@ const WarehouseRegister: React.FC = () => {
         </table>
       </div>
       <div className='pt-60 pr-20'>
-        <BtnEntryCommon title='登録' style='end' action={handleRegisterWarehouse} width={150} height={50} fontSize={25} background={'#548EA6'}/>
+        <BtnEntryCommon title='登録' style='end' action={handleRegisterWarehouse} width={150} height={50} fontSize={25} background={'#548EA6'} disabled={false} />
       </div>
 
     </div>

@@ -1,7 +1,6 @@
 "use client";
 
 import BtnClassicCommon from '@/common/button/BtnClassicCommon';
-import BtnDisabledCommon from '@/common/button/BtnDisabledCommon';
 import BtnEntryCommon from '@/common/button/BtnEntryCommon';
 import InputDateCommon from '@/common/combobox/InputDateCommon';
 import SelectCommon from '@/common/combobox/SelectCommon';
@@ -69,9 +68,8 @@ const Home: React.FC = () => {
   return (
     <div className='w-full h-full'>
       <TitleCommon title='出荷一覧' />
-      <BtnEntryCommon title='検索オプション' style='center' action={handleClick} width={200} height={50} fontSize={20} background={'#548EA6'} />
-      <BtnClassicCommon title='検索オプション' style='center' action={handleClick} width={200} height={50} fontSize={20} border={40} />
-      <BtnDisabledCommon title='検索オプション' style='center' width={200} height={50} fontSize={20} />
+      <BtnEntryCommon title='検索オプション' style='center' action={handleClick} width={200} height={50} fontSize={20} background={'#548EA6'} disabled={true} />
+      <BtnClassicCommon title='検索オプション' style='center' action={handleClick} width={200} height={50} fontSize={20} border={40} disabled={true} />
       <br />
       <br />
       <br />
@@ -84,6 +82,7 @@ const Home: React.FC = () => {
           width={80}
           requid={true}
           errorMess={["huhu", "hihi"]}
+          disabled={false}
         />
 
         <InputDateCommon
@@ -93,6 +92,7 @@ const Home: React.FC = () => {
           width={200}
           requid={true}
           errorMess={["huhu", "hihi"]}
+          disabled={false}
         />
 
         <InputNumberCommon
@@ -102,6 +102,7 @@ const Home: React.FC = () => {
           width={200}
           requid={true}
           errorMess={["huhu", "hihi"]}
+          disabled
         />
       </div>
 
@@ -111,7 +112,7 @@ const Home: React.FC = () => {
         itemsPerPage={itemsPerPage}
         onPageChange={handlePageChange}
       />
-      <TableListCommon columns={columns} data={data} widthCheckbox={30} />
+      <TableListCommon columns={columns} data={data} widthCheckbox={30} handleUpdate={handleClick} />
       {/* <Loading /> */}
     </div>
   );
