@@ -35,6 +35,11 @@ const master = {
         return axiosAPI.get(url);
     },
 
+    createDivision(payload, data) {
+        const url = `master/division/create?${payload}`;
+        return axiosAPI.post(url, data);
+    } ,
+
     // customer
     getCustumerList(payload) {
         const url = `master/customer/get-list?${payload}`;

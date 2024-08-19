@@ -148,7 +148,7 @@ const Location: React.FC = () => {
             </div>
 
                 {/* paging and button option */}
-                {
+                { 
                     actionTable ? <div className='pt-20'>
                         <div className='flex justify-between items-center pl-3 pb-2'>
                             <Pagination
