@@ -1,0 +1,92 @@
+{
+    "navbar": {
+        "btn-TBTTech": "TBT Tech",
+        "user-login": "Loggin User",
+        "logout": "LogOut"
+    },
+    "error": {
+        "check-data-change": "The data remains unchanged."
+    },
+    "sidebar": {
+        "home": "Home",
+        "inventory": "Warehouse Management",
+        "register": "Data Entry",
+        "register-goods-issue": "Goods Issue",
+        "register-goods-receive": "Purchase",
+        "register-orther": "Other Adjustments",
+        "list": "Data",
+        "list-goods-issue": "Goods Issue",
+        "list-goods-receive": "Purchase",
+        "list-orther": "Other Adjustments",
+        "schedule": "Schedule",
+        "analysis": "Analysis",
+        "master": "Settings",
+        "detail-setting": "Advanced Settings"
+    },
+    "sidebar-master": {
+        "product": "Product",
+        "category": "Category",
+        "warehouse": "Warehouse",
+        "location": "Location",
+        "customer": "Customer",
+        "user": "User",
+        "role": "Role",
+        "division": "Division",
+        "setting": "Setting"
+    },
+    "button": {
+        "button-search": "Search Data",
+        "button-delete": "Delete",
+        "button-register": "Register",
+        "button-import": "Import File",
+        "button-search-advance": "Search Advance",
+        "button-register-submit": "Submit",
+        "button-back": "Back"
+    },
+    "master": {
+        "warehouse": {
+            "list-search": {
+                "warehouse-cod": "Warehouse Code",
+                "warehouse-name": "Warehouse Name"
+            },
+            "table-list": {
+                "warehouse-cod": "Warehouse Code",
+                "warehouse-name": "Warehouse Name"
+            },
+            "register": {
+                "warehouse-cod": "Warehouse Code",
+                "warehouse-name": "Warehouse Name"
+            }
+        },
+        "location": {
+            "list-search": {
+                "location-cod": "Location Code",
+                "location-name": "Location Name"
+            },
+            "table-list": {
+                "location-cod": "Location Code",
+                "location-name": "Location Name"
+            },
+            "register": {
+                "location-cod": "Location Code",
+                "location-name": "Location Name"
+            }
+        },
+        "customer": {
+            "list-search": {
+                "customer-cod": "Customer Code",
+                "customer-name": "Customer Name"
+            },
+            "table-list": {
+                "customer-cod": "Customer Code",
+                "customer-name": "Customer Name",
+                "customer-name-formal": "Customer Name Formal",
+                "supplier-flag": "Supplier Flag"
+            },
+            "register": {
+                "customer-cod": "Customer Code",
+                "customer-name": "Customer Name"
+            }
+        }
+    }
+}

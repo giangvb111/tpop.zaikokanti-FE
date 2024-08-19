@@ -10,6 +10,7 @@ import { hiddenLoading, showLoading } from '@/redux/future/loading-slice';
 import { AppDispatch } from '@/redux/store';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from "react-i18next";
 import { useDispatch } from 'react-redux';
 
 const Customer: React.FC = () => {
@@ -24,6 +25,8 @@ const Customer: React.FC = () => {
   const pathName = usePathname();
   const dispatch = useDispatch<AppDispatch>();
 
+  const { t } = useTranslation();
+
   const routerLocationEntry = () => {
 
   }
@@ -31,10 +34,10 @@ const Customer: React.FC = () => {
   // fake data
   const columns = [
     { title: '', key: 'id', width: 200 },
-    { title: '取引先コード', key: 'customerCd', width: 200 },
-    { title: '取引先名', key: 'customerName', width: 200 },
-    { title: '取引先名（正式名称）', key: 'customerNameFormal', width: 200 },
-    { title: '仕入先フラグ', key: 'supplierFlag', width: 200 },
+    { title: t("master.customer.table-list.customer-cod"), key: 'customerCd', width: 200 },
+    { title: t("master.customer.table-list.customer-name"), key: 'customerName', width: 200 },
+    { title: t("master.customer.table-list.customer-name-formal"), key: 'customerNameFormal', width: 200 },
+    { title: t("master.customer.table-list.supplier-flag"), key: 'supplierFlag', width: 200 },
   ];
 
   // list table data
@@ -81,13 +84,13 @@ const Customer: React.FC = () => {
       <div className='px-3'>
         {/* button register */}
         <div className='flex justify-start items-center gap-3'>
-          <BtnEntryCommon title='新規登録' style='start' action={routerCustomerRegister} width={200} height={60} fontSize={25} background={'#548EA6'} disabled={false} />
-          <BtnClassicCommon title='インポート' style='start' action={routerLocationEntry} width={200} height={60} fontSize={25} border={50} disabled={false} />
+          <BtnEntryCommon title={t("button.button-register")} style='start' action={routerCustomerRegister} width={150} height={40} fontSize={20} background={'#548EA6'} disabled={false} />
+          <BtnClassicCommon title={t("button.button-import")} style='start' action={routerLocationEntry} width={150} height={40} fontSize={20} border={50} disabled={false} />
         </div>
 
         {/* button search pro data */}
         <div className='pr-3'>
-          <BtnClassicCommon title='検索オプション' style='end' action={routerLocationEntry} width={150} height={35} fontSize={15} border={10} disabled={true} />
+          <BtnClassicCommon title={t("button.button-search-advance")} style='end' action={routerLocationEntry} width={150} height={35} fontSize={15} border={10} disabled={true} />
         </div>
 
         {/* item search data */}
@@ -95,7 +98,7 @@ const Customer: React.FC = () => {
           <table className='min-w-full'>
             <tbody>
               <tr className='border-b-2'>
-                <th className='text-left py-2 text-[#8B8B8B] w-[15%] text-base'>取引先コード</th>
+                <th className='text-left py-2 text-[#8B8B8B] w-[15%] text-base'>{t("master.customer.list-search.customer-cod")}</th>
                 <td className='pr-10 py-2'>
                   <input
                     className='border-[2px] px-2 h-8 rounded-md border-[#9B9B9B]'
@@ -106,7 +109,7 @@ const Customer: React.FC = () => {
                 </td>
               </tr>
               <tr className='border-b-2'>
-                <th className='text-left py-2 text-[#8B8B8B] w-[15%] text-base'>取引先名</th>
+                <th className='text-left py-2 text-[#8B8B8B] w-[15%] text-base'>{t("master.customer.list-search.customer-name")}</th>
                 <td className='pr-10 py-2'>
                   <input
                     className='border-[2px] px-2 h-8 rounded-md border-[#9B9B9B]'
@@ -121,7 +124,7 @@ const Customer: React.FC = () => {
         </div>
         {/* button search data */}
         <div id='btn-search-data'>
-          <BtnEntryCommon title='この条件で検索' style='center' action={handleSearchList} width={220} height={35} fontSize={15} background={'#548EA6'} disabled={false} />
+          <BtnEntryCommon title={t("button.button-search")} style='center' action={handleSearchList} width={220} height={35} fontSize={15} background={'#548EA6'} disabled={false} />
         </div>
 
         {/* paging and button option */}
@@ -135,7 +138,7 @@ const Customer: React.FC = () => {
                 onPageChange={handlePageChange}
               />
               <div className='flex justify-center items-center pr-3'>
-                <BtnClassicCommon title='削除' style='end' width={100} height={40} fontSize={15} border={50} action={routerLocationEntry} disabled={true} />
+                <BtnClassicCommon title={t("button.button-delete")} style='end' width={100} height={40} fontSize={15} border={50} action={routerLocationEntry} disabled={true} />
                 {/* <BtnClassicCommon title='・・・' action={routerWarehouseEntry} border={50} style='center' width={40} height={40} fontSize={15} /> */}
                 <div className={`flex justify-end items-center pt-3`}>
                   <button
@@ -154,7 +157,7 @@ const Customer: React.FC = () => {
             </div>
 
             {/* table data list  */}
-            <TableListCommon columns={listHeaderCustomer} data={listDataCustomer} widthCheckbox={100} handleUpdate={routerLocationEntry} listKeyLink={["customerCd"]}/>
+            <TableListCommon columns={listHeaderCustomer} data={listDataCustomer} widthCheckbox={100} handleUpdate={routerLocationEntry} listKeyLink={["customerCd"]} />
           </div>
             : <ErrorMessager titles={errorMess} />
         }

@@ -2,6 +2,7 @@
 
 import React, { memo } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
+import { useTranslation } from "react-i18next";
 
 interface MasterAction {
     actionMaster: boolean;
@@ -12,6 +13,8 @@ const SlidebarMaster: React.FC<MasterAction> = ({ actionMaster, setActionMaster 
     const router = useRouter();
     const pathName = usePathname();
 
+    const { t, i18n } = useTranslation();
+    
     const handleItemClick = (item: string) => {
         router.push(item);
     };
@@ -23,55 +26,55 @@ const SlidebarMaster: React.FC<MasterAction> = ({ actionMaster, setActionMaster 
                     className={`${pathName.split('/')[2] === "product" ? "bg-white text-black" : ""} hover:bg-white hover:text-black text-xl px-6 py-2 cursor-pointer`}
                     onClick={() => handleItemClick('/master/product/list')}
                 >
-                    製品
+                    {t("sidebar-master.product")}
                 </li>
                 <li
                     className={`${pathName.split('/')[2] === "category" ? "bg-white text-black" : ""} hover:bg-white hover:text-black text-xl px-6 py-2 cursor-pointer`}
                     onClick={() => handleItemClick('/master/category/list')}
                 >
-                    カテゴリ
+                    {t("sidebar-master.category")}
                 </li>
                 <li
                     className={`${pathName.split('/')[2] === "warehouse" ? "bg-white text-black" : ""} hover:bg-white hover:text-black text-xl px-6 py-2 cursor-pointer`}
                     onClick={() => handleItemClick('/master/warehouse/list')}
                 >
-                    倉庫
+                    {t("sidebar-master.warehouse")}
                 </li>
                 <li
                     className={`${pathName.split('/')[2] === "location" ? "bg-white text-black" : ""} hover:bg-white hover:text-black text-xl px-6 py-2 cursor-pointer`}
                     onClick={() => handleItemClick('/master/location/list')}
                 >
-                    ロケーション
+                    {t("sidebar-master.location")}
                 </li>
                 <li
                     className={`${pathName.split('/')[2] === "customer" ? "bg-white text-black" : ""} hover:bg-white hover:text-black text-xl px-6 py-2 cursor-pointer`}
                     onClick={() => handleItemClick('/master/customer/list')}
                 >
-                    取引先
+                    {t("sidebar-master.customer")}
                 </li>
                 <li
                     className={`${pathName.split('/')[2] === "user" ? "bg-white text-black" : ""} hover:bg-white hover:text-black text-xl px-6 py-2 cursor-pointer`}
                     onClick={() => handleItemClick('/master/user/list')}
                 >
-                    ユーザー
+                    {t("sidebar-master.user")}
                 </li>
                 <li
                     className={`${pathName.split('/')[2] === "kengen/list" ? "bg-white text-black" : ""} hover:bg-white hover:text-black text-xl px-6 py-2 cursor-pointer`}
-                    onClick={() => handleItemClick('/master/kengen/list/list')}
+                    onClick={() => handleItemClick('/master/kengen/list')}
                 >
-                    権限
+                    {t("sidebar-master.role")}
                 </li>
                 <li
                     className={`${pathName.split('/')[2] === "division" ? "bg-white text-black" : ""} hover:bg-white hover:text-black text-xl px-6 py-2 cursor-pointer`}
                     onClick={() => handleItemClick('/master/division/list')}
                 >
-                    部門
+                    {t("sidebar-master.division")}
                 </li>
                 <li
                     className={`${pathName.split('/')[2] === "setting" ? "bg-white text-black" : ""} hover:bg-white hover:text-black text-xl px-6 py-2 cursor-pointer`}
                     onClick={() => handleItemClick('/master/setting')}
                 >
-                    詳細設定
+                    {t("sidebar-master.setting")}
                 </li>
             </ul>
         </div>

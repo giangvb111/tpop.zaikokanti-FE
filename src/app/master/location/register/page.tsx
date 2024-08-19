@@ -9,7 +9,7 @@ import master from '@/api/master';
 import { useDispatch } from 'react-redux';
 import { hiddenLoading, showLoading } from '@/redux/future/loading-slice';
 import { AppDispatch } from '@/redux/store';
-
+import { useTranslation } from "react-i18next";
 
 interface SelectOption {
   value: string;
@@ -29,6 +29,12 @@ const LocationRegister: React.FC = () => {
 
   const [listWareHouse, setListWareHouse] = useState<SelectOption[]>([]);
 
+  const { t, i18n } = useTranslation();
+  useEffect(() => {
+      // Đặt ngôn ngữ mặc định sau khi client render
+      const lang = i18n.language || 'en';
+      i18n.changeLanguage(lang);
+  }, []);
   useEffect(() => {
     // get languages
     const userLanguage = navigator.language.split("-")[0] || 'en';
@@ -116,7 +122,7 @@ const LocationRegister: React.FC = () => {
           onClick={routerLocationList}
         >
           <span>＜</span>
-          <span>一覧に戻る</span>
+          <span>{t("button.button-back")}</span>
         </button>
       </div>
       <div className='flex justify-between items-start px-7 py-10'>
@@ -124,7 +130,7 @@ const LocationRegister: React.FC = () => {
         <table className='min-w-[520px]'>
           <tbody>
             <tr className='flex justify-start items-start'>
-              <th className='text-left w-60 py-2 text-[#8B8B8B] text-xl'>ロケーションコード<span className='text-[#b72e30]'>*</span></th>
+              <th className='text-left w-60 py-2 text-[#8B8B8B] text-base'>{t("master.location.table-list.location-cod")}<span className='text-[#b72e30]'>*</span></th>
               <td className='py-2'>
                 <InputTextCommon
                   id='locationCd'
@@ -138,7 +144,7 @@ const LocationRegister: React.FC = () => {
               </td>
             </tr>
             <tr className='flex justify-start items-start'>
-              <th className='text-left w-60 py-2 text-[#8B8B8B] text-xl'>ロケーション名<span className='text-[#b72e30]'>*</span></th>
+              <th className='text-left w-60 py-2 text-[#8B8B8B] text-base'>{t("master.location.table-list.location-name")}<span className='text-[#b72e30]'>*</span></th>
               <td className='py-2'>
                 <InputTextCommon
                   id='locationName'
@@ -152,7 +158,7 @@ const LocationRegister: React.FC = () => {
               </td>
             </tr>
             <tr className='flex justify-start items-start'>
-              <th className='text-left w-60 py-2 text-[#8B8B8B] text-xl'>倉庫名<span className='text-[#b72e30]'>*</span></th>
+              <th className='text-left w-60 py-2 text-[#8B8B8B] text-base'>{t("master.warehouse.table-list.warehouse-name")}<span className='text-[#b72e30]'>*</span></th>
               <td className='py-2'>
                 <SelectCommon
                   id='warehouseId'
@@ -170,7 +176,7 @@ const LocationRegister: React.FC = () => {
         </table>
       </div>
       <div className='pt-60 pr-20'>
-        <BtnEntryCommon title='登録' style='end' action={handleRegisterLocation} width={150} height={50} fontSize={25} background={'#548EA6'} disabled={false} />
+        <BtnEntryCommon title={t("button.button-register-submit")} style='end' action={handleRegisterLocation} width={150} height={50} fontSize={25} background={'#548EA6'} disabled={false} />
 
       </div>
 
