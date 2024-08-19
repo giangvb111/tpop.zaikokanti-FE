@@ -19,13 +19,6 @@ interface SelectProps {
 const SelectCommon: React.FC<SelectProps> = ({ options, value, onChange, id, width, requid, errorMess, disabled }) => {
 
     const isValidValue = options?.some(option => option.value === value && value !== "");
-
-    // useEffect(() => {
-    //     if (!isValidValue) {
-    //         onChange("");
-    //     }
-    // }, [isValidValue, onChange]);
-
     return (
         <div className={`block justify-left items-center`}>
             <select

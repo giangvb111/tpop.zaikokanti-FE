@@ -4,17 +4,22 @@ import master from '@/api/master';
 import BtnEntryCommon from '@/common/button/BtnEntryCommon';
 import InputTextCommon from '@/common/combobox/InputTextCommon';
 import SelectCommon from '@/common/combobox/SelectCommon';
-import TableListCommon from '@/common/table/TableListCommon';
 import { hiddenLoading, showLoading } from '@/redux/future/loading-slice';
 import { AppDispatch } from '@/redux/store';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-
+import { v4 as uuidv4 } from 'uuid';
 
 interface SelectOption {
   value: string;
   label: string;
+}
+
+interface Row {
+  id: string;
+  warehouseId: string;
+  isChecked: boolean;
 }
 
 const DivisionRegister: React.FC = () => {
@@ -24,12 +29,22 @@ const DivisionRegister: React.FC = () => {
   const [errorMess, setErrorMess] = useState<{ field: string, message: string }[]>([]);
   const [divisionCd, setDivisionCd] = useState("");
   const [divisionName, setDivisonName] = useState("");
-  const [warehouseId, setWarehouseId] = useState("");
   const [listWareHouse, setListWareHouse] = useState<SelectOption[]>([]);
+  const [rows, setRows] = useState<Row[]>([
+    {
+      id: uuidv4(),
+      warehouseId: '',
+      isChecked: false
+    },
+  ]);
 
-  console.log("warehouseId ", warehouseId);
-  // console.log("divisionName " , divisionName);
-
+  const defaultRows = [
+    {
+      id: uuidv4(),
+      warehouseId: '',
+      isChecked: false
+    }
+  ];
 
   useEffect(() => {
     // get languages
@@ -64,17 +79,20 @@ const DivisionRegister: React.FC = () => {
     const postData = [{
       divisionCd: divisionCd,
       divisionName: divisionName,
-      warehouseId: warehouseId
+      warehouseIdList: rows.map(row => parseInt(row.warehouseId))
     }]
 
     master.createDivision(`lang=${language}`, postData)
       .then(res => {
+        console.log("res :", res);
+
         if (res.status === 200) {
           setDivisionCd("")
           setDivisonName("")
-          setWarehouseId("")
+          setRows(defaultRows)
           setErrorMess([])
           dispatch(hiddenLoading())
+          routerDivisionList()
         }
       })
       .catch(err => {
@@ -94,6 +112,36 @@ const DivisionRegister: React.FC = () => {
   ]
   const [listHeaderDivision, setListHeaderDivision] = useState(columns);
 
+  console.log("row  ", rows);
+
+
+  const handleWarehouseChange = (index: number, value: string) => {
+    console.log("handleWarehouseChange", 111);
+
+    setRows(prevRows => {
+      const newRows = [...prevRows];
+      newRows[index].warehouseId = value;
+      return newRows;
+    });
+  };
+
+  const addRow = () => {
+    setRows([
+      ...rows,
+      defaultRows[0]
+    ]);
+  }
+
+  const handleCheckboxChange = (index: number) => {
+    const newRows = [...rows];
+    newRows[index].isChecked = !newRows[index].isChecked;
+    setRows(newRows);
+  };
+
+  const deleteSelectedRows = () => {
+    const newRows = rows.filter(row => !row.isChecked);
+    setRows(newRows);
+  };
 
   return (
     <div className='bg-white h-screen pl-[170px] container-body'>
@@ -151,10 +199,14 @@ const DivisionRegister: React.FC = () => {
 
         <div className='flex my-3'>
           <div className='px-3'>
-            <button className={`px-5 bg-[#f38c8d] h-8 border border-[black] font-bold text-white transition-colors duration-150 rounded-md focus:shadow-outline hover:bg-[#f38c8d] truncate`}>追加</button>
+            <button className={`px-5 bg-[#f38c8d] h-8 border border-[black] font-bold text-white transition-colors duration-150 rounded-md focus:shadow-outline hover:bg-[#f38c8d] truncate`}
+              onClick={addRow}
+            >追加</button>
           </div>
           <div className='px-3'>
-            <button className={`px-5 bg-transparent h-8 border border-[#548ea6] font-bold text-black transition-colors duration-150 rounded-md focus:shadow-outline hover:bg-[#f38c8d] truncate`}>削除</button>
+            <button className={`px-5 bg-transparent h-8 border border-[#548ea6] font-bold text-black transition-colors duration-150 rounded-md focus:shadow-outline hover:bg-[#f38c8d] truncate`}
+              onClick={deleteSelectedRows}
+            >削除</button>
           </div>
         </div>
         <div className=''>
@@ -166,30 +218,35 @@ const DivisionRegister: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              <tr className='border border-white'>
-                <td className='border bg-[#E9EEF1] border-white p-2 text-center'>
-                  <input type="checkbox" className="w-[15px] h-[15px]" />
-                </td>
-                <td className='border bg-[#E9EEF1] border-white p-2 text-center'>
-                  <SelectCommon
-                    id='warehouseId'
-                    onChange={setWarehouseId}
-                    options={listWareHouse}
-                    value={warehouseId}
-                    requid={true}
-                    width={250}
-                    errorMess={errorMess.filter(error => error.field === 'warehouseId').map(error => error.message)}
-                    disabled={false}
-                  />
-                </td>
-              </tr>
+              {rows.map((row, index) => (
+                <tr key={row.id} className='border border-white'>
+                  <td className='border bg-[#E9EEF1] border-white p-2 text-center'>
+                    <input
+                      type="checkbox" className="w-[15px] h-[15px]"
+                      checked={row.isChecked}
+                      onChange={() => handleCheckboxChange(index)}
+                    />
+                  </td>
+                  <td className='border bg-[#E9EEF1] border-white p-2 text-center'>
+                    <SelectCommon
+                      id={`warehouseId-${index}`}
+                      onChange={(value: string) => handleWarehouseChange(index, value)}
+                      options={listWareHouse}
+                      value={row.warehouseId}
+                      requid={true}
+                      width={250}
+                      disabled={false}
+                      errorMess={errorMess.filter(error => error.field === 'warehouseId').map(error => error.message)}
+                    />
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
       </div>
-      <div className='pt-60 pr-20'>
-        <BtnEntryCommon title='登録' style='end' action={handleRegisterDivision} width={150} height={50} fontSize={25} background={'#548EA6'} disabled={false}/>
-
+      <div className='pr-20'>
+        <BtnEntryCommon title='登録' style='end' action={handleRegisterDivision} width={120} height={40} fontSize={20} background={'#548EA6'} disabled={false} />
       </div>
 
     </div>
