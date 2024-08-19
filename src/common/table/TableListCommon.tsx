@@ -1,3 +1,4 @@
+import { usePathname } from 'next/navigation';
 import React, { useState, useRef, useEffect } from 'react';
 
 interface Column {
@@ -10,15 +11,18 @@ interface TableListCommonProps {
     columns: Column[];
     data: Record<string, any>[]; // Array of objects, each representing a row
     widthCheckbox: number;
+    handleUpdate: (id: string) => void;
 }
 
-const TableListCommon: React.FC<TableListCommonProps> = ({ columns, data, widthCheckbox }) => {
+const TableListCommon: React.FC<TableListCommonProps> = ({ columns, data, widthCheckbox, handleUpdate }) => {
     const [colWidths, setColWidths] = useState([widthCheckbox, ...columns.map(col => col.width || 100)]);
     const [totalWidth, setTotalWidth] = useState(colWidths.reduce((acc, width) => acc + width, 0));
+    const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' } | null>(null);
     const tableRef = useRef<HTMLTableElement>(null);
     const startXRef = useRef(0);
     const startWidthRef = useRef(0);
     const colIndexRef = useRef(0);
+    const pathName = usePathname();
 
     useEffect(() => {
         setTotalWidth(colWidths.reduce((acc, width) => acc + width, 0));
@@ -49,15 +53,34 @@ const TableListCommon: React.FC<TableListCommonProps> = ({ columns, data, widthC
         document.removeEventListener('mouseup', handleMouseUp);
     };
 
+    const handleSort = (key: string) => {
+        let direction: 'asc' | 'desc' = 'asc';
+        if (sortConfig && sortConfig.key === key && sortConfig.direction === 'asc') {
+            direction = 'desc';
+        }
+        setSortConfig({ key, direction });
+    };
+
+    const sortedData = React.useMemo(() => {
+        if (!sortConfig) return data;
+        const sorted = [...data].sort((a, b) => {
+            if (a[sortConfig.key] < b[sortConfig.key]) return sortConfig.direction === 'asc' ? -1 : 1;
+            if (a[sortConfig.key] > b[sortConfig.key]) return sortConfig.direction === 'asc' ? 1 : -1;
+            return 0;
+        });
+        return sorted;
+    }, [data, sortConfig]);
+
     return (
         <div
             style={{
                 width: totalWidth + 20,
-                maxWidth: '100%'
+                maxWidth: '100%',
             }}
-            className="max-h-96 w-auto overflow-auto">
+            className="max-h-96 w-auto overflow-auto"
+        >
             <table ref={tableRef} style={{ width: totalWidth }} className="table-fixed border-collapse border-[2px] border-[#548EA6]">
-                <thead className='bg-[#548EA6] text-white border-[#548EA6] border-collapse sticky top-[-2px] z-10 py-8'>
+                <thead className="bg-[#548EA6] text-white border-[#548EA6] border-collapse sticky top-[-2px] z-10 py-8">
                     <tr>
                         <th
                             style={{ width: widthCheckbox }}
@@ -67,12 +90,19 @@ const TableListCommon: React.FC<TableListCommonProps> = ({ columns, data, widthC
                         {columns.map((col, index) => (
                             <th
                                 key={col.key}
-                                style={{ width: colWidths[index + 1] }} // Offset index for the added checkbox column
-                                className="border px-3 py-2 relative border-white text-[#FFFFFF] bg-[#548EA6]"
+                                style={{
+                                    width: colWidths[index + 1],
+                                    display: col.key === 'id' ? 'none' : 'table-cell',
+                                }}
+                                className="border px-3 py-2 relative border-white text-[#FFFFFF] bg-[#548EA6] cursor-pointer"
+                                onClick={() => handleSort(col.key)}
                             >
                                 {col.title}
+                                {sortConfig?.key === col.key && (
+                                    <span>{sortConfig.direction === 'asc' ? ' ▲' : ' ▼'}</span>
+                                )}
                                 <div
-                                    onMouseDown={(e) => handleMouseDown(e, index + 1)} // Adjust index for the added checkbox column
+                                    onMouseDown={(e) => handleMouseDown(e, index + 1)}
                                     className="absolute right-0 top-0 h-full w-2 cursor-col-resize"
                                     style={{ userSelect: 'none' }}
                                 />
@@ -81,7 +111,7 @@ const TableListCommon: React.FC<TableListCommonProps> = ({ columns, data, widthC
                     </tr>
                 </thead>
                 <tbody>
-                    {data.map((row, rowIndex) => (
+                    {sortedData.map((row, rowIndex) => (
                         <tr key={rowIndex} className="border border-white">
                             <td style={{ width: widthCheckbox }} className="border bg-[#E9EEF1] border-white p-2 text-center">
                                 <input type="checkbox" className="w-[15px] h-[15px]" />
@@ -89,12 +119,23 @@ const TableListCommon: React.FC<TableListCommonProps> = ({ columns, data, widthC
                             {columns.map((col, colIndex) => (
                                 <td
                                     key={col.key}
-                                    style={{ width: colWidths[colIndex + 1] }} // Adjust index for the added checkbox column
-                                    className="border bg-[#E9EEF1] border-white p-2 text-center px-3 py-2"
+                                    style={{
+                                        width: colWidths[colIndex + 1],
+                                        display: col.key === 'id' ? 'none' : 'table-cell',
+                                    }}
+                                    className="border bg-[#E9EEF1] border-white p-2 text-center px-3 py-2 truncate"
                                 >
-                                    {row[col.key]}
+                                    {col.key.endsWith('Cd') ? (
+                                        <button
+                                            onClick={() => handleUpdate(row['id'])}
+                                            className='underline text-[#0070C0] hover:font-bold'
+                                        >{row[col.key]}</button>
+                                    ) : (
+                                        (col.key === 'supplierFlag') && row[col.key] === 1 ? <span className="text-3xl">●</span> : row[col.key]
+                                    )}
                                 </td>
                             ))}
+
                         </tr>
                     ))}
                 </tbody>

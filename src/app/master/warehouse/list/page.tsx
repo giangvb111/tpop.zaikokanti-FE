@@ -1,7 +1,6 @@
 "use client";
 
 import BtnClassicCommon from '@/common/button/BtnClassicCommon';
-import BtnDisabledCommon from '@/common/button/BtnDisabledCommon';
 import BtnEntryCommon from '@/common/button/BtnEntryCommon';
 import Pagination from '@/common/pagination/Pagination';
 import TableListCommon from '@/common/table/TableListCommon';
@@ -33,6 +32,7 @@ const Warehouse: React.FC = () => {
 
   // fake data
   const columns = [
+    { title: '', key: 'id', width: 200 },
     { title: '倉庫コード', key: 'warehouseCd', width: 200 },
     { title: '倉庫名', key: 'warehouseName', width: 200 }
   ];
@@ -48,8 +48,12 @@ const Warehouse: React.FC = () => {
 
   }
   // get screen warehouse register
-  const routerWarehouseRegister = () => {
-    router.push("/master/warehouse/register")
+  const routerWarehouseRegister = (id?: string) => {
+    if (id) {
+      router.push(`/master/warehouse/register?id=${id}`);
+    } else {
+      router.push("/master/warehouse/register");
+    }
   }
 
   const handlePageChange = (page: number) => {
@@ -61,7 +65,7 @@ const Warehouse: React.FC = () => {
     dispatch(showLoading())
 
     master.getWarehouseList(`warehouseCd=${warehouseCd}&warehouseName=${warehouseName}&lang=${language}&page=${currentPage - 1}&limit=100`).then(res => {
-      if (res.status === 200) {
+      if (res.status === 200 && res.data.message === null) {
         setActionTable(true)
         setListDataWarehouse(res.data.data.content)
         setTotalElement(res.data.data.page.totalElements);
@@ -74,6 +78,11 @@ const Warehouse: React.FC = () => {
 
       }
     })
+  }
+
+  //handle update data
+  const handleUpdateData = (id: string) => {
+    routerWarehouseRegister(id);
   }
 
   // search when render
@@ -91,50 +100,50 @@ const Warehouse: React.FC = () => {
 
       <div className='px-3'>
         {/* button register */}
-      <div className='flex justify-start items-center gap-3'>
-        <BtnEntryCommon title='新規登録' style='start' action={routerWarehouseRegister} width={200} height={60} fontSize={25} background={'#548EA6'}/>
-        <BtnClassicCommon title='インポート' style='start' action={routerWarehouseEntry} width={200} height={60} fontSize={25} border={50} />
-      </div>
+        <div className='flex justify-start items-center gap-3'>
+          <BtnEntryCommon title='新規登録' style='start' action={() => routerWarehouseRegister("")} width={200} height={60} fontSize={25} background={'#548EA6'} disabled={false} />
+          <BtnClassicCommon title='インポート' style='start' action={routerWarehouseEntry} width={200} height={60} fontSize={25} border={50} disabled={false} />
+        </div>
 
 
         {/* button search pro data */}
         <div className='pr-3'>
-          <BtnClassicCommon title='検索オプション' style='end' action={routerWarehouseEntry} width={150} height={35} fontSize={15} border={10} />
+          <BtnClassicCommon title='検索オプション' style='end' action={routerWarehouseEntry} width={150} height={35} fontSize={15} border={10} disabled={false} />
         </div>
 
-      {/* item search data */}
-      <div className='flex justify-between items-start'>
-        <table className='min-w-[520px]'>
-          <tbody>
-            <tr className='border-b-2'>
-              <th className='text-left pr-20 py-2 text-[#8B8B8B] text-xl'>倉庫コード</th>
-              <td className='pr-10 py-2'>
-                <input
-                  className='border-[2px] px-2 h-8 rounded-md border-[#9B9B9B]'
-                  type="text"
-                  value={warehouseCd}
-                  onChange={(e) => setWarehouseCd(e.target.value)}
-                />
-              </td>
-            </tr>
-            <tr className='border-b-2'>
-              <th className='text-left pr-20 py-2 text-[#8B8B8B] text-xl'>倉庫名</th>
-              <td className='pr-10 py-2'>
-                <input
-                  className='border-[2px] px-2 h-8 rounded-md border-[#9B9B9B]'
-                  type="text"
-                  value={warehouseName}
-                  onChange={(e) => setWarehouseName(e.target.value)}
-                />
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      {/* button search data */}
-      <div id='btn-search-data'>
-        <BtnEntryCommon title='この条件で検索' style='center' action={handleSearchList} width={220} height={35} fontSize={15} background={'#548EA6'}/>
-      </div>
+        {/* item search data */}
+        <div className='flex justify-between items-start'>
+          <table className='min-w-[520px]'>
+            <tbody>
+              <tr className='border-b-2'>
+                <th className='text-left pr-20 py-2 text-[#8B8B8B] text-xl'>倉庫コード</th>
+                <td className='pr-10 py-2'>
+                  <input
+                    className='border-[2px] px-2 h-8 rounded-md border-[#9B9B9B]'
+                    type="text"
+                    value={warehouseCd}
+                    onChange={(e) => setWarehouseCd(e.target.value)}
+                  />
+                </td>
+              </tr>
+              <tr className='border-b-2'>
+                <th className='text-left pr-20 py-2 text-[#8B8B8B] text-xl'>倉庫名</th>
+                <td className='pr-10 py-2'>
+                  <input
+                    className='border-[2px] px-2 h-8 rounded-md border-[#9B9B9B]'
+                    type="text"
+                    value={warehouseName}
+                    onChange={(e) => setWarehouseName(e.target.value)}
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        {/* button search data */}
+        <div id='btn-search-data'>
+          <BtnEntryCommon title='この条件で検索' style='center' action={handleSearchList} width={220} height={35} fontSize={15} background={'#548EA6'} disabled={false} />
+        </div>
 
         {/* paging and button option */}
         {
@@ -147,7 +156,7 @@ const Warehouse: React.FC = () => {
                 onPageChange={handlePageChange}
               />
               <div className='flex justify-center items-center pr-3'>
-                <BtnDisabledCommon title='削除' style='end' width={100} height={40} fontSize={15} />
+                <BtnClassicCommon title='削除' style='end' width={100} height={40} fontSize={15} action={routerWarehouseEntry} border={50} disabled={true} />
                 {/* <BtnClassicCommon title='・・・' action={routerWarehouseEntry} border={50} style='center' width={40} height={40} fontSize={15} /> */}
                 <div className={`flex justify-end items-center pt-3`}>
                   <button
@@ -166,7 +175,7 @@ const Warehouse: React.FC = () => {
             </div>
 
             {/* table data list  */}
-            <TableListCommon columns={listHeaderWarehouse} data={listDataWarehouse} widthCheckbox={100} />
+            <TableListCommon columns={listHeaderWarehouse} data={listDataWarehouse} widthCheckbox={100} handleUpdate={handleUpdateData} />
           </div>
             : <ErrorMessager titles={errorMess} />
         }

@@ -3,7 +3,6 @@
 
 import master from '@/api/master';
 import BtnClassicCommon from '@/common/button/BtnClassicCommon';
-import BtnDisabledCommon from '@/common/button/BtnDisabledCommon';
 import BtnEntryCommon from '@/common/button/BtnEntryCommon';
 import ErrorMessager from '@/common/error/ErrorMessager';
 import Pagination from '@/common/pagination/Pagination';
@@ -91,8 +90,8 @@ const Division: React.FC = () => {
       <div className='px-3'>
       {/* button register */}
       <div className='flex justify-start items-center gap-3'>
-        <BtnEntryCommon title='新規登録' style='start' action={routerDivisionEntry} width={150} height={40} fontSize={20} background={'#548EA6'}/>
-        <BtnClassicCommon title='インポート' style='start' action={routerDivisionImport} width={150} height={40} fontSize={20} border={50} />
+        <BtnEntryCommon title='新規登録' style='start' action={routerDivisionEntry} width={150} height={40} fontSize={20} background={'#548EA6'} disabled={false}/>
+        <BtnClassicCommon title='インポート' style='start' action={routerDivisionImport} width={150} height={40} fontSize={20} border={50} disabled={false}/>
       </div>
 
       {/* item search data */}
@@ -136,7 +135,7 @@ const Division: React.FC = () => {
         </table>
       </div>
       <div id='btn-search-data'>
-        <BtnEntryCommon title='この条件で検索' style='center' action={handleSearchList} width={220} height={35} fontSize={15} background={'#548EA6'}/>
+        <BtnEntryCommon title='この条件で検索' style='center' action={handleSearchList} width={220} height={35} fontSize={15} background={'#548EA6'} disabled={false}/>
       </div>
 
       {/* paging and button option */}
@@ -151,7 +150,7 @@ const Division: React.FC = () => {
               onPageChange={handlePageChange}
             />
             <div className='flex justify-center items-center pr-3'>
-              <BtnDisabledCommon title='削除' style='end' width={100} height={40} fontSize={15} />
+              <BtnClassicCommon title='削除' style='end' width={100} height={40} fontSize={15} disabled={true} action={routerDivisionEntry} border={50}/>
               {/* <BtnClassicCommon title='・・・' action={routerDivisionImport} border={50} style='center' width={40} height={40} fontSize={15} /> */}
               <div className={`flex justify-end items-center pt-3`}>
                 <button
@@ -170,7 +169,7 @@ const Division: React.FC = () => {
           </div>
 
           {/* table data list  */}
-          <TableListCommon columns={listHeaderDivision} data={listDataDivision} widthCheckbox={100} />
+          <TableListCommon columns={listHeaderDivision} data={listDataDivision} widthCheckbox={100} handleUpdate={routerDivisionImport}/>
         </div>
           : <ErrorMessager titles={errorMess} />
       }

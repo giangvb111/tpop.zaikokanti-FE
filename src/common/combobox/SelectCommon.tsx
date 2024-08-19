@@ -13,17 +13,18 @@ interface SelectProps {
     width: number;
     requid: boolean;
     errorMess: string[];
+    disabled: boolean
 }
 
-const SelectCommon: React.FC<SelectProps> = ({ options, value, onChange, id, width, requid, errorMess }) => {
+const SelectCommon: React.FC<SelectProps> = ({ options, value, onChange, id, width, requid, errorMess, disabled }) => {
 
     const isValidValue = options?.some(option => option.value === value && value !== "");
 
-    useEffect(() => {
-        if (!isValidValue) {
-            onChange("");
-        }
-    }, [isValidValue, onChange]);
+    // useEffect(() => {
+    //     if (!isValidValue) {
+    //         onChange("");
+    //     }
+    // }, [isValidValue, onChange]);
 
     return (
         <div className={`block justify-left items-center`}>
@@ -33,8 +34,9 @@ const SelectCommon: React.FC<SelectProps> = ({ options, value, onChange, id, wid
                 style={{
                     width: width
                 }}
+                disabled={disabled}
                 onChange={(e) => onChange(e.target.value)}
-                className={`border h-8 border-[#595959] px-2 rounded-lg focus:outline-none focus:border-[#595959] ${requid && (value === null || value === "") ? "bg-[#F8BABB]" : ""}`}
+                className={`${disabled ? "border-[#A6A6A6] text-[#A6A6A6] cursor-not-allowed" : "border-[#595959] text-[#595959]"} border h-8 px-2 rounded-lg focus:outline-none focus:border-[#595959] ${requid && !disabled && (value === null || value === "") ? "bg-[#F8BABB]" : ""}`}
             >
                 <option value=""></option>
                 {

@@ -13,6 +13,11 @@ const master = {
         return axiosAPI.get(url);
     },
 
+    getWarehouseById(payload) {
+        const url = `master/warehouse/get-warehouse-by-id?${payload}`;
+        return axiosAPI.get(url);
+    },
+
     createWarehouse(payload, data) {
         const url = `master/warehouse/create?${payload}`;
         return axiosAPI.post(url, data);
@@ -24,10 +29,15 @@ const master = {
         return axiosAPI.get(url);
     },
 
+    getLocationById(payload) {
+        const url = `master/location/get-location-by-id?${payload}`;
+        return axiosAPI.get(url);
+    },
+
     createLocation(payload, data) {
         const url = `master/location/create?${payload}`;
         return axiosAPI.post(url, data);
-    } ,
+    },
 
     //Division
     getDivisionList(payload) {
@@ -38,7 +48,7 @@ const master = {
     createDivision(payload, data) {
         const url = `master/division/create?${payload}`;
         return axiosAPI.post(url, data);
-    } ,
+    },
 
     // customer
     getCustumerList(payload) {

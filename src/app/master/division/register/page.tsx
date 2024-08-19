@@ -121,6 +121,7 @@ const DivisionRegister: React.FC = () => {
               value={divisionCd}
               onChange={setDivisionCd}
               errorMess={errorMess.filter(error => error.field === 'divisionCd').map(error => error.message)}
+              disabled={false}
             />
           </div>
         </div>
@@ -137,6 +138,7 @@ const DivisionRegister: React.FC = () => {
               value={divisionName}
               onChange={setDivisonName}
               errorMess={errorMess.filter(error => error.field === 'divisionName').map(error => error.message)}
+              disabled={false}
             />
           </div>
         </div>
@@ -177,6 +179,7 @@ const DivisionRegister: React.FC = () => {
                     requid={true}
                     width={250}
                     errorMess={errorMess.filter(error => error.field === 'warehouseId').map(error => error.message)}
+                    disabled={false}
                   />
                 </td>
               </tr>
@@ -185,7 +188,7 @@ const DivisionRegister: React.FC = () => {
         </div>
       </div>
       <div className='pt-60 pr-20'>
-        <BtnEntryCommon title='登録' style='end' action={handleRegisterDivision} width={150} height={50} fontSize={25} background={'#548EA6'} />
+        <BtnEntryCommon title='登録' style='end' action={handleRegisterDivision} width={150} height={50} fontSize={25} background={'#548EA6'} disabled={false}/>
 
       </div>
 

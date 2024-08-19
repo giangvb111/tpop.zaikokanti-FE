@@ -10,9 +10,10 @@ interface InputDateProps {
     width: number;
     requid: boolean;
     errorMess: string[];
+    disabled: boolean
 }
 
-const InputDateCommon: React.FC<InputDateProps> = ({ value, onChange, id, width, requid, errorMess }) => {
+const InputDateCommon: React.FC<InputDateProps> = ({ value, onChange, id, width, requid, errorMess, disabled }) => {
     const handleDateChange = (date: Date | null) => {
         if (date) {
             onChange(format(date, 'yyyy-MM-dd'));
@@ -28,7 +29,8 @@ const InputDateCommon: React.FC<InputDateProps> = ({ value, onChange, id, width,
                 selected={value ? new Date(value) : null}
                 onChange={handleDateChange}
                 dateFormat="yyyy-MM-dd"
-                className={`border h-8 w-[${width}px] min-w-[${width}px] border-[#595959] text-[#595959] px-2 rounded-lg ${requid && !value ? "bg-[#F8BABB]" : ""}`}
+                disabled={disabled}
+                className={`${disabled ? "border-[#A6A6A6] text-[#A6A6A6] cursor-not-allowed" : "border-[#595959] text-[#595959]"} border h-8 w-[${width}px] min-w-[${width}px] px-2 rounded-lg ${requid && !disabled && !value ? "bg-[#F8BABB]" : ""}`}
             />
             {errorMess.length > 0 && (
                 <div className='pt-0.5'>

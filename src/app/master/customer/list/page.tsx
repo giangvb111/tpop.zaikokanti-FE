@@ -2,7 +2,6 @@
 
 import master from '@/api/master';
 import BtnClassicCommon from '@/common/button/BtnClassicCommon';
-import BtnDisabledCommon from '@/common/button/BtnDisabledCommon';
 import BtnEntryCommon from '@/common/button/BtnEntryCommon';
 import ErrorMessager from '@/common/error/ErrorMessager';
 import Pagination from '@/common/pagination/Pagination';
@@ -10,7 +9,7 @@ import TableListCommon from '@/common/table/TableListCommon';
 import { hiddenLoading, showLoading } from '@/redux/future/loading-slice';
 import { AppDispatch } from '@/redux/store';
 import { usePathname, useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 const Customer: React.FC = () => {
@@ -48,14 +47,20 @@ const Customer: React.FC = () => {
     setCurrentPage(page);
   };
 
+  // get screen warehouse register
+  const routerCustomerRegister = () => {
+    router.push("/master/customer/register")
+  }
+
   // handle search data
   const handleSearchList = () => {
     dispatch(showLoading())
 
     master.getCustumerList(`customerCd=${customerCd}&customerName=${customerName}&lang=${language}&page=${currentPage - 1}&limit=100`).then(res => {
-      if (res.status === 200) {
+      if (res.status === 200 && res.data.message === null) {
         setActionTable(true)
         setListDataCustomer(res.data.data.content)
+        setTotalElement(res.data.data.page.totalElements);
         dispatch(hiddenLoading())
       } else {
         setActionTable(false)
@@ -65,18 +70,23 @@ const Customer: React.FC = () => {
       }
     })
   }
+
+  useEffect(() => {
+    handleSearchList();
+  }, [])
+
   return (
     <div className='bg-white h-screen pl-[170px] container-body'>
       <div className='px-3'>
         {/* button register */}
         <div className='flex justify-start items-center gap-3'>
-          <BtnEntryCommon title='新規登録' style='start' action={routerLocationEntry} width={200} height={60} fontSize={25} background={'#548EA6'}/>
-          <BtnClassicCommon title='インポート' style='start' action={routerLocationEntry} width={200} height={60} fontSize={25} border={50} />
+          <BtnEntryCommon title='新規登録' style='start' action={routerCustomerRegister} width={200} height={60} fontSize={25} background={'#548EA6'} disabled={false} />
+          <BtnClassicCommon title='インポート' style='start' action={routerLocationEntry} width={200} height={60} fontSize={25} border={50} disabled={false} />
         </div>
 
         {/* button search pro data */}
         <div className='pr-3'>
-          <BtnClassicCommon title='検索オプション' style='end' action={routerLocationEntry} width={150} height={35} fontSize={15} border={10} />
+          <BtnClassicCommon title='検索オプション' style='end' action={routerLocationEntry} width={150} height={35} fontSize={15} border={10} disabled={true} />
         </div>
 
         {/* item search data */}
@@ -110,7 +120,7 @@ const Customer: React.FC = () => {
         </div>
         {/* button search data */}
         <div id='btn-search-data'>
-          <BtnEntryCommon title='この条件で検索' style='center' action={handleSearchList} width={220} height={35} fontSize={15} background={'#548EA6'}/>
+          <BtnEntryCommon title='この条件で検索' style='center' action={handleSearchList} width={220} height={35} fontSize={15} background={'#548EA6'} disabled={false} />
         </div>
 
         {/* paging and button option */}
@@ -124,7 +134,7 @@ const Customer: React.FC = () => {
                 onPageChange={handlePageChange}
               />
               <div className='flex justify-center items-center pr-3'>
-                <BtnDisabledCommon title='削除' style='end' width={100} height={40} fontSize={15} />
+                <BtnClassicCommon title='削除' style='end' width={100} height={40} fontSize={15} border={50} action={routerLocationEntry} disabled={true} />
                 {/* <BtnClassicCommon title='・・・' action={routerWarehouseEntry} border={50} style='center' width={40} height={40} fontSize={15} /> */}
                 <div className={`flex justify-end items-center pt-3`}>
                   <button
@@ -143,16 +153,11 @@ const Customer: React.FC = () => {
             </div>
 
             {/* table data list  */}
-            <TableListCommon columns={listHeaderCustomer} data={listDataCustomer} widthCheckbox={100} />
+            <TableListCommon columns={listHeaderCustomer} data={listDataCustomer} widthCheckbox={100} handleUpdate={routerLocationEntry}/>
           </div>
             : <ErrorMessager titles={errorMess} />
         }
-      {/* button register */}
-      <div className='flex justify-start items-center gap-3'>
-        <BtnEntryCommon title='新規登録' style='start' action={routerLocationEntry} width={200} height={60} fontSize={25} background={'#548EA6'}/>
-        <BtnClassicCommon title='インポート' style='start' action={routerLocationEntry} width={200} height={60} fontSize={25} border={50} />
       </div>
-    </div>
     </div>
   );
 };
