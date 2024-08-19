@@ -4,6 +4,7 @@ import master from '@/api/master';
 import BtnEntryCommon from '@/common/button/BtnEntryCommon';
 import InputTextCommon from '@/common/combobox/InputTextCommon';
 import SelectCommon from '@/common/combobox/SelectCommon';
+import TableListCommon from '@/common/table/TableListCommon';
 import { hiddenLoading, showLoading } from '@/redux/future/loading-slice';
 import { AppDispatch } from '@/redux/store';
 import { useRouter } from 'next/navigation';
@@ -21,8 +22,14 @@ const DivisionRegister: React.FC = () => {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
   const [errorMess, setErrorMess] = useState<{ field: string, message: string }[]>([]);
-
+  const [divisionCd, setDivisionCd] = useState("");
+  const [divisionName, setDivisonName] = useState("");
+  const [warehouseId, setWarehouseId] = useState("");
   const [listWareHouse, setListWareHouse] = useState<SelectOption[]>([]);
+
+  console.log("warehouseId ", warehouseId);
+  // console.log("divisionName " , divisionName);
+
 
   useEffect(() => {
     // get languages
@@ -45,29 +52,26 @@ const DivisionRegister: React.FC = () => {
       });
   }, []);
 
-  const [locationCd, setLocationCd] = useState("");
-  const [locationName, setLocationName] = useState("");
-  const [warehouseId, setWarehouseId] = useState("");
 
   const routerDivisionList = () => {
     router.push("/master/division/list")
   }
 
   // handle register location
-  const handleRegisterLocation = () => {
+  const handleRegisterDivision = () => {
     dispatch(showLoading())
 
     const postData = [{
-      locationCd: locationCd,
-      locationName: locationName,
+      divisionCd: divisionCd,
+      divisionName: divisionName,
       warehouseId: warehouseId
     }]
 
-    master.createLocation(`lang=${language}`, postData)
+    master.createDivision(`lang=${language}`, postData)
       .then(res => {
         if (res.status === 200) {
-          setLocationCd("")
-          setLocationName("")
+          setDivisionCd("")
+          setDivisonName("")
           setWarehouseId("")
           setErrorMess([])
           dispatch(hiddenLoading())
@@ -82,6 +86,14 @@ const DivisionRegister: React.FC = () => {
 
       });
   }
+
+  const columns = [
+    { title: '部門コード', key: 'divisionCd', width: 200 },
+    { title: '部門', key: 'divisionName', width: 200 },
+    { title: '倉庫', key: 'warehouseCd', width: 300 }
+  ]
+  const [listHeaderDivision, setListHeaderDivision] = useState(columns);
+
 
   return (
     <div className='bg-white h-screen pl-[170px] container-body'>
@@ -103,13 +115,13 @@ const DivisionRegister: React.FC = () => {
           </div>
           <div className=''>
             <InputTextCommon
-                  id='locationCd'
-                  requid={true}
-                  width={200}
-                  value={locationCd}
-                  onChange={setLocationCd}
-                  errorMess={errorMess.filter(error => error.field === 'locationCd').map(error => error.message)}
-                />
+              id='divisionCd'
+              requid={true}
+              width={200}
+              value={divisionCd}
+              onChange={setDivisionCd}
+              errorMess={errorMess.filter(error => error.field === 'divisionCd').map(error => error.message)}
+            />
           </div>
         </div>
 
@@ -119,13 +131,13 @@ const DivisionRegister: React.FC = () => {
           </div>
           <div className=''>
             <InputTextCommon
-                  id='locationCd'
-                  requid={true}
-                  width={200}
-                  value={locationCd}
-                  onChange={setLocationCd}
-                  errorMess={errorMess.filter(error => error.field === 'locationCd').map(error => error.message)}
-                />
+              id='divisionName'
+              requid={true}
+              width={200}
+              value={divisionName}
+              onChange={setDivisonName}
+              errorMess={errorMess.filter(error => error.field === 'divisionName').map(error => error.message)}
+            />
           </div>
         </div>
 
@@ -136,61 +148,44 @@ const DivisionRegister: React.FC = () => {
         </div>
 
         <div className='flex my-3'>
-          <div className='w-[12%]'>
-                    <BtnEntryCommon title='追加' style='end' action={handleRegisterLocation} width={80} height={40} fontSize={15} background={'#f38c8d'}/>
+          <div className='px-3'>
+            <button className={`px-5 bg-[#f38c8d] h-8 border border-[black] font-bold text-white transition-colors duration-150 rounded-md focus:shadow-outline hover:bg-[#f38c8d] truncate`}>追加</button>
           </div>
-          <div className=''>
-            
+          <div className='px-3'>
+            <button className={`px-5 bg-transparent h-8 border border-[#548ea6] font-bold text-black transition-colors duration-150 rounded-md focus:shadow-outline hover:bg-[#f38c8d] truncate`}>削除</button>
           </div>
         </div>
-
-        {/* <table className='min-w-[520px]'>
-          <tbody>
-            <tr className='flex justify-start items-start'>
-              <th className='text-left w-[33%] py-2 text-[#8B8B8B] text-base'>部門コード</th>
-              <td className='py-2'>
-                <InputTextCommon
-                  id='locationCd'
-                  requid={true}
-                  width={200}
-                  value={locationCd}
-                  onChange={setLocationCd}
-                  errorMess={errorMess.filter(error => error.field === 'locationCd').map(error => error.message)}
-                />
-              </td>
-            </tr>
-            <tr className='flex justify-start items-start'>
-              <th className='text-left w-[33%] py-2 text-[#8B8B8B] text-base'>部門<span className='text-[#b72e30]'>*</span></th>
-              <td className='py-2'>
-                <InputTextCommon
-                  id='locationName'
-                  requid={true}
-                  width={200}
-                  value={locationName}
-                  onChange={setLocationName}
-                  errorMess={errorMess.filter(error => error.field === 'locationName').map(error => error.message)}
-                />
-              </td>
-            </tr>
-            <tr className='flex justify-start items-start'>
-              <th className='text-left w-[33%] py-2 text-[#8B8B8B] text-base'>倉庫<span className='text-[#b72e30]'>*</span></th>
-              <td className='py-2'>
-                <SelectCommon
-                  id='warehouseId'
-                  onChange={setWarehouseId}
-                  options={listWareHouse}
-                  value={warehouseId}
-                  requid={true}
-                  width={200}
-                  errorMess={errorMess.filter(error => error.field === 'warehouseId').map(error => error.message)}
-                />
-              </td>
-            </tr>
-          </tbody>
-        </table> */}
+        <div className=''>
+          <table className='table-fixed border-collapse border-[2px] border-[#548EA6]'>
+            <thead className='bg-[#548EA6] text-white border-[#548EA6] border-collapse sticky top-[-2px] z-10 py-8'>
+              <tr>
+                <th className='w-12 border px-3 py-2 relative border-white text-[#FFFFFF] bg-[#548EA6]'></th>
+                <th className='w-56'>倉庫</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className='border border-white'>
+                <td className='border bg-[#E9EEF1] border-white p-2 text-center'>
+                  <input type="checkbox" className="w-[15px] h-[15px]" />
+                </td>
+                <td className='border bg-[#E9EEF1] border-white p-2 text-center'>
+                  <SelectCommon
+                    id='warehouseId'
+                    onChange={setWarehouseId}
+                    options={listWareHouse}
+                    value={warehouseId}
+                    requid={true}
+                    width={250}
+                    errorMess={errorMess.filter(error => error.field === 'warehouseId').map(error => error.message)}
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
       <div className='pt-60 pr-20'>
-        <BtnEntryCommon title='登録' style='end' action={handleRegisterLocation} width={150} height={50} fontSize={25} background={'#548EA6'}/>
+        <BtnEntryCommon title='登録' style='end' action={handleRegisterDivision} width={150} height={50} fontSize={25} background={'#548EA6'} />
 
       </div>
 
