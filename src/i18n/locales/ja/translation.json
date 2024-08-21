@@ -1,0 +1,94 @@
+{
+    "navbar": {
+        "btn-TBTTech": "テービーテック",
+        "user-login": "ログインユーザー",
+        "logout": "ログアウト"
+    },
+    "error": {
+        "check-data-change": "データは変更されません。"
+    },
+    "sidebar": {
+        "home": "ホーム",
+        "inventory": "在庫確認",
+        "register": "データ登録",
+        "register-goods-issue": "出荷",
+        "register-goods-receive": "仕入",
+        "register-orther": "その他調整",
+        "list": "データ",
+        "list-goods-issue": "出荷",
+        "list-goods-receive": "仕入",
+        "list-orther": "その他調整",
+        "schedule": "スケジュール表",
+        "analysis": "解析",
+        "master": "設定",
+        "detail-setting": "詳細設定"
+    },
+    "sidebar-master": {
+        "product": "製品",
+        "category": "カテゴリ",
+        "warehouse": "倉庫",
+        "location": "ロケーション",
+        "customer": "取引先",
+        "user": "ユーザー",
+        "role": "権限",
+        "division": "部門",
+        "setting": "詳細設定"
+    },
+    "button": {
+        "button-search": "この条件で検索",
+        "button-delete": "削除",
+        "button-register": "新規登録",
+        "button-import": "インポート",
+        "button-search-advance": "検索オプション",
+        "button-register-submit": "登録",
+        "button-back": "一覧に戻る"
+    },
+    "master": {
+        "warehouse": {
+            "list-search": {
+                "warehouse-cod": "倉庫コード",
+                "warehouse-name": "倉庫名"
+            },
+            "table-list": {
+                "warehouse-cod": "倉庫コード",
+                "warehouse-name": "倉庫名"
+            },
+            "register": {
+                "warehouse-cod": "倉庫コード",
+                "warehouse-name": "倉庫名"
+            }
+        },
+        "location": {
+            "list-search": {
+                "location-cod": "ロケーションコード",
+                "location-name": "ロケーション名"
+            },
+            "table-list": {
+                "location-cod": "ロケーションコード",
+                "location-name": "ロケーション名",
+                "customer-name-formal": "取引先名（正式名称）",
+                "supplier-flag": "仕入先フラグ"
+            },
+            "register": {
+                "location-cod": "ロケーションコード",
+                "location-name": "ロケーション名"
+            }
+        },
+        "customer": {
+            "list-search": {
+                "customer-cod": "取引先コード",
+                "customer-name": "取引先名"
+            },
+            "table-list": {
+                "customer-cod": "取引先コード",
+                "customer-name": "取引先名",
+                "customer-name-formal": "取引先名（正式名称）",
+                "supplier-flag": "仕入先フラグ"
+            },
+            "register": {
+                "customer-cod": "取引先コード",
+                "customer-name": "取引先名"
+            }
+        }
+    }
+}

@@ -11,6 +11,7 @@ import ErrorMessager from '@/common/error/ErrorMessager';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
 import { hiddenLoading, showLoading } from '@/redux/future/loading-slice';
+import { useTranslation } from "react-i18next";
 
 const Location: React.FC = () => {
 
@@ -26,6 +27,8 @@ const Location: React.FC = () => {
     const pathName = usePathname();
     const dispatch = useDispatch<AppDispatch>();
 
+    const { t } = useTranslation();
+
     // get languages
     useEffect(() => {
         const userLanguage = navigator.language.split("-")[0] || 'en';
@@ -35,9 +38,9 @@ const Location: React.FC = () => {
     // fake header data
     const columns = [
         { title: '', key: 'id', width: 135 },
-        { title: 'ロケーションコード', key: 'locationCd', width: 135 },
-        { title: 'ロケーション名', key: 'locationName', width: 200 },
-        { title: '倉庫名', key: 'warehouseName', width: 200 }
+        { title: t("master.location.table-list.location-cod"), key: 'locationCd', width: 135 },
+        { title: t("master.location.table-list.location-cod"), key: 'locationName', width: 200 },
+        { title: t("master.warehouse.table-list.warehouse-name"), key: 'warehouseName', width: 200 }
     ];
 
     // list table data
@@ -105,20 +108,20 @@ const Location: React.FC = () => {
             <div className='px-3'>
                 {/* button register */}
                 <div className='flex justify-start items-center gap-3'>
-                    <BtnEntryCommon title='新規登録' style='start' action={() => routerLocationRegister("")} width={200} height={60} fontSize={25} background={'#548EA6'} disabled={false} />
-                    <BtnClassicCommon title='インポート' style='start' action={routerLocationEntry} width={200} height={60} fontSize={25} border={50} disabled={false} />
+                    <BtnEntryCommon title={t("button.button-register")} style='start' action={() => routerLocationRegister("")} width={150} height={40} fontSize={20} background={'#548EA6'} disabled={false} />
+                    <BtnClassicCommon title={t("button.button-import")} style='start' action={routerLocationEntry} width={150} height={40} fontSize={20} border={50} disabled={false} />
                 </div>
 
                 {/* button search pro data */}
                 <div className='pr-3'>
-                    <BtnClassicCommon title='検索オプション' style='end' action={routerLocationEntry} width={150} height={35} fontSize={15} border={10} disabled={false} />
+                    <BtnClassicCommon title={t("button.button-search-advance")} style='end' action={routerLocationEntry} width={150} height={35} fontSize={15} border={10} disabled={false} />
                 </div>
                 {/* item search data */}
                 <div className='flex justify-between items-start'>
-                    <table className='min-w-[520px]'>
+                    <table className='min-w-full'>
                         <tbody>
                             <tr className='border-b-2'>
-                                <th className='text-left pr-20 py-2 text-[#8B8B8B] text-xl'>ロケーションコード</th>
+                                <th className='text-left pr-20 py-2 text-[#8B8B8B] text-base w-[20%]'>{t("master.location.list-search.location-cod")}</th>
                                 <td className='pr-10 py-2'>
                                     <input
                                         className='border-[2px] h-8 rounded-md px-2 border-[#9B9B9B]'
@@ -129,7 +132,7 @@ const Location: React.FC = () => {
                                 </td>
                             </tr>
                             <tr className='border-b-2'>
-                                <th className='text-left pr-20 py-2 text-[#8B8B8B] text-xl'>ロケーション名</th>
+                                <th className='text-left pr-20 py-2 text-[#8B8B8B] text-base w-[20%]'>{t("master.location.list-search.location-name")}</th>
                                 <td className='pr-10 py-2'>
                                     <input
                                         className='border-[2px] h-8 rounded-md px-2 border-[#9B9B9B]'
@@ -140,7 +143,7 @@ const Location: React.FC = () => {
                                 </td>
                             </tr>
                             <tr className='border-b-2'>
-                                <th className='text-left pr-20 py-2 text-[#8B8B8B] text-xl'>倉庫名</th>
+                                <th className='text-left pr-20 py-2 text-[#8B8B8B] text-base w-[20%]'>{t("master.warehouse.list-search.warehouse-name")}</th>
                                 <td className='pr-10 py-2'>
                                     <input
                                         className='border-[2px] h-8 rounded-md px-2 border-[#9B9B9B]'
@@ -155,7 +158,7 @@ const Location: React.FC = () => {
                 </div>
                 {/* button search data */}
                 <div id='btn-search-data'>
-                    <BtnEntryCommon title='この条件で検索' style='center' action={handleSearchList} width={220} height={35} fontSize={15} background={'#548EA6'} disabled={false} />
+                    <BtnEntryCommon title={t("button.button-search")} style='center' action={handleSearchList} width={220} height={35} fontSize={15} background={'#548EA6'} disabled={false} />
                 </div>
 
                 {/* paging and button option */}
@@ -170,7 +173,7 @@ const Location: React.FC = () => {
                                     onPageChange={handlePageChange}
                                 />
                                 <div className='flex justify-center items-center pr-3'>
-                                    <BtnClassicCommon title='削除' style='end' width={100} height={40} fontSize={15} disabled={true} action={routerLocationEntry} border={50} />
+                                    <BtnClassicCommon title={t("button.button-delete")} style='end' width={100} height={40} fontSize={15} disabled={true} action={routerLocationEntry} border={50} />
                                     {/* <BtnClassicCommon title='・・・' action={routerLocationEntry} border={50} style='center' width={40} height={40} fontSize={15} /> */}
                                     <div className={`flex justify-end items-center pt-3`}>
                                         <button

@@ -11,6 +11,7 @@ import ErrorMessager from '@/common/error/ErrorMessager';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
 import { hiddenLoading, showLoading } from '@/redux/future/loading-slice';
+import { useTranslation } from "react-i18next";
 
 const Warehouse: React.FC = () => {
   const [language, setLanguage] = useState<string>('en');
@@ -24,6 +25,8 @@ const Warehouse: React.FC = () => {
   const pathName = usePathname();
   const dispatch = useDispatch<AppDispatch>();
 
+  const { t, i18n } = useTranslation();  
+
   // get languages
   useEffect(() => {
     const userLanguage = navigator.language.split("-")[0] || 'en';
@@ -33,8 +36,8 @@ const Warehouse: React.FC = () => {
   // fake data
   const columns = [
     { title: '', key: 'id', width: 200 },
-    { title: '倉庫コード', key: 'warehouseCd', width: 200 },
-    { title: '倉庫名', key: 'warehouseName', width: 200 }
+    { title: t("master.warehouse.table-list.warehouse-cod"), key: 'warehouseCd', width: 200 },
+    { title: t("master.warehouse.table-list.warehouse-name"), key: 'warehouseName', width: 200 }
   ];
 
   // list table data
@@ -101,22 +104,22 @@ const Warehouse: React.FC = () => {
       <div className='px-3'>
         {/* button register */}
         <div className='flex justify-start items-center gap-3'>
-          <BtnEntryCommon title='新規登録' style='start' action={() => routerWarehouseRegister("")} width={200} height={60} fontSize={25} background={'#548EA6'} disabled={false} />
-          <BtnClassicCommon title='インポート' style='start' action={routerWarehouseEntry} width={200} height={60} fontSize={25} border={50} disabled={false} />
+          <BtnEntryCommon title={t("button.button-register")} style='start' action={() => routerWarehouseRegister("")} width={150} height={40} fontSize={20} background={'#548EA6'} disabled={false} />
+          <BtnClassicCommon title={t("button.button-import")} style='start' action={routerWarehouseEntry} width={150} height={40} fontSize={20} border={50} disabled={false} />
         </div>
 
 
         {/* button search pro data */}
         <div className='pr-3'>
-          <BtnClassicCommon title='検索オプション' style='end' action={routerWarehouseEntry} width={150} height={35} fontSize={15} border={10} disabled={false} />
+          <BtnClassicCommon title={t("button.button-search-advance")} style='end' action={routerWarehouseEntry} width={150} height={35} fontSize={15} border={10} disabled={false} />
         </div>
 
         {/* item search data */}
         <div className='flex justify-between items-start'>
-          <table className='min-w-[520px]'>
+          <table className='min-w-full'>
             <tbody>
               <tr className='border-b-2'>
-                <th className='text-left pr-20 py-2 text-[#8B8B8B] text-xl'>倉庫コード</th>
+                <th className='text-left pr-20 py-2 text-[#8B8B8B] text-base w-[20%]'>{t("master.warehouse.list-search.warehouse-cod")}</th>
                 <td className='pr-10 py-2'>
                   <input
                     className='border-[2px] px-2 h-8 rounded-md border-[#9B9B9B]'
@@ -127,7 +130,7 @@ const Warehouse: React.FC = () => {
                 </td>
               </tr>
               <tr className='border-b-2'>
-                <th className='text-left pr-20 py-2 text-[#8B8B8B] text-xl'>倉庫名</th>
+                <th className='text-left pr-20 py-2 text-[#8B8B8B] text-base w-[20%]'>{t("master.warehouse.list-search.warehouse-name")}</th>
                 <td className='pr-10 py-2'>
                   <input
                     className='border-[2px] px-2 h-8 rounded-md border-[#9B9B9B]'
@@ -142,7 +145,7 @@ const Warehouse: React.FC = () => {
         </div>
         {/* button search data */}
         <div id='btn-search-data'>
-          <BtnEntryCommon title='この条件で検索' style='center' action={handleSearchList} width={220} height={35} fontSize={15} background={'#548EA6'} disabled={false} />
+          <BtnEntryCommon title={t("button.button-search")} style='center' action={handleSearchList} width={220} height={35} fontSize={15} background={'#548EA6'} disabled={false} />
         </div>
 
         {/* paging and button option */}
@@ -156,7 +159,7 @@ const Warehouse: React.FC = () => {
                 onPageChange={handlePageChange}
               />
               <div className='flex justify-center items-center pr-3'>
-                <BtnClassicCommon title='削除' style='end' width={100} height={40} fontSize={15} action={routerWarehouseEntry} border={50} disabled={true} />
+                <BtnClassicCommon title={t("button.button-delete")} style='end' width={100} height={40} fontSize={15} action={routerWarehouseEntry} border={50} disabled={true} />
                 {/* <BtnClassicCommon title='・・・' action={routerWarehouseEntry} border={50} style='center' width={40} height={40} fontSize={15} /> */}
                 <div className={`flex justify-end items-center pt-3`}>
                   <button
@@ -175,7 +178,7 @@ const Warehouse: React.FC = () => {
             </div>
 
             {/* table data list  */}
-            <TableListCommon columns={listHeaderWarehouse} data={listDataWarehouse} widthCheckbox={100} handleUpdate={handleUpdateData} listKeyLink={["warehouseCd"]}/>
+            <TableListCommon columns={listHeaderWarehouse} data={listDataWarehouse} widthCheckbox={100} handleUpdate={handleUpdateData} listKeyLink={["warehouseCd"]} />
           </div>
             : <ErrorMessager titles={errorMess} />
         }

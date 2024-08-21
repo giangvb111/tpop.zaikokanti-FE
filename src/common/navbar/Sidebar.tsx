@@ -3,12 +3,14 @@
 import React, { useEffect, useState } from 'react';
 import SlidebarMaster from './SlidebarMaster';
 import { usePathname, useRouter } from 'next/navigation';
+import { useTranslation } from "react-i18next";
 
 const Sidebar: React.FC = () => {
     const router = useRouter();
     const pathName = usePathname();
 
-
+    const { t, i18n } = useTranslation();
+    
     const [isDataTorokuOpen, setIsDataTorokuOpen] = useState(false);
     const [isDataOpen, setIsDataOpen] = useState(false);
     const [actionTitle, setActionTitle] = useState(pathName.split('/')[1]);
@@ -77,19 +79,19 @@ const Sidebar: React.FC = () => {
                 <nav className="text-white py-4 relative">
                     <ul className='text-left w-80'>
                         <li
-                            className={`cursor-pointer pl-20 hover:bg-[#f2f2f2] hover:text-[#548EA6] ${actionTitle === "/" ? "bg-[#f2f2f2] text-[#548EA6]" : ""}`}
+                            className={`cursor-pointer pl-20 hover:bg-[#f2f2f2] truncate hover:text-[#548EA6] ${actionTitle === "/" ? "bg-[#f2f2f2] text-[#548EA6]" : ""}`}
                             onClick={() => handleItemClick('/')}
                         >
-                            ホーム
+                            {t("sidebar.home")}
                         </li>
                         <li
-                            className={`cursor-pointer pl-20 hover:bg-[#f2f2f2] hover:text-[#548EA6] ${actionTitle === "/inventory" ? "bg-[#f2f2f2] text-[#548EA6]" : ""}`}
+                            className={`cursor-pointer pl-20 hover:bg-[#f2f2f2] truncate hover:text-[#548EA6] ${actionTitle === "/inventory" ? "bg-[#f2f2f2] text-[#548EA6]" : ""}`}
                             onClick={() => handleItemClick('/inventory')}
                         >
-                            在庫確認
+                            {t("sidebar.inventory")}
                         </li>
                         <li
-                            className={`relative cursor-pointer pl-20 hover:bg-[#f2f2f2] hover:text-[#548EA6] ${pathName.split('/')[1] === "register" ? "bg-[#f2f2f2] text-[#548EA6]" : ""}`}
+                            className={`relative cursor-pointer pl-20 hover:bg-[#f2f2f2] truncate hover:text-[#548EA6] ${pathName.split('/')[1] === "register" ? "bg-[#f2f2f2] text-[#548EA6]" : ""}`}
                         >
                             <button
                                 id="btn-shukka-toroku"
@@ -97,7 +99,7 @@ const Sidebar: React.FC = () => {
                                 name='btn-shukka-entry'
                                 onClick={handleSidebarDataTorokuClick}
                             >
-                                データ登録
+                                {t("sidebar.register")}
                             </button>
                             <ul
                                 id="submenu-shukka-toroku"
@@ -107,24 +109,24 @@ const Sidebar: React.FC = () => {
                                     className={`${pathName === "/register/goods-issue" ? "text-[#616161]" : "text-[#D9D9D9]"} pl-[7rem] bg-[#f2f2f2] hover:bg-gray-100`}
                                     onClick={() => handleItemClick('/register/goods-issue')}
                                 >
-                                    出荷
+                                    {t("sidebar.register-goods-issue")}
                                 </li>
                                 <li
                                     className={`${pathName === "/register/goods-receive" ? "text-[#616161]" : "text-[#D9D9D9]"} pl-[7rem] bg-[#f2f2f2] hover:bg-gray-100`}
                                     onClick={() => handleItemClick('/register/goods-receive')}
                                 >
-                                    仕入
+                                    {t("sidebar.register-goods-receive")}
                                 </li>
                                 <li
                                     className={`${pathName === "/register/other" ? "text-[#616161]" : "text-[#D9D9D9]"} pl-[7rem] bg-[#f2f2f2] hover:bg-gray-100`}
                                     onClick={() => handleItemClick('/register/other')}
                                 >
-                                    その他調整
+                                    {t("sidebar.register-orther")}
                                 </li>
                             </ul>
                         </li>
                         <li
-                            className={`relative cursor-pointer pl-20 hover:bg-[#f2f2f2] hover:text-[#548EA6] ${pathName.split('/')[1] === "list" ? "bg-[#f2f2f2] text-[#548EA6]" : ""}`}
+                            className={`relative cursor-pointer pl-20 hover:bg-[#f2f2f2] truncate hover:text-[#548EA6] ${pathName.split('/')[1] === "list" ? "bg-[#f2f2f2] text-[#548EA6]" : ""}`}
                         >
                             <button
                                 id="btn-shukka-ichiran"
@@ -132,7 +134,7 @@ const Sidebar: React.FC = () => {
                                 name='btn-shukka-ichiran'
                                 onClick={handleSidebarDataClick}
                             >
-                                データ
+                                {t("sidebar.list")}
                             </button>
                             <ul
                                 id="submenu-shukka-ichiran"
@@ -142,43 +144,43 @@ const Sidebar: React.FC = () => {
                                     className={`${pathName === "/list/goods-issue" ? "text-[#616161]" : "text-[#D9D9D9]"} pl-[7rem] bg-[#f2f2f2] hover:bg-gray-100`}
                                     onClick={() => handleItemClick('/list/goods-issue')}
                                 >
-                                    出荷
+                                    {t("sidebar.list-goods-issue")}
                                 </li>
                                 <li
                                     className={`${pathName === "/list/goods-receive" ? "text-[#616161]" : "text-[#D9D9D9]"} pl-[7rem] bg-[#f2f2f2] hover:bg-gray-100`}
                                     onClick={() => handleItemClick('/list/goods-receive')}
                                 >
-                                    仕入
+                                    {t("sidebar.list-goods-receive")}
                                 </li>
                                 <li
                                     className={`${pathName === "/list/other" ? "text-[#616161]" : "text-[#D9D9D9]"} pl-[7rem] bg-[#f2f2f2] hover:bg-gray-100`}
                                     onClick={() => handleItemClick('/list/other')}
                                 >
-                                    その他調整
+                                    {t("sidebar.list-orther")}
                                 </li>
                             </ul>
                         </li>
                         <li
-                            className={`cursor-pointer pl-20 hover:bg-[#f2f2f2] hover:text-[#548EA6] ${actionTitle === "/schedule" ? "bg-[#f2f2f2] text-[#548EA6]" : ""}`}
+                            className={`cursor-pointer pl-20 hover:bg-[#f2f2f2] truncate hover:text-[#548EA6] ${actionTitle === "/schedule" ? "bg-[#f2f2f2] text-[#548EA6]" : ""}`}
                             onClick={() => handleItemClick('/schedule')}
                         >
-                            スケジュール表
+                            {t("sidebar.schedule")}
                         </li>
                         <li
-                            className={`cursor-pointer pl-20 hover:bg-[#f2f2f2] hover:text-[#548EA6] ${actionTitle === "/analysis" ? "bg-[#f2f2f2] text-[#548EA6]" : ""}`}
+                            className={`cursor-pointer pl-20 hover:bg-[#f2f2f2] truncate hover:text-[#548EA6] ${actionTitle === "/analysis" ? "bg-[#f2f2f2] text-[#548EA6]" : ""}`}
                             onClick={() => handleItemClick('/analysis')}
                         >
-                            解析
+                            {t("sidebar.analysis")}
                         </li>
                         <li
-                            className={`cursor-pointer pl-20 hover:bg-[#f2f2f2] hover:text-[#548EA6] ${pathName.split('/')[1] === "master" ? "bg-[#f2f2f2] text-[#548EA6]" : ""}`}
+                            className={`cursor-pointer pl-20 hover:bg-[#f2f2f2] truncate hover:text-[#548EA6] ${pathName.split('/')[1] === "master" ? "bg-[#f2f2f2] text-[#548EA6]" : ""}`}
                             onClick={() => handleItemClick('/master/product/list')}
                         >
-                            設定
+                            {t("sidebar.master")}
                         </li>
                     </ul>
                     <div className={`${!actionMaster ? "flex w-80 justify-end" : "hidden"}`}>
-                        <button onClick={handleShowMaster} className='pr-10 pt-10 hover:text-cyan-700 text-base font-thin'>詳細設定</button>
+                        <button onClick={handleShowMaster} className='pr-10 pt-10 hover:text-cyan-700 text-base font-thin'>{t("sidebar.detail-setting")}</button>
                     </div>
                 </nav>
             </div>

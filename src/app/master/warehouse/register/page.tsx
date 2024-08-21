@@ -9,6 +9,7 @@ import { AppDispatch } from '@/redux/store';
 import { hiddenLoading, showLoading } from '@/redux/future/loading-slice';
 import master from '@/api/master';
 import ErrorMessager from '@/common/error/ErrorMessager';
+import { useTranslation } from "react-i18next";
 
 
 const WarehouseRegister: React.FC = () => {
@@ -20,8 +21,16 @@ const WarehouseRegister: React.FC = () => {
   const searchParams = useSearchParams();
   const idParam = searchParams.get('id');
 
+  const { t, i18n } = useTranslation();
+  useEffect(() => {
+      // Đặt ngôn ngữ mặc định sau khi client render
+      const lang = i18n.language || 'en';
+      i18n.changeLanguage(lang);
+  }, []);
+
   const [warehouseCd, setWarehouseCd] = useState("");
   const [warehouseName, setWarehouseName] = useState("");
+
   //check data change
   const [warehouseCdCheck, setWarehouseCdCheck] = useState("");
   const [warehouseNameCheck, setWarehouseNameCheck] = useState("");
@@ -60,32 +69,42 @@ const WarehouseRegister: React.FC = () => {
   const handleRegisterWarehouse = () => {
     dispatch(showLoading())
 
+    let checkChange = false;
+
     const postData = [{
       id: idParam,
       warehouseCd: warehouseCd,
       warehouseName: warehouseName
     }]
 
-    if (!idParam) {
-
+    if (idParam) {
+      if (warehouseCd === warehouseCdCheck && warehouseName === warehouseNameCheck) {
+        setErrorTitle(t('error.check-data-change'));
+        dispatch(hiddenLoading())
+        checkChange = true;
+      } else {
+        checkChange = false;
+      }
     }
 
-    master.createWarehouse(`lang=${language}`, postData)
-      .then(res => {
-        if (res.status === 200) {
-          setWarehouseCd("")
-          setWarehouseName("")
-          setErrorMess([])
-          dispatch(hiddenLoading())
-          routerWarehouseList()
-        }
-      })
-      .catch(err => {
-        if (err.response.data.status === 0) {
-          setErrorMess(err.response.data.error.errorDetails)
-          dispatch(hiddenLoading());
-        }
-      });
+    if (!checkChange) {
+      master.createWarehouse(`lang=${language}`, postData)
+        .then(res => {
+          if (res.status === 200) {
+            setWarehouseCd("")
+            setWarehouseName("")
+            setErrorMess([])
+            dispatch(hiddenLoading())
+            routerWarehouseList()
+          }
+        })
+        .catch(err => {
+          if (err.response.data.status === 0) {
+            setErrorMess(err.response.data.error.errorDetails)
+            dispatch(hiddenLoading());
+          }
+        });
+    }
   }
 
   return (
@@ -93,19 +112,22 @@ const WarehouseRegister: React.FC = () => {
       <div className='pt-5'>
         {/* button back to list */}
         <button
-          className='flex justify-start items-center gap-5 hover:text-black hover:font-bold text-xl'
+          className='flex justify-start items-center gap-5 hover:text-black hover:font-bold text-base'
           onClick={routerWarehouseList}
         >
           <span>＜</span>
-          <span>一覧に戻る</span>
+          <span>{t("button.button-back")}</span>
         </button>
+      </div>
+      <div>
+        <ErrorMessager titles={[errorTile]} />
       </div>
       <div className='flex justify-between items-start px-7 py-10'>
         {/* register items */}
         <table className='min-w-[520px]'>
           <tbody>
             <tr className='flex justify-start items-start'>
-              <th className='text-left w-40 py-2 text-[#8B8B8B] text-xl'>倉庫コード<span className='text-[#b72e30]'>*</span></th>
+              <th className='text-left w-40 py-2 text-[#8B8B8B] text-base'>{t("master.warehouse.register.warehouse-cod")}<span className='text-[#b72e30]'>*</span></th>
               <td className='py-2'>
                 <InputTextCommon
                   id='warehouseCd'
@@ -119,7 +141,7 @@ const WarehouseRegister: React.FC = () => {
               </td>
             </tr>
             <tr className='flex justify-start items-start'>
-              <th className='text-left w-40 py-2 text-[#8B8B8B] text-xl'>倉庫名<span className='text-[#b72e30]'>*</span></th>
+              <th className='text-left w-40 py-2 text-[#8B8B8B] text-base'>{t("master.warehouse.register.warehouse-name")}<span className='text-[#b72e30]'>*</span></th>
               <td className='py-2'>
                 <InputTextCommon
                   id='warehouseName'
@@ -135,11 +157,8 @@ const WarehouseRegister: React.FC = () => {
           </tbody>
         </table>
       </div>
-      <div>
-        <ErrorMessager titles={[errorTile]} />
-      </div>
       <div className='pt-60 pr-20'>
-        <BtnEntryCommon title='登録' style='end' action={handleRegisterWarehouse} width={150} height={50} fontSize={25} background={'#548EA6'} disabled={false} />
+        <BtnEntryCommon title={t("button.button-register-submit")} style='end' action={handleRegisterWarehouse} width={150} height={50} fontSize={25} background={'#548EA6'} disabled={false} />
       </div>
 
     </div>

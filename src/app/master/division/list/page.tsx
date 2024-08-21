@@ -34,6 +34,7 @@ const Division: React.FC = () => {
 
   // fake data
   const columns = [
+    { title: '', key: 'id', width: 200 },
     { title: '部門コード', key: 'divisionCd', width: 200 },
     { title: '部門', key: 'divisionName', width: 200 },
     { title: '倉庫', key: 'warehouseCd', width: 300 }
@@ -169,7 +170,7 @@ const Division: React.FC = () => {
           </div>
 
           {/* table data list  */}
-          <TableListCommon columns={listHeaderDivision} data={listDataDivision} widthCheckbox={100} handleUpdate={routerDivisionImport}/>
+          <TableListCommon columns={listHeaderDivision} data={listDataDivision} widthCheckbox={100} handleUpdate={routerDivisionImport} listKeyLink={["divisionCd"]}/>
         </div>
           : <ErrorMessager titles={errorMess} />
       }
