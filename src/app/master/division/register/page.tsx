@@ -6,7 +6,8 @@ import InputTextCommon from '@/common/combobox/InputTextCommon';
 import SelectCommon from '@/common/combobox/SelectCommon';
 import { hiddenLoading, showLoading } from '@/redux/future/loading-slice';
 import { AppDispatch } from '@/redux/store';
-import { useRouter } from 'next/navigation';
+import { id } from 'date-fns/locale';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
@@ -17,7 +18,7 @@ interface SelectOption {
 }
 
 interface Row {
-  id: string;
+  diviWarehouseId: number | null;
   warehouseId: string;
   isChecked: boolean;
 }
@@ -30,9 +31,11 @@ const DivisionRegister: React.FC = () => {
   const [divisionCd, setDivisionCd] = useState("");
   const [divisionName, setDivisonName] = useState("");
   const [listWareHouse, setListWareHouse] = useState<SelectOption[]>([]);
+  const searchParams = useSearchParams();
+  const idParam = searchParams.get('id');
   const [rows, setRows] = useState<Row[]>([
     {
-      id: uuidv4(),
+      diviWarehouseId: null,
       warehouseId: '',
       isChecked: false
     },
@@ -40,7 +43,7 @@ const DivisionRegister: React.FC = () => {
 
   const defaultRows = [
     {
-      id: uuidv4(),
+      diviWarehouseId: null,
       warehouseId: '',
       isChecked: false
     }
@@ -67,6 +70,32 @@ const DivisionRegister: React.FC = () => {
       });
   }, []);
 
+  useEffect(() => {
+    if (idParam) {
+      dispatch(showLoading())
+      master.getDivisionById(`id=${idParam}&&lang=${language}`)
+        .then(res => {
+          console.log("resss ==", res);
+          if (res.status === 200) {
+            setDivisionCd(res.data.data[0].divisionCd)
+            setDivisonName(res.data.data[0].divisionName)
+            const rows: Row[] = res.data.data.map((item: any) => ({
+              diviWarehouseId: item.warehouseDivisionId,
+              warehouseId: item.warehouseId,
+              isChecked: false
+            }));
+            setRows(rows)
+            setErrorMess([])
+            dispatch(hiddenLoading())
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+  }, [])
+
+  console.log("rows ==", rows);
 
   const routerDivisionList = () => {
     router.push("/master/division/list")
@@ -77,15 +106,16 @@ const DivisionRegister: React.FC = () => {
     dispatch(showLoading())
 
     const postData = [{
+      id: idParam ? parseInt(idParam) : null,
       divisionCd: divisionCd,
       divisionName: divisionName,
-      warehouseIdList: rows.map(row => parseInt(row.warehouseId))
+      divisionWarehouseList: rows
     }]
+
+    console.log("postData  ", postData);
 
     master.createDivision(`lang=${language}`, postData)
       .then(res => {
-        console.log("res :", res);
-
         if (res.status === 200) {
           setDivisionCd("")
           setDivisonName("")
@@ -111,9 +141,6 @@ const DivisionRegister: React.FC = () => {
     { title: '倉庫', key: 'warehouseCd', width: 300 }
   ]
   const [listHeaderDivision, setListHeaderDivision] = useState(columns);
-
-  console.log("row  ", rows);
-
 
   const handleWarehouseChange = (index: number, value: string) => {
     console.log("handleWarehouseChange", 111);
@@ -219,7 +246,7 @@ const DivisionRegister: React.FC = () => {
             </thead>
             <tbody>
               {rows.map((row, index) => (
-                <tr key={row.id} className='border border-white'>
+                <tr key={row.diviWarehouseId} className='border border-white'>
                   <td className='border bg-[#E9EEF1] border-white p-2 text-center'>
                     <input
                       type="checkbox" className="w-[15px] h-[15px]"

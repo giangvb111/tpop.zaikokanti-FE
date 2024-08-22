@@ -50,6 +50,11 @@ const master = {
         return axiosAPI.post(url, data);
     },
 
+    getDivisionById(payload) {
+        const url = `master/division/get-division-by-id?${payload}`;
+        return axiosAPI.get(url);
+    },
+
     // customer
     getCustumerList(payload) {
         const url = `master/customer/get-list?${payload}`;
