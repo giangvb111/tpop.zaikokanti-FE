@@ -1,5 +1,4 @@
-import { usePathname } from 'next/navigation';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 interface Column {
     title: string;
@@ -23,7 +22,8 @@ const TableListCommon: React.FC<TableListCommonProps> = ({ columns, data, widthC
     const startXRef = useRef(0);
     const startWidthRef = useRef(0);
     const colIndexRef = useRef(0);
-    const pathName = usePathname();
+
+    const MIN_COLUMN_WIDTH = 50; // Độ rộng tối thiểu cho các cột (px)
 
     useEffect(() => {
         setTotalWidth(colWidths.reduce((acc, width) => acc + width, 0));
@@ -38,9 +38,27 @@ const TableListCommon: React.FC<TableListCommonProps> = ({ columns, data, widthC
         document.addEventListener('mouseup', handleMouseUp);
     };
 
+    // const handleMouseMove = (e: MouseEvent) => {
+    //     const deltaX = e.clientX - startXRef.current;
+    //     const newWidth = startWidthRef.current + deltaX;
+
+    //     setColWidths(prevWidths => {
+    //         const updatedWidths = [...prevWidths];
+    //         updatedWidths[colIndexRef.current] = newWidth;
+    //         return updatedWidths;
+    //     });
+    // };
+
     const handleMouseMove = (e: MouseEvent) => {
         const deltaX = e.clientX - startXRef.current;
-        const newWidth = startWidthRef.current + deltaX;
+        let newWidth = startWidthRef.current + deltaX;
+
+        if (newWidth < MIN_COLUMN_WIDTH) {
+            newWidth = MIN_COLUMN_WIDTH;
+        }
+        // else if (newWidth > MAX_COLUMN_WIDTH) {
+        //     newWidth = MAX_COLUMN_WIDTH;
+        // }
 
         setColWidths(prevWidths => {
             const updatedWidths = [...prevWidths];
