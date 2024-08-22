@@ -72,6 +72,26 @@
                 "location-name": "Location Name"
             }
         },
+        "category": {
+            "list-search": {
+                "category-cod": "Category Code",
+                "major-category": "Major Category",
+                "medium-category": "Medium Category",
+                "sub-category": "Sub Category"
+            },
+            "table-list": {
+                "category-cod": "Category Code",
+                "major-category": "Major Category",
+                "medium-category": "Medium Category",
+                "sub-category": "Sub Category"
+            },
+            "register": {
+                "category-cod": "Category Code",
+                "major-category": "Major Category",
+                "medium-category": "Medium Category",
+                "sub-category": "Sub Category"
+            }
+        },
         "customer": {
             "list-search": {
                 "customer-cod": "Customer Code",
@@ -85,7 +105,11 @@
             },
             "register": {
                 "customer-cod": "Customer Code",
-                "customer-name": "Customer Name"
+                "customer-name": "Customer Name",
+                "customer-name-formal": "Customer Name Formal",
+                "supplier-flag": "Supplier Flag",
+                "delivery-flag": "Delivery Flag",
+                "delivery": "Delivery"
             }
         }
     }

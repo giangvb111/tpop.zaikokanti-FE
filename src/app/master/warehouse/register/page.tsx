@@ -22,11 +22,6 @@ const WarehouseRegister: React.FC = () => {
   const idParam = searchParams.get('id');
 
   const { t, i18n } = useTranslation();
-  useEffect(() => {
-      // Đặt ngôn ngữ mặc định sau khi client render
-      const lang = i18n.language || 'en';
-      i18n.changeLanguage(lang);
-  }, []);
 
   const [warehouseCd, setWarehouseCd] = useState("");
   const [warehouseName, setWarehouseName] = useState("");

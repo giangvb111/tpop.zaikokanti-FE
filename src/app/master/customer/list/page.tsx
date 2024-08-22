@@ -18,7 +18,9 @@ const Customer: React.FC = () => {
   const [customerName, setCustomerName] = useState("")
   const [language, setLanguage] = useState<string>('en');
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalElement, setTotalElement] = useState(0)
+  const [totalElement, setTotalElement] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+  const [sizePage, setSizePage] = useState(1);
   const [actionTable, setActionTable] = useState(false);
   const [errorMess, setErrorMess] = useState([]);
   const router = useRouter();
@@ -44,27 +46,35 @@ const Customer: React.FC = () => {
   const [listHeaderCustomer, setListHeaderCustomer] = useState(columns);
   const [listDataCustomer, setListDataCustomer] = useState([]);
 
-  // check data > 100 item
-  const itemsPerPage = listDataCustomer.length > 100 ? 100 : listDataCustomer.length;
-
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
   // get screen warehouse register
-  const routerCustomerRegister = () => {
-    router.push("/master/customer/register")
+  const routerCustomerRegister = (id?: string) => {
+    if (id) {
+      router.push(`/master/customer/register?id=${id}`);
+    } else {
+      router.push("/master/customer/register");
+    }
+  }
+
+  //handle update data
+  const handleUpdateData = (id: string) => {    
+    routerCustomerRegister(id);
   }
 
   // handle search data
   const handleSearchList = () => {
     dispatch(showLoading())
 
-    master.getCustumerList(`customerCd=${customerCd}&customerName=${customerName}&lang=${language}&page=${currentPage - 1}&limit=100`).then(res => {
+    master.getCustomerList(`customerCd=${customerCd}&customerName=${customerName}&lang=${language}&page=${currentPage - 1}&limit=100`).then(res => {
       if (res.status === 200 && res.data.message === null) {
         setActionTable(true)
         setListDataCustomer(res.data.data.content)
         setTotalElement(res.data.data.page.totalElements);
+        setTotalPages(res.data.data.page.totalPages);
+        setSizePage(res.data.data.page.size);
         dispatch(hiddenLoading())
       } else {
         setActionTable(false)
@@ -75,16 +85,22 @@ const Customer: React.FC = () => {
     })
   }
 
+  // search when render
   useEffect(() => {
     handleSearchList();
   }, [])
+
+  // render when page change
+  useEffect(() => {
+    handleSearchList();
+  }, [currentPage])
 
   return (
     <div className='bg-white h-screen pl-[170px] container-body'>
       <div className='px-3'>
         {/* button register */}
         <div className='flex justify-start items-center gap-3'>
-          <BtnEntryCommon title={t("button.button-register")} style='start' action={routerCustomerRegister} width={150} height={40} fontSize={20} background={'#548EA6'} disabled={false} />
+          <BtnEntryCommon title={t("button.button-register")} style='start' action={() => routerCustomerRegister("")} width={150} height={40} fontSize={20} background={'#548EA6'} disabled={false} />
           <BtnClassicCommon title={t("button.button-import")} style='start' action={routerLocationEntry} width={150} height={40} fontSize={20} border={50} disabled={false} />
         </div>
 
@@ -134,8 +150,9 @@ const Customer: React.FC = () => {
               <Pagination
                 currentPage={currentPage}
                 totalItems={totalElement}
-                itemsPerPage={itemsPerPage}
+                itemsPerPage={sizePage}
                 onPageChange={handlePageChange}
+                totalPage={totalPages}
               />
               <div className='flex justify-center items-center pr-3'>
                 <BtnClassicCommon title={t("button.button-delete")} style='end' width={100} height={40} fontSize={15} border={50} action={routerLocationEntry} disabled={true} />
@@ -157,7 +174,7 @@ const Customer: React.FC = () => {
             </div>
 
             {/* table data list  */}
-            <TableListCommon columns={listHeaderCustomer} data={listDataCustomer} widthCheckbox={100} handleUpdate={routerLocationEntry} listKeyLink={["customerCd"]} />
+            <TableListCommon columns={listHeaderCustomer} data={listDataCustomer} widthCheckbox={100} handleUpdate={handleUpdateData} listKeyLink={["customerCd"]} />
           </div>
             : <ErrorMessager titles={errorMess} />
         }

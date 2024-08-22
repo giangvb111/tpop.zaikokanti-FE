@@ -74,6 +74,26 @@
                 "location-name": "ロケーション名"
             }
         },
+        "category": {
+            "list-search": {
+                "category-cod": "カテゴリコード",
+                "major-category": "大カテゴリ",
+                "medium-category": "中カテゴリ",
+                "sub-category": "小カテゴリ"
+            },
+            "table-list": {
+                "category-cod": "カテゴリコード",
+                "major-category": "大カテゴリ",
+                "medium-category": "中カテゴリ",
+                "sub-category": "小カテゴリ"
+            },
+            "register": {
+                "category-cod": "カテゴリコード",
+                "major-category": "大カテゴリ",
+                "medium-category": "中カテゴリ",
+                "sub-category": "小カテゴリ"
+            }
+        },
         "customer": {
             "list-search": {
                 "customer-cod": "取引先コード",
@@ -87,7 +107,11 @@
             },
             "register": {
                 "customer-cod": "取引先コード",
-                "customer-name": "取引先名"
+                "customer-name": "取引先名",
+                "customer-name-formal": "取引先正式名称",
+                "supplier-flag": "仕入先フラグ",
+                "delivery-flag": "納品先フラグ",
+                "delivery": "納品先"
             }
         }
     }

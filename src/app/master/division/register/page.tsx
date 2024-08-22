@@ -75,7 +75,6 @@ const DivisionRegister: React.FC = () => {
       dispatch(showLoading())
       master.getDivisionById(`id=${idParam}&&lang=${language}`)
         .then(res => {
-          console.log("resss ==", res);
           if (res.status === 200) {
             setDivisionCd(res.data.data[0].divisionCd)
             setDivisonName(res.data.data[0].divisionName)
@@ -95,8 +94,6 @@ const DivisionRegister: React.FC = () => {
     }
   }, [])
 
-  console.log("rows ==", rows);
-
   const routerDivisionList = () => {
     router.push("/master/division/list")
   }
@@ -111,8 +108,6 @@ const DivisionRegister: React.FC = () => {
       divisionName: divisionName,
       divisionWarehouseList: rows
     }]
-
-    console.log("postData  ", postData);
 
     master.createDivision(`lang=${language}`, postData)
       .then(res => {
@@ -143,8 +138,6 @@ const DivisionRegister: React.FC = () => {
   const [listHeaderDivision, setListHeaderDivision] = useState(columns);
 
   const handleWarehouseChange = (index: number, value: string) => {
-    console.log("handleWarehouseChange", 111);
-
     setRows(prevRows => {
       const newRows = [...prevRows];
       newRows[index].warehouseId = value;
@@ -246,7 +239,7 @@ const DivisionRegister: React.FC = () => {
             </thead>
             <tbody>
               {rows.map((row, index) => (
-                <tr key={row.diviWarehouseId} className='border border-white'>
+                <tr key={row.diviWarehouseId ? row.diviWarehouseId : uuidv4()} className='border border-white'>
                   <td className='border bg-[#E9EEF1] border-white p-2 text-center'>
                     <input
                       type="checkbox" className="w-[15px] h-[15px]"

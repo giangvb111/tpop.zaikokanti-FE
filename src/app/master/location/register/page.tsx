@@ -30,11 +30,7 @@ const LocationRegister: React.FC = () => {
   const [listWareHouse, setListWareHouse] = useState<SelectOption[]>([]);
 
   const { t, i18n } = useTranslation();
-  useEffect(() => {
-      // Đặt ngôn ngữ mặc định sau khi client render
-      const lang = i18n.language || 'en';
-      i18n.changeLanguage(lang);
-  }, []);
+
   useEffect(() => {
     // get languages
     const userLanguage = navigator.language.split("-")[0] || 'en';

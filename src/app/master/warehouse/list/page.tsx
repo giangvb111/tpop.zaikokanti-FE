@@ -16,7 +16,9 @@ import { useTranslation } from "react-i18next";
 const Warehouse: React.FC = () => {
   const [language, setLanguage] = useState<string>('en');
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalElement, setTotalElement] = useState(0)
+  const [totalElement, setTotalElement] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [sizePage, setSizePage] = useState(1);
   const [actionTable, setActionTable] = useState(false);
   const [errorMess, setErrorMess] = useState([]);
   const [warehouseCd, setWarehouseCd] = useState("");
@@ -25,7 +27,7 @@ const Warehouse: React.FC = () => {
   const pathName = usePathname();
   const dispatch = useDispatch<AppDispatch>();
 
-  const { t, i18n } = useTranslation();  
+  const { t, i18n } = useTranslation();
 
   // get languages
   useEffect(() => {
@@ -43,9 +45,6 @@ const Warehouse: React.FC = () => {
   // list table data
   const [listHeaderWarehouse, setListHeaderWarehouse] = useState(columns);
   const [listDataWarehouse, setListDataWarehouse] = useState([]);
-
-  // check data > 100 item
-  const itemsPerPage = listDataWarehouse.length > 100 ? 100 : listDataWarehouse.length;
 
   const routerWarehouseEntry = () => {
 
@@ -72,6 +71,8 @@ const Warehouse: React.FC = () => {
         setActionTable(true)
         setListDataWarehouse(res.data.data.content)
         setTotalElement(res.data.data.page.totalElements);
+        setSizePage(res.data.data.page.size);
+        setTotalPages(res.data.data.page.totalPages);
         dispatch(hiddenLoading())
       } else {
         setActionTable(false)
@@ -155,8 +156,9 @@ const Warehouse: React.FC = () => {
               <Pagination
                 currentPage={currentPage}
                 totalItems={totalElement}
-                itemsPerPage={itemsPerPage}
+                itemsPerPage={sizePage}
                 onPageChange={handlePageChange}
+                totalPage={totalPages}
               />
               <div className='flex justify-center items-center pr-3'>
                 <BtnClassicCommon title={t("button.button-delete")} style='end' width={100} height={40} fontSize={15} action={routerWarehouseEntry} border={50} disabled={true} />

@@ -18,8 +18,7 @@ interface SelectProps {
 
 const SelectCommon: React.FC<SelectProps> = ({ options, value, onChange, id, width, requid, errorMess, disabled }) => {
 
-    const isValidValue = options?.some(option => option.value === value && value !== "");
-
+    const isValidValue = options?.some(option => option.value == value && value != "");
     return (
         <div className={`block justify-left items-center`}>
             <select
@@ -45,7 +44,7 @@ const SelectCommon: React.FC<SelectProps> = ({ options, value, onChange, id, wid
                 }
             </select>
             {
-                errorMess.length > 0 && (
+                errorMess?.length > 0 && (
                     <div className='pt-0.5'>
                         {errorMess.map((message, index) => (
                             <p key={index} className='text-left text-sm text-red-500'>{message}</p>

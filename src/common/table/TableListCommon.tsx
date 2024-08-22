@@ -22,8 +22,9 @@ const TableListCommon: React.FC<TableListCommonProps> = ({ columns, data, widthC
     const startXRef = useRef(0);
     const startWidthRef = useRef(0);
     const colIndexRef = useRef(0);
+    const isResizingRef = useRef(false);
 
-    const MIN_COLUMN_WIDTH = 50; // Độ rộng tối thiểu cho các cột (px)
+    const MIN_COLUMN_WIDTH = 50;
 
     useEffect(() => {
         setTotalWidth(colWidths.reduce((acc, width) => acc + width, 0));
@@ -33,21 +34,11 @@ const TableListCommon: React.FC<TableListCommonProps> = ({ columns, data, widthC
         startXRef.current = e.clientX;
         startWidthRef.current = colWidths[index];
         colIndexRef.current = index;
+        isResizingRef.current = false;
 
         document.addEventListener('mousemove', handleMouseMove);
         document.addEventListener('mouseup', handleMouseUp);
     };
-
-    // const handleMouseMove = (e: MouseEvent) => {
-    //     const deltaX = e.clientX - startXRef.current;
-    //     const newWidth = startWidthRef.current + deltaX;
-
-    //     setColWidths(prevWidths => {
-    //         const updatedWidths = [...prevWidths];
-    //         updatedWidths[colIndexRef.current] = newWidth;
-    //         return updatedWidths;
-    //     });
-    // };
 
     const handleMouseMove = (e: MouseEvent) => {
         const deltaX = e.clientX - startXRef.current;
@@ -56,9 +47,8 @@ const TableListCommon: React.FC<TableListCommonProps> = ({ columns, data, widthC
         if (newWidth < MIN_COLUMN_WIDTH) {
             newWidth = MIN_COLUMN_WIDTH;
         }
-        // else if (newWidth > MAX_COLUMN_WIDTH) {
-        //     newWidth = MAX_COLUMN_WIDTH;
-        // }
+
+        isResizingRef.current = true;
 
         setColWidths(prevWidths => {
             const updatedWidths = [...prevWidths];
@@ -73,6 +63,11 @@ const TableListCommon: React.FC<TableListCommonProps> = ({ columns, data, widthC
     };
 
     const handleSort = (key: string) => {
+        if (isResizingRef.current) {
+            isResizingRef.current = false;
+            return;
+        }
+
         let direction: 'asc' | 'desc' = 'asc';
         if (sortConfig && sortConfig.key === key && sortConfig.direction === 'asc') {
             direction = 'desc';
@@ -152,8 +147,11 @@ const TableListCommon: React.FC<TableListCommonProps> = ({ columns, data, widthC
                                             {row[col.key]}
                                         </button>
                                     ) : (
-                                        (col.key.endsWith("Flag")) && row[col.key] === 1 ? <span className="text-3xl">●</span> : row[col.key]
+                                        col.key.endsWith("Flag")
+                                            ? (row[col.key] === 1 ? <span className="text-3xl">●</span> : "")
+                                            : row[col.key]
                                     )}
+
                                 </td>
                             ))}
                         </tr>

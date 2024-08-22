@@ -4,6 +4,7 @@ interface PaginationProps {
     currentPage: number;
     totalItems: number;
     itemsPerPage: number;
+    totalPage: number;
     onPageChange: (page: number) => void;
 }
 
@@ -11,9 +12,10 @@ const Pagination: React.FC<PaginationProps> = ({
     currentPage,
     totalItems,
     itemsPerPage,
-    onPageChange
+    onPageChange,
+    totalPage
 }) => {
-    const totalPages = Math.ceil(totalItems / itemsPerPage);
+    const totalPages = totalPage;
 
     const renderPageNumbers = () => {
         const pageNumbers = [];
@@ -24,9 +26,12 @@ const Pagination: React.FC<PaginationProps> = ({
                 pageNumbers.push(i);
             }
         } else {
-            if (currentPage <= 5) {
+            if (currentPage <= 3) {
                 for (let i = 1; i <= maxVisiblePages; i++) {
                     pageNumbers.push(i);
+                }
+                if (totalPages > maxVisiblePages) {
+                    pageNumbers.push('...');
                 }
             } else if (currentPage >= totalPages - 2) {
                 pageNumbers.push('...');
@@ -38,23 +43,25 @@ const Pagination: React.FC<PaginationProps> = ({
                 for (let i = currentPage - 1; i <= currentPage + 2; i++) {
                     pageNumbers.push(i);
                 }
-                pageNumbers.push('...');
+                if (currentPage + 2 < totalPages) {
+                    pageNumbers.push('...');
+                }
             }
         }
 
         return pageNumbers.map((page, index) =>
             typeof page === 'number' ? (
-                <span
+                <button
                     key={index}
                     className={`mx-1 cursor-pointer ${page === currentPage ? 'font-bold' : ''}`}
                     onClick={() => onPageChange(page)}
                 >
                     {page}
-                </span>
+                </button>
             ) : (
-                <span key={index} className="mx-1">
+                <button key={index} className="mx-1">
                     {page}
-                </span>
+                </button>
             )
         );
     };
@@ -64,19 +71,19 @@ const Pagination: React.FC<PaginationProps> = ({
             <span className='font-bold mr-5'>
                 {itemsPerPage * (currentPage - 1) + 1}-{Math.min(itemsPerPage * currentPage, totalItems)}/{totalItems}
             </span>
-            <span
-                className={`mx-2 ${currentPage === 1 ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+            <button
+                className={`mx-2 ${currentPage === 1 ? 'cursor-not-allowed' : 'cursor-pointer hover:font-bold'}`}
                 onClick={() => currentPage > 1 && onPageChange(currentPage - 1)}
             >
                 &lt;
-            </span>
+            </button>
             {renderPageNumbers()}
-            <span
-                className={`mx-2 ${currentPage === totalPages ? 'cursor-not-allowed' : 'cursor-pointer'}`}
+            <button
+                className={`mx-2 ${currentPage === totalPages ? 'cursor-not-allowed' : 'cursor-pointer hover:font-bold'}`}
                 onClick={() => currentPage < totalPages && onPageChange(currentPage + 1)}
             >
                 &gt;
-            </span>
+            </button>
         </div>
     );
 };

@@ -17,11 +17,14 @@ const Division: React.FC = () => {
 
   const [language, setLanguage] = useState<string>('en');
   const [currentPage, setCurrentPage] = useState(1);
+  const [totalElement, setTotalElement] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+  const [sizePage, setSizePage] = useState(1);
   const [actionTable, setActionTable] = useState(false);
   const [errorMess, setErrorMess] = useState([]);
   const [divisionCd, setDivisionCd] = useState("");
   const [divisionName, setDivisionName] = useState("");
-  const [warehouseCd, setwarehouseCd] = useState("");
+  const [warehouseName, setWarehouseName] = useState("");
   const router = useRouter();
   const pathName = usePathname();
   const dispatch = useDispatch<AppDispatch>();
@@ -37,15 +40,12 @@ const Division: React.FC = () => {
     { title: '', key: 'id', width: 200 },
     { title: '部門コード', key: 'divisionCd', width: 200 },
     { title: '部門', key: 'divisionName', width: 200 },
-    { title: '倉庫', key: 'warehouseCd', width: 300 }
+    { title: '倉庫', key: 'warehouseName', width: 300 }
   ];
 
   // list table data
   const [listHeaderDivision, setListHeaderDivision] = useState(columns);
   const [listDataDivision, setlistDataDivision] = useState([]);
-
-  // check data > 100 item
-  const itemsPerPage = listDataDivision.length > 100 ? 100 : listDataDivision.length;
 
   const routerDivisionImport = () => {
 
@@ -61,8 +61,6 @@ const Division: React.FC = () => {
 
   //handle update data
   const handleUpdateData = (id: string) => {
-    console.log("id ", id);
-
     routerDivisionEntry(id);
   }
 
@@ -74,14 +72,14 @@ const Division: React.FC = () => {
   const handleSearchList = () => {
     dispatch(showLoading())
 
-    master.getDivisionList(`divisionCd=${divisionCd}&divisionName=${divisionName}&warehouseCd=${warehouseCd}&lang=${language}&page=${currentPage - 1}&limit=100`)
+    master.getDivisionList(`divisionCd=${divisionCd}&divisionName=${divisionName}&warehouseName=${warehouseName}&lang=${language}&page=${currentPage - 1}&limit=100`)
       .then(res => {
-
-        console.log("res", res);
-
         if (res.data.message === null) {
           setActionTable(true)
           setlistDataDivision(res.data.data.content)
+          setTotalElement(res.data.data.page.totalElements);
+          setTotalPages(res.data.data.page.totalPages);
+          setSizePage(res.data.data.page.size);
           dispatch(hiddenLoading())
         } else {
           setActionTable(false)
@@ -102,8 +100,8 @@ const Division: React.FC = () => {
       <div className='px-3'>
         {/* button register */}
         <div className='flex justify-start items-center gap-3'>
-          <BtnEntryCommon title='新規登録' style='start' action={() => routerDivisionEntry("")} width={150} height={40} fontSize={20} background={'#548EA6'} disabled={false} />
-          <BtnClassicCommon title='インポート' style='start' action={routerDivisionImport} width={150} height={40} fontSize={20} border={50} disabled={false} />
+        <BtnEntryCommon title='新規登録' style='start' action={() => routerDivisionEntry("")} width={150} height={40} fontSize={20} background={'#548EA6'} disabled={false} />
+        <BtnClassicCommon title='インポート' style='start' action={routerDivisionImport} width={150} height={40} fontSize={20} border={50} disabled={false} />
         </div>
 
         {/* item search data */}
@@ -138,8 +136,8 @@ const Division: React.FC = () => {
                   <input
                     className='border-[2px] px-2 h-7 rounded-md border-[#9B9B9B]'
                     type="text"
-                    value={warehouseCd}
-                    onChange={(e) => setwarehouseCd(e.target.value)}
+                    value={warehouseName}
+                    onChange={(e) => setWarehouseName(e.target.value)}
                   />
                 </td>
               </tr>
@@ -157,9 +155,10 @@ const Division: React.FC = () => {
               <div className='flex justify-between items-center pl-3 pb-2'>
                 <Pagination
                   currentPage={currentPage}
-                  totalItems={listDataDivision.length}
-                  itemsPerPage={itemsPerPage}
+                  totalItems={totalElement}
+                  itemsPerPage={sizePage}
                   onPageChange={handlePageChange}
+                  totalPage={totalPages}
                 />
                 <div className='flex justify-center items-center pr-3'>
                   <BtnClassicCommon title='削除' style='end' width={100} height={40} fontSize={15} disabled={true} action={routerDivisionEntry} border={50} />
