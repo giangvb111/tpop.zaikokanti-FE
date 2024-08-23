@@ -28,6 +28,7 @@ const Division: React.FC = () => {
   const router = useRouter();
   const pathName = usePathname();
   const dispatch = useDispatch<AppDispatch>();
+  const [listIds, setListIds] = useState<string[]>([]);
 
   // get languages
   useEffect(() => {
@@ -180,7 +181,7 @@ const Division: React.FC = () => {
               </div>
 
               {/* table data list  */}
-              <TableListCommon columns={listHeaderDivision} data={listDataDivision} widthCheckbox={100} handleUpdate={handleUpdateData} listKeyLink={['divisionCd']} />
+              <TableListCommon columns={listHeaderDivision} data={listDataDivision} widthCheckbox={100} handleUpdate={handleUpdateData} listKeyLink={['divisionCd']} handleIdsCheck={setListIds}/>
             </div>
             : <ErrorMessager titles={errorMess} />
         }

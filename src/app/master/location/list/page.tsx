@@ -28,6 +28,7 @@ const Location: React.FC = () => {
     const router = useRouter();
     const pathName = usePathname();
     const dispatch = useDispatch<AppDispatch>();
+    const [listIds, setListIds] = useState<string[]>([]);
 
     const { t } = useTranslation();
 
@@ -194,7 +195,7 @@ const Location: React.FC = () => {
                             </div>
 
                             {/* table data list  */}
-                            <TableListCommon columns={listHeaderLocation} data={listDataLocation} widthCheckbox={100} handleUpdate={handleUpdateData} listKeyLink={["locationCd"]}/>
+                            <TableListCommon columns={listHeaderLocation} data={listDataLocation} widthCheckbox={100} handleUpdate={handleUpdateData} listKeyLink={["locationCd"]} handleIdsCheck={setListIds}/>
                         </div>
                         : <ErrorMessager titles={errorMess} />
                 }

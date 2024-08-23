@@ -12,12 +12,15 @@ interface TableListCommonProps {
     widthCheckbox: number;
     handleUpdate: (id: string) => void;
     listKeyLink: string[];
+    handleIdsCheck: (id: string[]) => void;
 }
 
-const TableListCommon: React.FC<TableListCommonProps> = ({ columns, data, widthCheckbox, handleUpdate, listKeyLink }) => {
+const TableListCommon: React.FC<TableListCommonProps> = ({ columns, data, widthCheckbox, handleUpdate, listKeyLink, handleIdsCheck }) => {
     const [colWidths, setColWidths] = useState([widthCheckbox, ...columns.map(col => col.width || 100)]);
     const [totalWidth, setTotalWidth] = useState(colWidths.reduce((acc, width) => acc + width, 0));
     const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' } | null>(null);
+    const [selectedIds, setSelectedIds] = useState<string[]>([]);
+
     const tableRef = useRef<HTMLTableElement>(null);
     const startXRef = useRef(0);
     const startWidthRef = useRef(0);
@@ -85,6 +88,18 @@ const TableListCommon: React.FC<TableListCommonProps> = ({ columns, data, widthC
         return sorted;
     }, [data, sortConfig]);
 
+    const handleCheckboxChange = (id: string) => {
+        setSelectedIds((prevSelectedIds) =>
+            prevSelectedIds.includes(id)
+                ? prevSelectedIds.filter((selectedId) => selectedId !== id)
+                : [...prevSelectedIds, id]
+        );
+    };
+
+    useEffect(() => {        
+        handleIdsCheck(selectedIds);
+    }, [selectedIds])
+
     return (
         <div
             style={{
@@ -128,7 +143,12 @@ const TableListCommon: React.FC<TableListCommonProps> = ({ columns, data, widthC
                     {sortedData.map((row, rowIndex) => (
                         <tr key={rowIndex} className="border border-white">
                             <td style={{ width: widthCheckbox }} className="border bg-[#E9EEF1] border-white p-2 text-center">
-                                <input type="checkbox" className="w-[15px] h-[15px]" />
+                                <input
+                                    type="checkbox"
+                                    className="w-[15px] h-[15px]"
+                                    checked={selectedIds.includes(row['id'])}
+                                    onChange={() => handleCheckboxChange(row['id'])}
+                                />
                             </td>
                             {columns.map((col, colIndex) => (
                                 <td

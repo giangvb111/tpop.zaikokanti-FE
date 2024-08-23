@@ -25,6 +25,7 @@ const Category: React.FC = () => {
   const router = useRouter();
   const pathName = usePathname();
   const dispatch = useDispatch<AppDispatch>();
+  const [listIds, setListIds] = useState<string[]>([]);
 
   const [categoryCd, setCategoryCd] = useState("");
   const [majorCategory, setMajorCategory] = useState("");
@@ -199,7 +200,7 @@ const Category: React.FC = () => {
             </div>
 
             {/* table data list  */}
-            <TableListCommon columns={listHeaderCategory} data={listDataCategory} widthCheckbox={100} handleUpdate={handleUpdateData} listKeyLink={["categoryCd"]} />
+            <TableListCommon columns={listHeaderCategory} data={listDataCategory} widthCheckbox={100} handleUpdate={handleUpdateData} listKeyLink={["categoryCd"]} handleIdsCheck={setListIds}/>
           </div>
             : <ErrorMessager titles={errorMess} />
         }

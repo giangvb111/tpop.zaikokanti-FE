@@ -30,7 +30,7 @@ const InputDateCommon: React.FC<InputDateProps> = ({ value, onChange, id, width,
                 onChange={handleDateChange}
                 dateFormat="yyyy-MM-dd"
                 disabled={disabled}
-                className={`${disabled ? "border-[#A6A6A6] text-[#A6A6A6] cursor-not-allowed" : "border-[#595959] text-[#595959]"} border h-8 w-[${width}px] min-w-[${width}px] px-2 rounded-lg ${requid && !disabled && !value ? "bg-[#F8BABB]" : ""}`}
+                className={`${disabled ? "border-[#A6A6A6] text-[#A6A6A6] cursor-not-allowed" : "border-[#595959] text-[#595959]"} border h-8 w-[${width}px] min-w-[${width}px] px-2 rounded-lg ${errorMess?.length > 0 ? "bg-[#F8BABB]" : ""}`}
             />
             {errorMess?.length > 0 && (
                 <div className='pt-0.5'>
