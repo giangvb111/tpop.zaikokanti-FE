@@ -111,6 +111,7 @@ const Home: React.FC = () => {
         totalItems={totalItems}
         itemsPerPage={itemsPerPage}
         onPageChange={handlePageChange}
+        totalPage={10}
       />
       <TableListCommon columns={columns} data={data} widthCheckbox={30} handleUpdate={handleClick} listKeyLink={['']} />
       {/* <Loading /> */}

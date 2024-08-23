@@ -56,8 +56,30 @@ const master = {
     },
 
     // customer
-    getCustumerList(payload) {
+    getCustomerList(payload) {
         const url = `master/customer/get-list?${payload}`;
+        return axiosAPI.get(url);
+    },
+    createCustomer(payload, data) {
+        const url = `master/customer/create?${payload}`;
+        return axiosAPI.post(url, data);
+    },
+    getCustomerById(payload) {
+        const url = `master/customer/get-customer-by-id?${payload}`;
+        return axiosAPI.get(url);
+    },
+
+    //category
+    getCategoryList(payload) {
+        const url = `master/category/get-list?${payload}`;
+        return axiosAPI.get(url);
+    },
+    createCategory(payload, data) {
+        const url = `master/category/create?${payload}`;
+        return axiosAPI.post(url, data);
+    },
+    getCategoryById(payload) {
+        const url = `master/category/get-category-by-id?${payload}`;
         return axiosAPI.get(url);
     },
 };
