@@ -29,7 +29,7 @@ const SelectCommon: React.FC<SelectProps> = ({ options, value, onChange, id, wid
                 }}
                 disabled={disabled}
                 onChange={(e) => onChange(e.target.value)}
-                className={`${disabled ? "border-[#A6A6A6] text-[#A6A6A6] cursor-not-allowed" : "border-[#595959] text-[#595959]"} border h-8 px-2 rounded-lg focus:outline-none focus:border-[#595959] ${requid && !disabled && (value === null || value === "") ? "bg-[#F8BABB]" : ""}`}
+                className={`${disabled ? "border-[#A6A6A6] text-[#A6A6A6] cursor-not-allowed" : "border-[#595959] text-[#595959]"} border h-8 px-2 rounded-lg focus:outline-none focus:border-[#595959] ${errorMess?.length > 0 ? "bg-[#F8BABB]" : ""}`}
             >
                 <option value=""></option>
 

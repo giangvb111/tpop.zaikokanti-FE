@@ -23,6 +23,7 @@ const Warehouse: React.FC = () => {
   const [errorMess, setErrorMess] = useState([]);
   const [warehouseCd, setWarehouseCd] = useState("");
   const [warehouseName, setWarehouseName] = useState("");
+  const [listIds, setListIds] = useState<string[]>([]);
   const router = useRouter();
   const pathName = usePathname();
   const dispatch = useDispatch<AppDispatch>();
@@ -161,7 +162,7 @@ const Warehouse: React.FC = () => {
                 totalPage={totalPages}
               />
               <div className='flex justify-center items-center pr-3'>
-                <BtnClassicCommon title={t("button.button-delete")} style='end' width={100} height={40} fontSize={15} action={routerWarehouseEntry} border={50} disabled={true} />
+                <BtnClassicCommon title={t("button.button-delete")} style='end' width={100} height={40} fontSize={15} action={routerWarehouseEntry} border={50} disabled={listIds.length == 0} />
                 {/* <BtnClassicCommon title='・・・' action={routerWarehouseEntry} border={50} style='center' width={40} height={40} fontSize={15} /> */}
                 <div className={`flex justify-end items-center pt-3`}>
                   <button
@@ -180,7 +181,7 @@ const Warehouse: React.FC = () => {
             </div>
 
             {/* table data list  */}
-            <TableListCommon columns={listHeaderWarehouse} data={listDataWarehouse} widthCheckbox={100} handleUpdate={handleUpdateData} listKeyLink={["warehouseCd"]} />
+            <TableListCommon columns={listHeaderWarehouse} data={listDataWarehouse} widthCheckbox={100} handleUpdate={handleUpdateData} listKeyLink={["warehouseCd"]} handleIdsCheck={setListIds} />
           </div>
             : <ErrorMessager titles={errorMess} />
         }

@@ -26,6 +26,7 @@ const Customer: React.FC = () => {
   const router = useRouter();
   const pathName = usePathname();
   const dispatch = useDispatch<AppDispatch>();
+  const [listIds, setListIds] = useState<string[]>([]);
 
   const { t } = useTranslation();
 
@@ -174,7 +175,7 @@ const Customer: React.FC = () => {
             </div>
 
             {/* table data list  */}
-            <TableListCommon columns={listHeaderCustomer} data={listDataCustomer} widthCheckbox={100} handleUpdate={handleUpdateData} listKeyLink={["customerCd"]} />
+            <TableListCommon columns={listHeaderCustomer} data={listDataCustomer} widthCheckbox={100} handleUpdate={handleUpdateData} listKeyLink={["customerCd"]} handleIdsCheck={setListIds}/>
           </div>
             : <ErrorMessager titles={errorMess} />
         }
