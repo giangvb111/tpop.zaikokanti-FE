@@ -63,6 +63,7 @@ const WarehouseRegister: React.FC = () => {
   // register warehouse
   const handleRegisterWarehouse = () => {
     dispatch(showLoading())
+    setErrorMess([])
 
     let checkChange = false;
 
@@ -130,7 +131,7 @@ const WarehouseRegister: React.FC = () => {
                   width={200}
                   value={warehouseCd}
                   onChange={setWarehouseCd}
-                  errorMess={errorMess.filter(error => error.field === 'warehouseCd').map(error => error.message)}
+                  errorMess={errorMess?.filter(error => error.field === 'warehouseCd').map(error => error.message)}
                   disabled={false}
                 />
               </td>
@@ -144,7 +145,7 @@ const WarehouseRegister: React.FC = () => {
                   width={200}
                   value={warehouseName}
                   onChange={setWarehouseName}
-                  errorMess={errorMess.filter(error => error.field === 'warehouseName').map(error => error.message)}
+                  errorMess={errorMess?.filter(error => error.field === 'warehouseName').map(error => error.message)}
                   disabled={false}
                 />
               </td>

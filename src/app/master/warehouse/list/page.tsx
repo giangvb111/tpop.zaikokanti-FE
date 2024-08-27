@@ -66,6 +66,7 @@ const Warehouse: React.FC = () => {
   // handle search data
   const handleSearchList = () => {
     dispatch(showLoading())
+    setErrorMess([])
 
     master.getWarehouseList(`warehouseCd=${warehouseCd}&warehouseName=${warehouseName}&lang=${language}&page=${currentPage - 1}&limit=100`).then(res => {
       if (res.status === 200 && res.data.message === null) {
@@ -90,6 +91,28 @@ const Warehouse: React.FC = () => {
     routerWarehouseRegister(id);
   }
 
+  // handle delete data
+  const handleDeleteData = () => {
+    dispatch(showLoading())
+    setErrorMess([])
+
+    master.deleteWarehouse(`lang=${language}`, listIds)
+      .then(res => {
+        if (res.status === 200) {
+          handleSearchList();
+          setListIds([])
+          dispatch(hiddenLoading())
+        }
+      })
+      .catch(err => {
+        if (err.response.data.status === 0) {
+          setErrorMess(err.response.data.error.errorDetails?.map((e: any) => e.message));
+          dispatch(hiddenLoading())
+        }
+        dispatch(hiddenLoading())
+      })
+  }
+
   // search when render
   useEffect(() => {
     handleSearchList();
@@ -99,6 +122,11 @@ const Warehouse: React.FC = () => {
   useEffect(() => {
     handleSearchList();
   }, [currentPage])
+
+  // change language when change i18n
+  useEffect(() => {
+    setListHeaderWarehouse(columns)
+  }, [i18n.language])
 
   return (
     <div className='bg-white h-screen pl-[170px] container-body'>
@@ -110,6 +138,8 @@ const Warehouse: React.FC = () => {
           <BtnClassicCommon title={t("button.button-import")} style='start' action={routerWarehouseEntry} width={150} height={40} fontSize={20} border={50} disabled={false} />
         </div>
 
+        {/* error message */}
+        <ErrorMessager titles={errorMess} />
 
         {/* button search pro data */}
         <div className='pr-3'>
@@ -162,7 +192,7 @@ const Warehouse: React.FC = () => {
                 totalPage={totalPages}
               />
               <div className='flex justify-center items-center pr-3'>
-                <BtnClassicCommon title={t("button.button-delete")} style='end' width={100} height={40} fontSize={15} action={routerWarehouseEntry} border={50} disabled={listIds.length == 0} />
+                <BtnClassicCommon title={t("button.button-delete")} style='end' width={100} height={40} fontSize={15} action={handleDeleteData} border={50} disabled={listIds.length == 0} />
                 {/* <BtnClassicCommon title='・・・' action={routerWarehouseEntry} border={50} style='center' width={40} height={40} fontSize={15} /> */}
                 <div className={`flex justify-end items-center pt-3`}>
                   <button
@@ -183,7 +213,7 @@ const Warehouse: React.FC = () => {
             {/* table data list  */}
             <TableListCommon columns={listHeaderWarehouse} data={listDataWarehouse} widthCheckbox={100} handleUpdate={handleUpdateData} listKeyLink={["warehouseCd"]} handleIdsCheck={setListIds} />
           </div>
-            : <ErrorMessager titles={errorMess} />
+            : ""
         }
       </div>
     </div>

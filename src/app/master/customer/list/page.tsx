@@ -28,11 +28,17 @@ const Customer: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [listIds, setListIds] = useState<string[]>([]);
 
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const routerLocationEntry = () => {
 
   }
+
+  // get languages
+  useEffect(() => {
+    const userLanguage = navigator.language.split("-")[0] || 'en';
+    setLanguage(userLanguage);
+  }, []);
 
   // fake data
   const columns = [
@@ -61,13 +67,14 @@ const Customer: React.FC = () => {
   }
 
   //handle update data
-  const handleUpdateData = (id: string) => {    
+  const handleUpdateData = (id: string) => {
     routerCustomerRegister(id);
   }
 
   // handle search data
   const handleSearchList = () => {
     dispatch(showLoading())
+    setErrorMess([])
 
     master.getCustomerList(`customerCd=${customerCd}&customerName=${customerName}&lang=${language}&page=${currentPage - 1}&limit=100`).then(res => {
       if (res.status === 200 && res.data.message === null) {
@@ -86,6 +93,28 @@ const Customer: React.FC = () => {
     })
   }
 
+  // handle delete data
+  const handleDeleteData = () => {
+    dispatch(showLoading())
+    setErrorMess([])
+
+    master.deleteCustomer(`lang=${language}`, listIds)
+      .then(res => {
+        if (res.status === 200) {
+          handleSearchList();
+          setListIds([])
+          dispatch(hiddenLoading())
+        }
+      })
+      .catch(err => {
+        if (err.response.data.status === 0) {
+          setErrorMess(err.response.data.error.errorDetails?.map((e: any) => e.message));
+          dispatch(hiddenLoading())
+        }
+        dispatch(hiddenLoading())
+      })
+  }
+
   // search when render
   useEffect(() => {
     handleSearchList();
@@ -96,6 +125,10 @@ const Customer: React.FC = () => {
     handleSearchList();
   }, [currentPage])
 
+  useEffect(() => {
+    setListHeaderCustomer(columns)
+  }, [i18n.language])
+
   return (
     <div className='bg-white h-screen pl-[170px] container-body'>
       <div className='px-3'>
@@ -104,6 +137,9 @@ const Customer: React.FC = () => {
           <BtnEntryCommon title={t("button.button-register")} style='start' action={() => routerCustomerRegister("")} width={150} height={40} fontSize={20} background={'#548EA6'} disabled={false} />
           <BtnClassicCommon title={t("button.button-import")} style='start' action={routerLocationEntry} width={150} height={40} fontSize={20} border={50} disabled={false} />
         </div>
+
+        {/* error message */}
+        <ErrorMessager titles={errorMess} />
 
         {/* button search pro data */}
         <div className='pr-3'>
@@ -156,7 +192,7 @@ const Customer: React.FC = () => {
                 totalPage={totalPages}
               />
               <div className='flex justify-center items-center pr-3'>
-                <BtnClassicCommon title={t("button.button-delete")} style='end' width={100} height={40} fontSize={15} border={50} action={routerLocationEntry} disabled={true} />
+                <BtnClassicCommon title={t("button.button-delete")} style='end' width={100} height={40} fontSize={15} border={50} action={handleDeleteData} disabled={listIds.length == 0} />
                 {/* <BtnClassicCommon title='・・・' action={routerWarehouseEntry} border={50} style='center' width={40} height={40} fontSize={15} /> */}
                 <div className={`flex justify-end items-center pt-3`}>
                   <button
@@ -175,9 +211,9 @@ const Customer: React.FC = () => {
             </div>
 
             {/* table data list  */}
-            <TableListCommon columns={listHeaderCustomer} data={listDataCustomer} widthCheckbox={100} handleUpdate={handleUpdateData} listKeyLink={["customerCd"]} handleIdsCheck={setListIds}/>
+            <TableListCommon columns={listHeaderCustomer} data={listDataCustomer} widthCheckbox={100} handleUpdate={handleUpdateData} listKeyLink={["customerCd"]} handleIdsCheck={setListIds} />
           </div>
-            : <ErrorMessager titles={errorMess} />
+            : ""
         }
       </div>
     </div>

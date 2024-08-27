@@ -284,7 +284,7 @@ const CustomerRegister: React.FC = () => {
                   width={200}
                   value={customerCd}
                   onChange={setCustomerCd}
-                  errorMess={errorMess.filter(error => error.field === 'customerCd').map(error => error.message)}
+                  errorMess={errorMess?.filter(error => error.field === 'customerCd').map(error => error.message)}
                   disabled={false}
                 />
               </td>
@@ -298,7 +298,7 @@ const CustomerRegister: React.FC = () => {
                   width={200}
                   value={customerName}
                   onChange={setCustomerName}
-                  errorMess={errorMess.filter(error => error.field === 'customerName').map(error => error.message)}
+                  errorMess={errorMess?.filter(error => error.field === 'customerName').map(error => error.message)}
                   disabled={false}
                 />
               </td>
@@ -312,7 +312,7 @@ const CustomerRegister: React.FC = () => {
                   width={200}
                   value={customerNameFormal}
                   onChange={setCustomerNameFormal}
-                  errorMess={errorMess.filter(error => error.field === 'customerNameFormal').map(error => error.message)}
+                  errorMess={errorMess?.filter(error => error.field === 'customerNameFormal').map(error => error.message)}
                   disabled={false}
                 />
               </td>
@@ -328,7 +328,7 @@ const CustomerRegister: React.FC = () => {
                   width={25}
                   value={supplierFlag}
                   onChange={setSupplierFlag}
-                  errorMess={errorMess.filter(error => error.field === 'supplierFlag').map(error => error.message)}
+                  errorMess={errorMess?.filter(error => error.field === 'supplierFlag').map(error => error.message)}
                   disabled={false}
                 />
               </td>
@@ -342,7 +342,7 @@ const CustomerRegister: React.FC = () => {
                   width={25}
                   value={deliveryFlag}
                   onChange={setDeliveryFlag}
-                  errorMess={errorMess.filter(error => error.field === 'deliveryFlag').map(error => error.message)}
+                  errorMess={errorMess?.filter(error => error.field === 'deliveryFlag').map(error => error.message)}
                   disabled={false}
                 />
               </td>
@@ -359,7 +359,7 @@ const CustomerRegister: React.FC = () => {
                   value={deliveryId}
                   requid={false}
                   width={200}
-                  errorMess={errorMess.filter(error => error.field === 'deliveryId').map(error => error.message)}
+                  errorMess={errorMess?.filter(error => error.field === 'deliveryId').map(error => error.message)}
                   disabled={requestFlag === 1 ? false : true}
                 />
               </td>

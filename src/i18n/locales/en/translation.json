@@ -41,6 +41,7 @@
         "button-import": "Import File",
         "button-search-advance": "Search Advance",
         "button-register-submit": "Submit",
+        "button-add": "Add",
         "button-back": "Back"
     },
     "master": {
@@ -110,6 +111,23 @@
                 "supplier-flag": "Supplier Flag",
                 "delivery-flag": "Delivery Flag",
                 "delivery": "Delivery"
+            }
+        },
+        "division": {
+            "list-search": {
+                "division-cod": "Division Code",
+                "division-name": "Division",
+                "warehouse-name": "Warehouse"
+            },
+            "table-list": {
+                "division-cod": "Division Code",
+                "division-name": "Division",
+                "warehouse-name": "Warehouse"
+            },
+            "register": {
+                "division-cod": "Division Code",
+                "division-name": "Division",
+                "warehouse-name": "Warehouse"
             }
         }
     }

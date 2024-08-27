@@ -41,6 +41,7 @@
         "button-import": "インポート",
         "button-search-advance": "検索オプション",
         "button-register-submit": "登録",
+        "button-add": "追加",
         "button-back": "一覧に戻る"
     },
     "master": {
@@ -112,6 +113,23 @@
                 "supplier-flag": "仕入先フラグ",
                 "delivery-flag": "納品先フラグ",
                 "delivery": "納品先"
+            }
+        },
+        "division": {
+            "list-search": {
+                "division-cod": "部門コード",
+                "division-name": "部門",
+                "warehouse-name": "倉庫"
+            },
+            "table-list": {
+                "division-cod": "部門コード",
+                "division-name": "部門",
+                "warehouse-name": "倉庫"
+            },
+            "register": {
+                "division-cod": "部門コード",
+                "division-name": "部門",
+                "warehouse-name": "倉庫"
             }
         }
     }
