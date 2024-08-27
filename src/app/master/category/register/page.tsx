@@ -149,7 +149,7 @@ const CategoryRegister: React.FC = () => {
                   width={200}
                   value={categoryCd}
                   onChange={setCategoryCd}
-                  errorMess={errorMess.filter(error => error.field === 'categoryCd').map(error => error.message)}
+                  errorMess={errorMess?.filter(error => error.field === 'categoryCd').map(error => error.message)}
                   disabled={false}
                 />
               </td>
@@ -163,7 +163,7 @@ const CategoryRegister: React.FC = () => {
                   width={200}
                   value={majorCategory}
                   onChange={setMajorCategory}
-                  errorMess={errorMess.filter(error => error.field === 'majorCategory').map(error => error.message)}
+                  errorMess={errorMess?.filter(error => error.field === 'majorCategory').map(error => error.message)}
                   disabled={false}
                 />
               </td>
@@ -177,7 +177,7 @@ const CategoryRegister: React.FC = () => {
                   width={200}
                   value={mediumCategory}
                   onChange={setMediumCategory}
-                  errorMess={errorMess.filter(error => error.field === 'mediumCategory').map(error => error.message)}
+                  errorMess={errorMess?.filter(error => error.field === 'mediumCategory').map(error => error.message)}
                   disabled={false}
                 />
               </td>
@@ -191,7 +191,7 @@ const CategoryRegister: React.FC = () => {
                   width={200}
                   value={subCategory}
                   onChange={setSubCategory}
-                  errorMess={errorMess.filter(error => error.field === 'subCategory').map(error => error.message)}
+                  errorMess={errorMess?.filter(error => error.field === 'subCategory').map(error => error.message)}
                   disabled={false}
                 />
               </td>

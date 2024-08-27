@@ -23,6 +23,11 @@ const master = {
         return axiosAPI.post(url, data);
     },
 
+    deleteWarehouse(payload, data) {
+        const url = `master/warehouse/delete-by-id-list?${payload}`;
+        return axiosAPI.delete(url, { data: data });
+    },
+
     // location
     getLocationList(payload) {
         const url = `master/location/get-list?${payload}`;
@@ -37,6 +42,11 @@ const master = {
     createLocation(payload, data) {
         const url = `master/location/create?${payload}`;
         return axiosAPI.post(url, data);
+    },
+
+    deleteLocation(payload, data) {
+        const url = `master/location/delete-by-id-list?${payload}`;
+        return axiosAPI.delete(url, { data: data });
     },
 
     //Division
@@ -55,6 +65,11 @@ const master = {
         return axiosAPI.get(url);
     },
 
+    deleteDivision(payload, data) {
+        const url = `master/division/delete-by-id-list?${payload}`;
+        return axiosAPI.delete(url, { data: data });
+    },
+
     // customer
     getCustomerList(payload) {
         const url = `master/customer/get-list?${payload}`;
@@ -69,6 +84,11 @@ const master = {
         return axiosAPI.get(url);
     },
 
+    deleteCustomer(payload, data) {
+        const url = `master/customer/delete-by-id-list?${payload}`;
+        return axiosAPI.delete(url, { data: data });
+    },
+
     //category
     getCategoryList(payload) {
         const url = `master/category/get-list?${payload}`;
@@ -81,6 +101,11 @@ const master = {
     getCategoryById(payload) {
         const url = `master/category/get-category-by-id?${payload}`;
         return axiosAPI.get(url);
+    },
+
+    deleteCategory(payload, data) {
+        const url = `master/category/delete-by-id-list?${payload}`;
+        return axiosAPI.delete(url, { data: data });
     },
 };
 

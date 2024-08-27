@@ -30,7 +30,7 @@ const Location: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
     const [listIds, setListIds] = useState<string[]>([]);
 
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     // get languages
     useEffect(() => {
@@ -70,6 +70,7 @@ const Location: React.FC = () => {
     // handle search data
     const handleSearchList = () => {
         dispatch(showLoading())
+        setErrorMess([]);
 
         master.getLocationList(`locationCd=${locationCd}&locationName=${locationName}&warehouseName=${warehouseName}&lang=${language}&page=${currentPage - 1}&limit=100`)
             .then(res => {
@@ -90,8 +91,30 @@ const Location: React.FC = () => {
             })
     }
 
+    // handle delete data
+    const handleDeleteData = () => {
+        dispatch(showLoading())
+        setErrorMess([])
+
+        master.deleteLocation(`lang=${language}`, listIds)
+            .then(res => {
+                if (res.status === 200) {
+                    handleSearchList();
+                    setListIds([])
+                    dispatch(hiddenLoading())
+                }
+            })
+            .catch(err => {
+                if (err.response.data.status === 0) {
+                    setErrorMess(err.response.data.error.errorDetails?.map((e: any) => e.message));
+                    dispatch(hiddenLoading())
+                }
+                dispatch(hiddenLoading())
+            })
+    }
+
     //handle update data
-    const handleUpdateData = (id: string) => {        
+    const handleUpdateData = (id: string) => {
         routerLocationRegister(id);
     }
 
@@ -105,6 +128,10 @@ const Location: React.FC = () => {
         handleSearchList();
     }, [currentPage])
 
+    useEffect(() => {
+        setListHeaderLocation(columns)
+    }, [i18n.language])
+
     return (
         <div className='bg-white h-screen pl-[170px] container-body'>
             <div className='px-3'>
@@ -113,6 +140,9 @@ const Location: React.FC = () => {
                     <BtnEntryCommon title={t("button.button-register")} style='start' action={() => routerLocationRegister("")} width={150} height={40} fontSize={20} background={'#548EA6'} disabled={false} />
                     <BtnClassicCommon title={t("button.button-import")} style='start' action={routerLocationEntry} width={150} height={40} fontSize={20} border={50} disabled={false} />
                 </div>
+
+                {/* error message */}
+                <ErrorMessager titles={errorMess} />
 
                 {/* button search pro data */}
                 <div className='pr-3'>
@@ -176,7 +206,7 @@ const Location: React.FC = () => {
                                     totalPage={totalPages}
                                 />
                                 <div className='flex justify-center items-center pr-3'>
-                                    <BtnClassicCommon title={t("button.button-delete")} style='end' width={100} height={40} fontSize={15} disabled={true} action={routerLocationEntry} border={50} />
+                                    <BtnClassicCommon title={t("button.button-delete")} style='end' width={100} height={40} fontSize={15} disabled={listIds.length == 0} action={handleDeleteData} border={50} />
                                     {/* <BtnClassicCommon title='・・・' action={routerLocationEntry} border={50} style='center' width={40} height={40} fontSize={15} /> */}
                                     <div className={`flex justify-end items-center pt-3`}>
                                         <button
@@ -195,9 +225,9 @@ const Location: React.FC = () => {
                             </div>
 
                             {/* table data list  */}
-                            <TableListCommon columns={listHeaderLocation} data={listDataLocation} widthCheckbox={100} handleUpdate={handleUpdateData} listKeyLink={["locationCd"]} handleIdsCheck={setListIds}/>
+                            <TableListCommon columns={listHeaderLocation} data={listDataLocation} widthCheckbox={100} handleUpdate={handleUpdateData} listKeyLink={["locationCd"]} handleIdsCheck={setListIds} />
                         </div>
-                        : <ErrorMessager titles={errorMess} />
+                        : ""
                 }
             </div>
         </div>

@@ -70,6 +70,7 @@ const Category: React.FC = () => {
   // handle search data
   const handleSearchList = () => {
     dispatch(showLoading())
+    setErrorMess([])
 
     master.getCategoryList(`categoryCd=${categoryCd}&majorCategory=${majorCategory}&mediumCategory=${mediumCategory}&subCategory=${subCategory}&lang=${language}&page=${currentPage - 1}&limit=`).then(res => {
       if (res.status === 200 && res.data.message === null) {
@@ -93,6 +94,28 @@ const Category: React.FC = () => {
     routerCategoryRegister(id);
   }
 
+  // handle delete data
+  const handleDeleteData = () => {
+    dispatch(showLoading())
+    setErrorMess([])
+
+    master.deleteCategory(`lang=${language}`, listIds)
+      .then(res => {
+        if (res.status === 200) {
+          handleSearchList();
+          setListIds([])
+          dispatch(hiddenLoading())
+        }
+      })
+      .catch(err => {
+        if (err.response.data.status === 0) {
+          setErrorMess(err.response.data.error.errorDetails?.map((e: any) => e.message));
+          dispatch(hiddenLoading())
+        }
+        dispatch(hiddenLoading())
+      })
+  }
+
   // search when render
   useEffect(() => {
     handleSearchList();
@@ -103,6 +126,9 @@ const Category: React.FC = () => {
     handleSearchList();
   }, [currentPage])
 
+  useEffect(() => {
+    setListHeaderCategory(columns)
+  }, [i18n.language])
   return (
     <div className='bg-white h-screen pl-[170px] container-body'>
 
@@ -112,6 +138,9 @@ const Category: React.FC = () => {
           <BtnEntryCommon title={t("button.button-register")} style='start' action={() => routerCategoryRegister("")} width={150} height={40} fontSize={20} background={'#548EA6'} disabled={false} />
           <BtnClassicCommon title={t("button.button-import")} style='start' action={handleTest} width={150} height={40} fontSize={20} border={50} disabled={false} />
         </div>
+
+        {/* error message */}
+        <ErrorMessager titles={errorMess} />
 
         {/* item search data */}
         <div className='flex justify-between items-start'>
@@ -181,7 +210,7 @@ const Category: React.FC = () => {
                 totalPage={totalPages}
               />
               <div className='flex justify-center items-center pr-3'>
-                <BtnClassicCommon title={t("button.button-delete")} style='end' width={100} height={40} fontSize={15} action={handleTest} border={50} disabled={true} />
+                <BtnClassicCommon title={t("button.button-delete")} style='end' width={100} height={40} fontSize={15} action={handleDeleteData} border={50} disabled={listIds.length == 0} />
                 {/* <BtnClassicCommon title='・・・' action={routerWarehouseEntry} border={50} style='center' width={40} height={40} fontSize={15} /> */}
                 <div className={`flex justify-end items-center pt-3`}>
                   <button
@@ -200,9 +229,9 @@ const Category: React.FC = () => {
             </div>
 
             {/* table data list  */}
-            <TableListCommon columns={listHeaderCategory} data={listDataCategory} widthCheckbox={100} handleUpdate={handleUpdateData} listKeyLink={["categoryCd"]} handleIdsCheck={setListIds}/>
+            <TableListCommon columns={listHeaderCategory} data={listDataCategory} widthCheckbox={100} handleUpdate={handleUpdateData} listKeyLink={["categoryCd"]} handleIdsCheck={setListIds} />
           </div>
-            : <ErrorMessager titles={errorMess} />
+            : ""
         }
       </div>
     </div>

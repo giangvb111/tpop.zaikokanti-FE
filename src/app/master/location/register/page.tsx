@@ -134,7 +134,7 @@ const LocationRegister: React.FC = () => {
                   width={200}
                   value={locationCd}
                   onChange={setLocationCd}
-                  errorMess={errorMess.filter(error => error.field === 'locationCd').map(error => error.message)}
+                  errorMess={errorMess?.filter(error => error.field === 'locationCd').map(error => error.message)}
                   disabled={false}
                 />
               </td>
@@ -148,7 +148,7 @@ const LocationRegister: React.FC = () => {
                   width={200}
                   value={locationName}
                   onChange={setLocationName}
-                  errorMess={errorMess.filter(error => error.field === 'locationName').map(error => error.message)}
+                  errorMess={errorMess?.filter(error => error.field === 'locationName').map(error => error.message)}
                   disabled={false}
                 />
               </td>
@@ -163,7 +163,7 @@ const LocationRegister: React.FC = () => {
                   value={warehouseId}
                   requid={true}
                   width={200}
-                  errorMess={errorMess.filter(error => error.field === 'warehouseId').map(error => error.message)}
+                  errorMess={errorMess?.filter(error => error.field === 'warehouseId').map(error => error.message)}
                   disabled={false}
                 />
               </td>

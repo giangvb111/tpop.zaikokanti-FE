@@ -29,10 +29,12 @@ const TableListCommon: React.FC<TableListCommonProps> = ({ columns, data, widthC
 
     const MIN_COLUMN_WIDTH = 50;
 
+    // Updates total width when column widths change
     useEffect(() => {
         setTotalWidth(colWidths.reduce((acc, width) => acc + width, 0));
     }, [colWidths]);
 
+    // Handles the start of column resizing
     const handleMouseDown = (e: React.MouseEvent, index: number) => {
         startXRef.current = e.clientX;
         startWidthRef.current = colWidths[index];
@@ -43,6 +45,7 @@ const TableListCommon: React.FC<TableListCommonProps> = ({ columns, data, widthC
         document.addEventListener('mouseup', handleMouseUp);
     };
 
+    // Handles column resizing while dragging
     const handleMouseMove = (e: MouseEvent) => {
         const deltaX = e.clientX - startXRef.current;
         let newWidth = startWidthRef.current + deltaX;
@@ -60,11 +63,13 @@ const TableListCommon: React.FC<TableListCommonProps> = ({ columns, data, widthC
         });
     };
 
+    // Handles the end of column resizing
     const handleMouseUp = () => {
         document.removeEventListener('mousemove', handleMouseMove);
         document.removeEventListener('mouseup', handleMouseUp);
     };
 
+    // Handles sorting when a column header is clicked
     const handleSort = (key: string) => {
         if (isResizingRef.current) {
             isResizingRef.current = false;
@@ -78,6 +83,7 @@ const TableListCommon: React.FC<TableListCommonProps> = ({ columns, data, widthC
         setSortConfig({ key, direction });
     };
 
+    // Returns sorted data based on the current sorting configuration
     const sortedData = React.useMemo(() => {
         if (!sortConfig) return data;
         const sorted = [...data].sort((a, b) => {
@@ -88,6 +94,7 @@ const TableListCommon: React.FC<TableListCommonProps> = ({ columns, data, widthC
         return sorted;
     }, [data, sortConfig]);
 
+    // Handles checkbox selection changes
     const handleCheckboxChange = (id: string) => {
         setSelectedIds((prevSelectedIds) =>
             prevSelectedIds.includes(id)
@@ -96,9 +103,21 @@ const TableListCommon: React.FC<TableListCommonProps> = ({ columns, data, widthC
         );
     };
 
-    useEffect(() => {        
+    // Ensures selected IDs match the current data set
+    useEffect(() => {
+        const filteredSelectedIds = selectedIds.filter(id =>
+            data.some(row => row.id === id)
+        );
+
+        if (filteredSelectedIds.length !== selectedIds.length) {
+            setSelectedIds(filteredSelectedIds);
+        }
+    }, [selectedIds]);
+
+    // Updates selected IDs when checkboxes change
+    useEffect(() => {
         handleIdsCheck(selectedIds);
-    }, [selectedIds])
+    }, [selectedIds]);
 
     return (
         <div
@@ -171,7 +190,6 @@ const TableListCommon: React.FC<TableListCommonProps> = ({ columns, data, widthC
                                             ? (row[col.key] === 1 ? <span className="text-3xl">●</span> : "")
                                             : row[col.key]
                                     )}
-
                                 </td>
                             ))}
                         </tr>

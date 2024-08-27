@@ -1,11 +1,21 @@
 "use client"
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useTranslation } from "react-i18next";
 import '@/i18n/i18n';
 
 const Header: React.FC = () => {
     const { t, i18n } = useTranslation();
+
+
+    useEffect(() => {
+        const userLanguage = navigator.language.split("-")[0] || 'en';
+        changeLanguage(userLanguage)
+    }, []);
+
+    const changeLanguage = (language: string) => {
+        i18n.changeLanguage(language);
+    };
 
     return (
         <div className="fixed left-0 h-14 flex w-full justify-between p-2 bg-white top-0 z-50 min-w-[1200px]">
@@ -15,6 +25,30 @@ const Header: React.FC = () => {
                     <button className="bg-[#548EA6] text-white h-10 px-5 text-lg transition-colors duration-150 rounded-lg focus:shadow-outline">
                         Standard
                     </button>
+                </div>
+                <div className="flex items-center border-2 border-[#548EA6] mx-2 rounded-full relative bg-white">
+                    <div className=''>
+                        <div
+                            className={`absolute top-0 left-0 w-1/2 h-full rounded-full border-black border transition-all duration-300 ease-in-out bg-[#548EA6] transform ${i18n.language === 'en' ? 'translate-x-0' : 'translate-x-full'
+                                }`}
+                        ></div>
+
+                        <button
+                            onClick={() => changeLanguage('en')}
+                            className={`p-3 w-1/2 z-10 relative transition-all duration-300 ${i18n.language === 'en' ? 'text-white' : 'text-[#D0CECE]'
+                                }`}
+                        >
+                            English
+                        </button>
+
+                        <button
+                            onClick={() => changeLanguage('ja')}
+                            className={`p-3 w-1/2 z-10 relative transition-all duration-300 ${i18n.language === 'ja' ? 'text-white' : 'text-[#D0CECE]'
+                                }`}
+                        >
+                            日本語
+                        </button>
+                    </div>
                 </div>
             </div>
             <div className="flex justify-center">

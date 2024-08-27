@@ -6,9 +6,9 @@ import InputTextCommon from '@/common/combobox/InputTextCommon';
 import SelectCommon from '@/common/combobox/SelectCommon';
 import { hiddenLoading, showLoading } from '@/redux/future/loading-slice';
 import { AppDispatch } from '@/redux/store';
-import { id } from 'date-fns/locale';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -40,6 +40,8 @@ const DivisionRegister: React.FC = () => {
       isChecked: false
     },
   ]);
+
+  const { t, i18n } = useTranslation();
 
   const defaultRows = [
     {
@@ -172,14 +174,14 @@ const DivisionRegister: React.FC = () => {
           onClick={routerDivisionList}
         >
           <span>＜</span>
-          <span>一覧に戻る</span>
+          <span>{t("button.button-back")}</span>
         </button>
       </div>
       <div className='items-start px-7 py-10'>
         {/* register items */}
         <div className='flex my-3'>
           <div className='w-[12%]'>
-            <span className='text-left w-[33%] py-2 text-base font-bold'>部門コード</span>
+            <span className='text-left w-[33%] py-2 text-base font-bold'>{t("master.division.register.division-cod")}<span className='text-[#b72e30]'>*</span></span>
           </div>
           <div className=''>
             <InputTextCommon
@@ -188,7 +190,7 @@ const DivisionRegister: React.FC = () => {
               width={200}
               value={divisionCd}
               onChange={setDivisionCd}
-              errorMess={errorMess.filter(error => error.field === 'divisionCd').map(error => error.message)}
+              errorMess={errorMess?.filter(error => error.field === 'divisionCd').map(error => error.message)}
               disabled={false}
             />
           </div>
@@ -196,7 +198,7 @@ const DivisionRegister: React.FC = () => {
 
         <div className='flex my-3'>
           <div className='w-[12%]'>
-            <span className='text-left w-[33%] py-2 text-base font-bold'>部門<span className='text-[#b72e30]'>*</span></span>
+            <span className='text-left w-[33%] py-2 text-base font-bold'>{t("master.division.register.division-name")}<span className='text-[#b72e30]'>*</span></span>
           </div>
           <div className=''>
             <InputTextCommon
@@ -205,7 +207,7 @@ const DivisionRegister: React.FC = () => {
               width={200}
               value={divisionName}
               onChange={setDivisonName}
-              errorMess={errorMess.filter(error => error.field === 'divisionName').map(error => error.message)}
+              errorMess={errorMess?.filter(error => error.field === 'divisionName').map(error => error.message)}
               disabled={false}
             />
           </div>
@@ -213,20 +215,20 @@ const DivisionRegister: React.FC = () => {
 
         <div className='my-3'>
           <div className='w-[12%]'>
-            <span className='text-left py-2 text-base font-bold'>倉庫</span>
+            <span className='text-left py-2 text-base font-bold'>{t("master.division.register.warehouse-name")}</span>
           </div>
         </div>
 
         <div className='flex my-3'>
           <div className='px-3'>
-            <button className={`px-5 bg-[#f38c8d] h-8 border border-[black] font-bold text-white transition-colors duration-150 rounded-md focus:shadow-outline hover:bg-[#f38c8d] truncate`}
+            <button className={`px-5 bg-[#f38c8d] h-8 border border-[black] font-bold text-white transition-colors duration-150 rounded-md focus:shadow-outline hover:bg-[#fd5f62] truncate`}
               onClick={addRow}
-            >追加</button>
+            >{t("button.button-add")}</button>
           </div>
           <div className='px-3'>
             <button className={`px-5 bg-transparent h-8 border border-[#548ea6] font-bold text-black transition-colors duration-150 rounded-md focus:shadow-outline hover:bg-[#f38c8d] truncate`}
               onClick={deleteSelectedRows}
-            >削除</button>
+            >{t("button.button-delete")}</button>
           </div>
         </div>
         <div className=''>
@@ -234,7 +236,7 @@ const DivisionRegister: React.FC = () => {
             <thead className='bg-[#548EA6] text-white border-[#548EA6] border-collapse sticky top-[-2px] z-10 py-8'>
               <tr>
                 <th className='w-12 border px-3 py-2 relative border-white text-[#FFFFFF] bg-[#548EA6]'></th>
-                <th className='w-56'>倉庫</th>
+                <th className='w-56'>{t("master.division.register.warehouse-name")}</th>
               </tr>
             </thead>
             <tbody>
@@ -256,7 +258,7 @@ const DivisionRegister: React.FC = () => {
                       requid={true}
                       width={250}
                       disabled={false}
-                      errorMess={errorMess.filter(error => error.field === 'warehouseId').map(error => error.message)}
+                      errorMess={errorMess?.filter(error => error.field === 'warehouseId').map(error => error.message)}
                     />
                   </td>
                 </tr>
@@ -266,7 +268,7 @@ const DivisionRegister: React.FC = () => {
         </div>
       </div>
       <div className='pr-20'>
-        <BtnEntryCommon title='登録' style='end' action={handleRegisterDivision} width={120} height={40} fontSize={20} background={'#548EA6'} disabled={false} />
+        <BtnEntryCommon title={t("button.button-register-submit")} style='end' action={handleRegisterDivision} width={120} height={40} fontSize={20} background={'#548EA6'} disabled={false} />
       </div>
 
     </div>
