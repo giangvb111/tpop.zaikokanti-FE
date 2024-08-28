@@ -2,6 +2,7 @@
 "use client";
 
 import master from '@/api/master';
+import setting from '@/api/setting';
 import BtnClassicCommon from '@/common/button/BtnClassicCommon';
 import BtnEntryCommon from '@/common/button/BtnEntryCommon';
 import ErrorMessager from '@/common/error/ErrorMessager';
@@ -41,10 +42,10 @@ const Division: React.FC = () => {
 
   // fake data
   const columns = [
-    { title: '', key: 'id', width: 200 },
-    { title: t("master.division.table-list.division-cod"), key: 'divisionCd', width: 200 },
-    { title: t("master.division.table-list.division-name"), key: 'divisionName', width: 200 },
-    { title: t("master.division.table-list.warehouse-name"), key: 'warehouseName', width: 300 }
+    { title: '', key: 'id' },
+    { title: t("master.division.table-list.division-cod"), key: 'divisionCd' },
+    { title: t("master.division.table-list.division-name"), key: 'divisionName' },
+    { title: t("master.division.table-list.warehouse-name"), key: 'warehouseName' }
   ];
 
   // list table data
@@ -54,6 +55,19 @@ const Division: React.FC = () => {
   const routerDivisionImport = () => {
 
   }
+
+  //get header table list
+  useEffect(() => {
+    setting.getSettingTableDivision(`lang=${language}`)
+      .then(res => {
+        console.log(res.data.data);
+
+      })
+      .catch(err => {
+
+      })
+  }, [i18n.language])
+
   // get screen warehouse register
   const routerDivisionEntry = (id?: string) => {
     if (id) {
