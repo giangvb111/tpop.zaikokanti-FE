@@ -3,31 +3,41 @@
 import React, { useEffect, useState } from 'react';
 import SlidebarMaster from './SlidebarMaster';
 import { usePathname, useRouter } from 'next/navigation';
-import { useTranslation } from "react-i18next";
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/redux/store';
 import { hiddenLoading, showLoading } from '@/redux/future/loading-slice';
 import setting from '@/api/setting';
+
+interface ChildrenData {
+    displayName: string;
+    displayOrder: number;
+    functionCode: string;
+    functionId: number;
+    functionName: string;
+    functionSection: string;
+    menuId: number;
+    parentId: number;
+    url: string;
+}
 
 const Sidebar: React.FC = () => {
     const router = useRouter();
     const pathName = usePathname();
 
     const [language, setLanguage] = useState<string>('en');
-    const [isDataTorokuOpen, setIsDataTorokuOpen] = useState(false);
-    const [isDataOpen, setIsDataOpen] = useState(false);
-    const [actionTitle, setActionTitle] = useState(pathName.split('/')[1]);
+    const [isDataOpen, setIsDataOpen] = useState<string>('');
     const [actionMaster, setActionMaster] = useState(false);
     const dispatch = useDispatch<AppDispatch>();
 
     const [listItemParent, setListItemParent] = useState([]);
-    const [listItemChildren, setListItemChildren] = useState([]);
+    const [listItemChildren, setListItemChildren] = useState<ChildrenData[]>([]);
 
 
     // get languages
     useEffect(() => {
         const userLanguage = navigator.language.split("-")[0] || 'en';
         setLanguage(userLanguage);
+        setIsDataOpen(pathName)
     }, []);
 
     useEffect(() => {
@@ -37,44 +47,17 @@ const Sidebar: React.FC = () => {
         } else {
             setActionMaster(false);
         }
-
-        //register
-        if (pathName.split('/')[1] === "register") {
-            setIsDataTorokuOpen(true);
-        } else {
-            setIsDataTorokuOpen(false);
-        }
-
-        //list
-        if (pathName.split('/')[1] === "list") {
-            setIsDataOpen(true);
-        } else {
-            setIsDataOpen(false);
-        }
-
-        setActionTitle(pathName);
     }, [pathName]);
 
-    const handleSidebarDataTorokuClick = () => {
-        if (pathName.split("/")[1] !== "register") {
-            router.push("/register/goods-issue");
-        }
-        setIsDataTorokuOpen(!isDataTorokuOpen);
-        setIsDataOpen(false);
-    };
-
-    const handleSidebarDataClick = () => {
-        if (pathName.split("/")[1] !== "list") {
-            router.push("/list/goods-issue");
-        }
-        setIsDataOpen(!isDataOpen);
-        setIsDataTorokuOpen(false);
+    const handleSidebarClick = (url: string, parentId: number) => {
+        const firstChildUrl = listItemChildren.find((child: ChildrenData) => child.parentId === parentId)?.url;
+        router.push(firstChildUrl ? firstChildUrl : url);
+        setIsDataOpen(url);
     };
 
     const handleItemClick = (item: string) => {
-        setActionTitle(item);
         router.push(item);
-
+        setIsDataOpen(item);
         //master
         if (pathName.split('/')[1] === "master") {
             setActionMaster(!actionMaster);
@@ -101,8 +84,6 @@ const Sidebar: React.FC = () => {
             .then(res => {
                 dispatch(hiddenLoading())
                 setListItemChildren(res.data.data);
-                console.log(res.data.data);
-
             })
     }, [language])
 
@@ -127,86 +108,42 @@ const Sidebar: React.FC = () => {
                                                 {value.displayName}
                                             </li>
                                             :
-                                            (
-                                                value.url === "/register"
-                                                    ? <li
-                                                        key={index}
-                                                        className={`relative cursor-pointer pl-20 hover:bg-[#f2f2f2] truncate hover:text-[#548EA6] ${pathName.split('/')[1] === value.url.split('/')[1] ? "bg-[#f2f2f2] text-[#548EA6]" : ""}`}
-                                                    >
-                                                        <button
-                                                            id="btn-shukka-toroku"
-                                                            className="w-full text-left"
-                                                            name='btn-shukka-entry'
-                                                            onClick={handleSidebarDataTorokuClick}
-                                                        >
-                                                            {value.displayName}
-                                                        </button>
-                                                        <ul
-                                                            id="submenu-shukka-toroku"
-                                                            className={`font-gray text-left -translate-x-1/4 item-center w-80 bg-[#f2f2f2] overflow-hidden transition-all duration-300 z-10 ${isDataTorokuOpen ? 'max-h-48' : 'max-h-0'}`}
-                                                        >
-                                                            {listItemChildren.map((data: any, key) => (
-                                                                data.url.split("/")[1] === "register"
-                                                                    ? <li
-                                                                        key={key}
-                                                                        className={`${pathName === data.url ? "text-[#616161]" : "text-[#D9D9D9]"} pl-[7rem] bg-[#f2f2f2] hover:bg-gray-100`}
-                                                                        onClick={() => handleItemClick(data.url)}
-                                                                    >
-                                                                        {data.displayName}
-                                                                    </li>
-                                                                    : ""
-                                                            ))}
-                                                        </ul>
-                                                    </li>
-                                                    : (
-                                                        value.url === "/list"
+                                            <li
+                                                key={index}
+                                                className={`relative cursor-pointer pl-20 hover:bg-[#f2f2f2] truncate hover:text-[#548EA6] ${pathName.split('/')[1] === value.url.split('/')[1] ? "bg-[#f2f2f2] text-[#548EA6]" : ""}`}
+                                            >
+                                                <button
+                                                    id="btn-shukka-toroku"
+                                                    className="w-full text-left"
+                                                    name='btn-shukka-entry'
+                                                    onClick={() => handleSidebarClick(value.url, value.menuId)}
+                                                >
+                                                    {value.displayName}
+                                                </button>
+                                                <ul
+                                                    id="submenu-shukka-toroku"
+                                                    className={`font-gray text-left -translate-x-1/4 item-center w-80 bg-[#f2f2f2] overflow-hidden transition-all duration-300 z-10 ${isDataOpen.split("/")[1] === value.url.split("/")[1] ? 'max-h-48' : 'max-h-0'}`}
+                                                >
+                                                    {listItemChildren.map((data: any, key) => (
+                                                        value.menuId === data.parentId
                                                             ? <li
-                                                                key={index}
-                                                                className={`relative cursor-pointer pl-20 hover:bg-[#f2f2f2] truncate hover:text-[#548EA6] ${pathName.split('/')[1] === value.url.split('/')[1] ? "bg-[#f2f2f2] text-[#548EA6]" : ""}`}
+                                                                key={key}
+                                                                className={`${pathName === data.url ? "text-[#616161]" : "text-[#D9D9D9]"} pl-[7rem] bg-[#f2f2f2] hover:bg-gray-100`}
+                                                                onClick={() => handleItemClick(data.url)}
                                                             >
-                                                                <button
-                                                                    id="btn-shukka-toroku"
-                                                                    className="w-full text-left"
-                                                                    name='btn-shukka-entry'
-                                                                    onClick={handleSidebarDataClick}
-                                                                >
-                                                                    {value.displayName}
-                                                                </button>
-                                                                <ul
-                                                                    id="submenu-shukka-toroku"
-                                                                    className={`font-gray text-left -translate-x-1/4 item-center w-80 bg-[#f2f2f2] overflow-hidden transition-all duration-300 z-10 ${isDataOpen ? 'max-h-48' : 'max-h-0'}`}
-                                                                >
-                                                                    {listItemChildren.map((data: any, key) => (
-                                                                        data.url.split("/")[1] === "list"
-                                                                            ? <li
-                                                                                key={key}
-                                                                                className={`${pathName === data.url ? "text-[#616161]" : "text-[#D9D9D9]"} pl-[7rem] bg-[#f2f2f2] hover:bg-gray-100`}
-                                                                                onClick={() => handleItemClick(data.url)}
-                                                                            >
-                                                                                {data.displayName}
-                                                                            </li>
-                                                                            : ""
-                                                                    ))}
-                                                                </ul>
+                                                                {data.displayName}
                                                             </li>
-                                                            : (
-                                                                <li
-                                                                    key={index}
-                                                                    className={`cursor-pointer pl-20 hover:bg-[#f2f2f2] truncate hover:text-[#548EA6] ${actionTitle === value.url ? "bg-[#f2f2f2] text-[#548EA6]" : ""}`}
-                                                                    onClick={() => handleItemClick(value.url)}
-                                                                >
-                                                                    {value.displayName}
-                                                                </li>
-                                                            )
-                                                    )
-                                            )
+                                                            : ""
+                                                    ))}
+                                                </ul>
+                                            </li>
                                     )
                             ))
                         }
                     </ul>
                 </nav>
             </div>
-            <SlidebarMaster actionMaster={actionMaster} setActionMaster={setActionMaster} />
+            <SlidebarMaster actionMaster={actionMaster} listItemChildren={listItemChildren} />
         </div>
     );
 };
