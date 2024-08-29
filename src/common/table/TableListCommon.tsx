@@ -15,7 +15,7 @@ interface TableListCommonProps {
 }
 
 const TableListCommon: React.FC<TableListCommonProps> = ({ columns, data, widthCheckbox, handleUpdate, listKeyLink, handleIdsCheck }) => {
-    const [colWidths, setColWidths] = useState([widthCheckbox, ...columns.map(col => 150)]);
+    const [colWidths, setColWidths] = useState([widthCheckbox, ...columns.map(col => 120)]);
     const [totalWidth, setTotalWidth] = useState(colWidths.reduce((acc, width) => acc + width, 0));
     const [sortConfig, setSortConfig] = useState<{ key: string; direction: 'asc' | 'desc' } | null>(null);
     const [selectedIds, setSelectedIds] = useState<string[]>([]);

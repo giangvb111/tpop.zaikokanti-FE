@@ -60,7 +60,7 @@ const Division: React.FC = () => {
   useEffect(() => {
     setting.getSettingTableDivision(`lang=${language}`)
       .then(res => {
-        console.log(res.data.data);
+        // console.log(res.data.data);
 
       })
       .catch(err => {
