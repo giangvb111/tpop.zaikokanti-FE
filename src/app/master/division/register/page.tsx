@@ -4,6 +4,7 @@ import master from '@/api/master';
 import BtnEntryCommon from '@/common/button/BtnEntryCommon';
 import InputTextCommon from '@/common/combobox/InputTextCommon';
 import SelectCommon from '@/common/combobox/SelectCommon';
+import ErrorMessager from '@/common/error/ErrorMessager';
 import { hiddenLoading, showLoading } from '@/redux/future/loading-slice';
 import { AppDispatch } from '@/redux/store';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -31,9 +32,19 @@ const DivisionRegister: React.FC = () => {
   const [divisionCd, setDivisionCd] = useState("");
   const [divisionName, setDivisonName] = useState("");
   const [listWareHouse, setListWareHouse] = useState<SelectOption[]>([]);
+  const [divisionCdCheck, setDivisionCdCheck] = useState("");
+  const [divisionNameCheck, setDivisonNameCheck] = useState("");
   const searchParams = useSearchParams();
   const idParam = searchParams.get('id');
+  const [errorTile, setErrorTitle] = useState("");
   const [rows, setRows] = useState<Row[]>([
+    {
+      diviWarehouseId: null,
+      warehouseId: '',
+      isChecked: false
+    },
+  ]);
+  const [rowsCheck, setRowsCheck] = useState<Row[]>([
     {
       diviWarehouseId: null,
       warehouseId: '',
@@ -85,7 +96,16 @@ const DivisionRegister: React.FC = () => {
               warehouseId: item.warehouseId,
               isChecked: false
             }));
+            //check data
+            setDivisionCdCheck(res.data.data[0].divisionCd)
+            setDivisonNameCheck(res.data.data[0].divisionName)
+            const rowCheck: Row[] = res.data.data.map((item: any) => ({
+              diviWarehouseId: item.warehouseDivisionId,
+              warehouseId: item.warehouseId,
+              isChecked: false
+            }));
             setRows(rows)
+            setRowsCheck(rowCheck)
             setErrorMess([])
             dispatch(hiddenLoading())
           }
@@ -100,9 +120,43 @@ const DivisionRegister: React.FC = () => {
     router.push("/master/division/list")
   }
 
+  // check equal
+  const deepEqual = (arr1: Row[], arr2: Row[]): boolean => {
+    if (arr1.length !== arr2.length) return false;
+
+    for (let i = 0; i < arr1.length; i++) {
+      if (
+        arr1[i].diviWarehouseId !== arr2[i].diviWarehouseId ||
+        arr1[i].warehouseId !== arr2[i].warehouseId ||
+        arr1[i].isChecked !== arr2[i].isChecked
+      ) {
+        return false;
+      }
+    }
+    return true;
+  };
+
   // handle register location
   const handleRegisterDivision = () => {
     dispatch(showLoading())
+
+    let checkChange = false;
+
+    console.log(deepEqual(rows, rowsCheck));
+
+    if (idParam) {
+      if (
+        divisionCd == divisionCdCheck
+        && divisionName == divisionNameCheck
+        && deepEqual(rows, rowsCheck)
+      ) {
+        setErrorTitle(t('error.check-data-change'));
+        dispatch(hiddenLoading())
+        checkChange = true;
+      } else {
+        checkChange = false;
+      }
+    }
 
     const postData = [{
       id: idParam ? parseInt(idParam) : null,
@@ -111,25 +165,27 @@ const DivisionRegister: React.FC = () => {
       divisionWarehouseList: rows
     }]
 
-    master.createDivision(`lang=${language}`, postData)
-      .then(res => {
-        if (res.status === 200) {
-          setDivisionCd("")
-          setDivisonName("")
-          setRows(defaultRows)
-          setErrorMess([])
+    if (!checkChange) {
+      master.createDivision(`lang=${language}`, postData)
+        .then(res => {
+          if (res.status === 200) {
+            setDivisionCd("")
+            setDivisonName("")
+            setRows(defaultRows)
+            setErrorMess([])
+            dispatch(hiddenLoading())
+            routerDivisionList()
+          }
+        })
+        .catch(err => {
+          if (err.response.data.status === 0) {
+            setErrorMess(err.response.data.error.errorDetails)
+            dispatch(hiddenLoading());
+          }
           dispatch(hiddenLoading())
-          routerDivisionList()
-        }
-      })
-      .catch(err => {
-        if (err.response.data.status === 0) {
-          setErrorMess(err.response.data.error.errorDetails)
-          dispatch(hiddenLoading());
-        }
-        dispatch(hiddenLoading())
 
-      });
+        });
+    }
   }
 
   const columns = [
@@ -176,6 +232,9 @@ const DivisionRegister: React.FC = () => {
           <span>＜</span>
           <span>{t("button.button-back")}</span>
         </button>
+      </div>
+      <div>
+        <ErrorMessager titles={[errorTile]} />
       </div>
       <div className='items-start px-7 py-10'>
         {/* register items */}

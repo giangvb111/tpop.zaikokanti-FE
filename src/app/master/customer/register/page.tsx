@@ -119,7 +119,7 @@ const CustomerRegister: React.FC = () => {
             setPicName(res.data.data.picName);
             setMailAddress(res.data.data.mailAddress);
             setHomePage(res.data.data.homePage);
-            setDeliveryId(res.data.data.deliveryId);
+            setDeliveryId(res.data.data.deliveryId === null ? "" : res.data.data.deliveryId);
 
             //set value data check
             setCustomerCdCheck(res.data.data.customerCd);
@@ -141,7 +141,7 @@ const CustomerRegister: React.FC = () => {
             setPicNameCheck(res.data.data.picName);
             setMailAddressCheck(res.data.data.mailAddress);
             setHomePageCheck(res.data.data.homePage);
-            setDeliveryIdCheck(res.data.data.deliveryId);
+            setDeliveryIdCheck(res.data.data.deliveryId === null ? "" : res.data.data.deliveryId);
 
             setErrorMess([])
             dispatch(hiddenLoading())
